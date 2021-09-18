@@ -15,4 +15,9 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
     public AbstractSpecification<T> not() {
         return new NotSpecification<>(this);
     }
+
+    @Override
+    public SpecificationName getName() {
+        throw new UnsupportedOperationException();
+    }
 }

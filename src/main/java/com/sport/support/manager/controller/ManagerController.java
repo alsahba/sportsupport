@@ -15,8 +15,8 @@ import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/managers")
 public class ManagerController {
 

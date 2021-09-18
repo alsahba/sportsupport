@@ -1,4 +1,4 @@
-package com.sport.support.branch.respository;
+package com.sport.support.branch.repository;
 
 import com.sport.support.branch.entity.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;

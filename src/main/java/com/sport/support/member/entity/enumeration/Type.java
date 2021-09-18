@@ -1,7 +1,11 @@
 package com.sport.support.member.entity.enumeration;
 
 public enum Type {
-    POOL(1), BRONZE(3), SILVER(5), GOLD(30), ONE_TIME(1);
+    POOL(1),
+    BRONZE(3),
+    SILVER(5),
+    GOLD(30),
+    ONE_TIME(1);
 
     private final int loginAttempt;
 

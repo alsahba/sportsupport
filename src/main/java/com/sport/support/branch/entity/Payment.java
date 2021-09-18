@@ -3,15 +3,17 @@ package com.sport.support.branch.entity;
 import com.sport.support.branch.controller.dto.AddUpdatePaymentDTO;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "PAYMENT")
 @Data
 @NoArgsConstructor
+@Table(name = "PAYMENT")
+@EqualsAndHashCode(callSuper = true)
 public class Payment extends AbstractAuditableEntity {
 
     @Column(name = "POOL_MEMBERSHIP", precision = 19)

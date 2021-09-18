@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 // TODO: 5/15/2021 pagination
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/branches")
 public class BranchController {
 

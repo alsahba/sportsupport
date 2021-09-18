@@ -53,7 +53,7 @@ public class Membership extends AbstractAuditableEntity {
     }
 
     public boolean isAddable() {
-        return isBranchExists() && isMemberExists();
+        return isBranchExists() && isMemberExists(); //TODO has wallet sufficient amount?
     }
 
     private boolean isBranchExists() {
