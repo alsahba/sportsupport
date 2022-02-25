@@ -21,7 +21,7 @@ public class SportSupportUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return User.builder().username("user")
                 .password(passwordEncoder.encode("123"))
-                .authorities(AppRole.TEST.getGrantedAuthorities())
+                .authorities(AppRole.ADMIN.getGrantedAuthorities())
                 .build();
     }
 

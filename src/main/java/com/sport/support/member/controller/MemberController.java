@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     @PutMapping()
-    @PreAuthorize("hasAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAuthority('CREATE_MEMBER')")
     public ResponseEntity<String> update(@RequestBody @Valid UpdateMemberDTO updateMemberDTO) {
         memberService.update(new Member(updateMemberDTO));
         return new ResponseEntity<>("Member with ID = " + updateMemberDTO.getId() + " updated!",
@@ -57,28 +57,28 @@ public class MemberController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAuthority('CREATE_MEMBER')")
     public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
         memberService.delete(id);
         return new ResponseEntity<>("Member with ID = " + id + " deleted!", HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value = "/{id}/ban")
-    @PreAuthorize("hasAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAuthority('CREATE_MEMBER')")
     public ResponseEntity<String> ban(@PathVariable @Min(1) Long id) {
         memberService.updateMemberStatus(id, MemberStatus.BANNED);
         return new ResponseEntity<>("Member with ID = " + id + " banned!", HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value = "/{id}/pacify")
-    @PreAuthorize("hasAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAuthority('CREATE_MEMBER')")
     public ResponseEntity<String> pacify(@PathVariable @Min(1) Long id) {
         memberService.updateMemberStatus(id, MemberStatus.PASSIVE);
         return new ResponseEntity<>("Member with ID = " + id + " pacified!", HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value = "/{id}/membership")
-    @PreAuthorize("hasAuthority('WRITE_MEMBER')")
+    @PreAuthorize("hasAuthority('CREATE_MEMBER')")
     public ResponseEntity<String> membership(@PathVariable @Min(1) Long id,
                                              @RequestBody @Valid AddMembershipDTO addMembershipDTO) {
         Long membershipId = memberService.addMembership(new Membership(addMembershipDTO, id));
