@@ -10,8 +10,11 @@ import com.sport.support.member.entity.enumeration.MemberStatus;
 import com.sport.support.member.messages.MemberErrorMessages;
 import com.sport.support.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,9 +25,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MembershipService membershipService;
     private final SpecificationFactory<AbstractEntity> specificationFactory;
+    private final RedisTemplate<Long, Member> redisTemplate;
 
     public Long add(Member member) {
-        return memberRepository.save(member).getId();
+        Long id = memberRepository.save(member).getId();
+        redisTemplate.opsForValue().set(id, member);
+        return id;
     }
 
     public List<Member> retrieveAll() {
@@ -32,6 +38,10 @@ public class MemberService {
     }
 
     public Member retrieveById(Long id) {
+        Member member = redisTemplate.opsForValue().get(id);
+        if (member != null) {
+            return member;
+        }
         return memberRepository.findById(id).orElse(new Member());
     }
 
