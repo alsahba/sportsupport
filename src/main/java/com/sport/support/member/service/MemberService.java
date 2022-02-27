@@ -10,11 +10,10 @@ import com.sport.support.member.entity.enumeration.MemberStatus;
 import com.sport.support.member.messages.MemberErrorMessages;
 import com.sport.support.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,25 +27,20 @@ public class MemberService {
     private final RedisTemplate<Long, Member> redisTemplate;
 
     public Long add(Member member) {
-        Long id = memberRepository.save(member).getId();
-        redisTemplate.opsForValue().set(id, member);
-        return id;
+        return memberRepository.save(member).getId();
     }
 
     public List<Member> retrieveAll() {
         return memberRepository.findAll();
     }
 
+    @Cacheable(value = "member", key = "#id")
     public Member retrieveById(Long id) {
-        Member member = redisTemplate.opsForValue().get(id);
-        if (member != null) {
-            return member;
-        }
-        return memberRepository.findById(id).orElse(new Member());
+        return getMemberFromCache(id).orElseGet(() -> getMemberFromDatabase(id));
     }
 
     public void update(Member member) {
-        Member memberDb = memberRepository.findById(member.getId()).get();
+        Member memberDb = retrieveById(member.getId());
         if (specificationFactory.execute(SpecificationName.MEMBER_EXISTS, member)) {
             memberDb.update(member);
             memberRepository.save(memberDb);
@@ -54,14 +48,14 @@ public class MemberService {
     }
 
     public void delete(Long id) {
-        Member memberDb = memberRepository.findById(id).get();
+        Member memberDb = retrieveById(id);
         if (specificationFactory.execute(SpecificationName.MEMBER_EXISTS, memberDb)) {
             memberRepository.delete(memberDb);
         }
     }
 
     public void updateMemberStatus(Long id, MemberStatus memberStatus) {
-        Member memberDb = memberRepository.findById(id).get();
+        Member memberDb = retrieveById(id);
         if (specificationFactory.execute(SpecificationName.MEMBER_EXISTS, memberDb)) {
             memberDb.setStatus(memberStatus);
             memberRepository.save(memberDb);
@@ -69,11 +63,20 @@ public class MemberService {
     }
 
     public Long addMembership(Membership membership) {
-        Member memberDb = memberRepository.findById(membership.getMember().getId()).get();
+        Member memberDb = retrieveById(membership.getMember().getId());
         if (specificationFactory.execute(SpecificationName.MEMBER_EXISTS, memberDb)) {
             membership.setMember(memberDb);
             membershipService.add(membership);
         }
         return membership.getId();
+    }
+
+    private Optional<Member> getMemberFromCache(Long id) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(id));
+    }
+
+    private Member getMemberFromDatabase(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new RecordDoesNotExistException(MemberErrorMessages.MEMBER_DOES_NOT_EXIST));
     }
 }

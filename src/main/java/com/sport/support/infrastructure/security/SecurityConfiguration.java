@@ -18,15 +18,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final SportSupportUserDetailsService userDetailsService;
 
-    @Value("{jwt.secretKey}")
+    @Value("${jwt.secretKey}")
     private String secretKey;
+
+    @Value("${jwt.ttl}")
+    private long tokenTtl;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), secretKey))
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), secretKey, tokenTtl))
                 .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests().anyRequest().authenticated();
     }

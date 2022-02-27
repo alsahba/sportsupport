@@ -25,12 +25,15 @@ import java.util.Date;
 public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final String secretKey;
+    private final long ttl;
 
     public JwtUsernamePasswordAuthenticationFilter(
             AuthenticationManager authenticationManager,
-            String secretKey) {
+            String secretKey,
+            long ttl) {
         super(authenticationManager);
         this.secretKey = secretKey;
+        this.ttl = ttl;
     }
 
     @Override
@@ -57,10 +60,14 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(Date.from(LocalDateTime.now().plusSeconds(100).atZone(ZoneId.systemDefault()).toInstant()))
+                .setExpiration(convertLocalDateTimeToDate(LocalDateTime.now().plusSeconds(ttl)))
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes(StandardCharsets.UTF_8))
                 .compact();
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+    }
+
+    private Date convertLocalDateTimeToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
 }
