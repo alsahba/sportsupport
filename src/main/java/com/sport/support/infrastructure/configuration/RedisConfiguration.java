@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.configuration;
 
-import com.sport.support.member.entity.Member;
+import com.sport.support.appuser.AppUser;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,8 @@ import java.time.Duration;
 public class RedisConfiguration {
 
     @Bean
-    public RedisTemplate<Long, Member> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Long, Member> template = new RedisTemplate<>();
+    public RedisTemplate<Long, AppUser> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<Long, AppUser> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
         return template;
     }

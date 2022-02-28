@@ -1,9 +1,12 @@
 package com.sport.support.member.entity;
 
-import com.sport.support.infrastructure.abstractions.entity.AbstractSystemUser;
-import com.sport.support.member.controller.dto.AddMemberDTO;
-import com.sport.support.member.controller.dto.UpdateMemberDTO;
-import com.sport.support.member.entity.enumeration.MemberStatus;
+
+import com.sport.support.appuser.AppUser;
+import com.sport.support.branch.entity.Branch;
+import com.sport.support.branch.specification.BranchExistsSpecification;
+import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
+import com.sport.support.member.entity.enumeration.Duration;
+import com.sport.support.member.entity.enumeration.Type;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,36 +16,33 @@ import javax.persistence.*;
 @Table(name = "MEMBER")
 @Data
 @NoArgsConstructor
-public class Member extends AbstractSystemUser {
+public class Member extends AbstractAuditableEntity {
 
-    @Column(name = "STATUS")
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private AppUser user;
+
+    @ManyToOne
+    @JoinColumn(name = "BRANCH_ID", nullable = false)
+    private Branch branch;
+
+    @Column(name = "DURATION")
     @Enumerated(EnumType.STRING)
-    private MemberStatus status;
+    private Duration duration;
 
-    public Member(AddMemberDTO addMemberDTO) {
-        setStatus(MemberStatus.ACTIVE);
-        setName(addMemberDTO.getName());
-        setSurname(addMemberDTO.getSurname());
-        setEMail(addMemberDTO.getEMail());
-        setUsername(addMemberDTO.getUsername());
-        setPassword(addMemberDTO.getPassword());
-        setPhoneNumber(addMemberDTO.getPhoneNumber());
+    @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @Column(name = "LOGIN_ATTEMPT")
+    private int loginAttempt;
+
+    public boolean isAddable() {
+        return isBranchExists(); //TODO has wallet sufficient amount?
     }
 
-    public Member(UpdateMemberDTO updateMemberDTO) {
-        setId(updateMemberDTO.getId());
-        setName(updateMemberDTO.getName());
-        setSurname(updateMemberDTO.getSurname());
-        setPhoneNumber(updateMemberDTO.getPhoneNumber());
+    private boolean isBranchExists() {
+        return new BranchExistsSpecification().isSatisfiedBy(getBranch());
     }
 
-    public Member(Long id) {
-        setId(id);
-    }
-
-    public void update(Member member) {
-        setPhoneNumber(member.getPhoneNumber());
-        setName(member.getName());
-        setSurname(member.getSurname());
-    }
 }
