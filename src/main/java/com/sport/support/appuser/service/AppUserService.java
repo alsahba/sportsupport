@@ -1,9 +1,9 @@
 package com.sport.support.appuser.service;
 
 import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
 import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
-import com.sport.support.member.messages.MemberErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -48,6 +48,6 @@ public class AppUserService {
 
     private AppUser getFromDatabase(Long id) {
         return appUserRepository.findById(id)
-                .orElseThrow(() -> new RecordDoesNotExistException(MemberErrorMessages.MEMBER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordDoesNotExistException(UserErrorMessages.USER_DOES_NOT_EXIST));
     }
 }

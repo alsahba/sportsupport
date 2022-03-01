@@ -4,14 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class AbstractAuditableEntity extends AbstractEntity{
+public abstract class AbstractAuditableEntity extends AbstractEntity {
 
     @Column(name = "CREATION_TIMESTAMP")
     private LocalDateTime creationTimestamp;

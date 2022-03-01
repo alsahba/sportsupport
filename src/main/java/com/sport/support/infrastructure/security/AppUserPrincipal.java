@@ -52,4 +52,8 @@ public class AppUserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return isEnabled;
     }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
 }

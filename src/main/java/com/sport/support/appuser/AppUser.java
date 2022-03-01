@@ -42,6 +42,10 @@ public class AppUser extends AbstractAuditableEntity {
         setPhoneNumber(addUserDTO.getPhoneNumber());
     }
 
+    public AppUser(Long id) {
+        setId(id);
+    }
+
     public void update(String name, String surname) {
         setName(name);
         setSurname(surname);

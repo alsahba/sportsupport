@@ -1,7 +1,7 @@
-package com.sport.support.member.controller.dto;
+package com.sport.support.membership.controller.dto;
 
-import com.sport.support.member.entity.enumeration.Duration;
-import com.sport.support.member.entity.enumeration.Type;
+import com.sport.support.membership.entity.enumeration.Duration;
+import com.sport.support.membership.entity.enumeration.Type;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

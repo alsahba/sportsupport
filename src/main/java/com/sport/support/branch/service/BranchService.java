@@ -8,12 +8,9 @@ import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
 import com.sport.support.infrastructure.specifications.SpecificationFactory;
 import com.sport.support.infrastructure.specifications.SpecificationName;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
 
 // TODO: 5/16/2021 branch stats
 // TODO: 5/19/2021 if a branch is closed, members should be transfered to other branches
@@ -33,7 +30,8 @@ public class BranchService {
     }
 
     public Branch retrieveById(Long id) {
-        return branchRepository.findById(id).orElse(new Branch());
+        return branchRepository.findById(id)
+                .orElseThrow(() -> new RecordDoesNotExistException(BranchErrorMessages.BRANCH_DOES_NOT_EXIST));
     }
 
     public void update(Branch branch) {

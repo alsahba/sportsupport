@@ -57,7 +57,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
-                .setSubject(authResult.getName())
+                .setSubject(((AppUserPrincipal) authResult.getPrincipal()).getAppUser().getId().toString())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(convertLocalDateTimeToDate(LocalDateTime.now().plusSeconds(ttl)))

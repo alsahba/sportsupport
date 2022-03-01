@@ -1,22 +1,22 @@
-package com.sport.support.member.entity;
-
+package com.sport.support.membership.entity;
 
 import com.sport.support.appuser.AppUser;
 import com.sport.support.branch.entity.Branch;
-import com.sport.support.branch.specification.BranchExistsSpecification;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.member.entity.enumeration.Duration;
-import com.sport.support.member.entity.enumeration.Type;
+import com.sport.support.membership.entity.enumeration.Duration;
+import com.sport.support.membership.entity.enumeration.Type;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "MEMBERSHIP_HISTORY")
 @Data
 @NoArgsConstructor
-public class Member extends AbstractAuditableEntity {
+public class MembershipHistory extends AbstractAuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -34,15 +34,10 @@ public class Member extends AbstractAuditableEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(name = "LOGIN_ATTEMPT")
-    private int loginAttempt;
-
-    public boolean isAddable() {
-        return isBranchExists(); //TODO has wallet sufficient amount?
+    public MembershipHistory(Membership membership) {
+        setType(membership.getType());
+        setBranch(membership.getBranch());
+        setUser(membership.getUser());
+        setDuration(membership.getDuration());
     }
-
-    private boolean isBranchExists() {
-        return new BranchExistsSpecification().isSatisfiedBy(getBranch());
-    }
-
 }

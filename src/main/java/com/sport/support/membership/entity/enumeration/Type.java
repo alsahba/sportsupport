@@ -1,4 +1,4 @@
-package com.sport.support.member.entity.enumeration;
+package com.sport.support.membership.entity.enumeration;
 
 public enum Type {
     POOL(1),
