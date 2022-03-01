@@ -5,7 +5,7 @@ import com.sport.support.appuser.AppUser;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.branch.specification.BranchExistsSpecification;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.membership.controller.dto.AddMembershipDTO;
+import com.sport.support.membership.controller.dto.AddMembershipRequest;
 import com.sport.support.membership.entity.enumeration.Duration;
 import com.sport.support.membership.entity.enumeration.Type;
 import lombok.Data;
@@ -44,10 +44,10 @@ public class Membership extends AbstractAuditableEntity {
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
 
-    public Membership(Long userId, AddMembershipDTO addMembershipDTO) {
-        setBranch(new Branch(addMembershipDTO.getBranchId()));
-        setDuration(addMembershipDTO.getDuration());
-        setType(addMembershipDTO.getType());
+    public Membership(Long userId, AddMembershipRequest addRequest) {
+        setBranch(new Branch(addRequest.getBranchId()));
+        setDuration(addRequest.getDuration());
+        setType(addRequest.getType());
         setUser(new AppUser(userId));
         setEndDate(calculateEndDate());
         setLoginAttempt(getType().getLoginAttempt());

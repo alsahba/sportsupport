@@ -1,8 +1,8 @@
 package com.sport.support.manager.controller;
 
-import com.sport.support.manager.controller.dto.AddManagerDTO;
-import com.sport.support.manager.controller.dto.ManagerDetailDTO;
-import com.sport.support.manager.controller.dto.UpdateManagerDTO;
+import com.sport.support.manager.controller.dto.AddManagerRequest;
+import com.sport.support.manager.controller.dto.ManagerDetailResponse;
+import com.sport.support.manager.controller.dto.UpdateManagerRequest;
 import com.sport.support.manager.entity.Manager;
 import com.sport.support.manager.service.ManagerService;
 import lombok.RequiredArgsConstructor;
@@ -23,29 +23,29 @@ public class ManagerController {
     private final ManagerService managerService;
 
     @GetMapping()
-    public ResponseEntity<List<ManagerDetailDTO>> getAll() {
-        List<ManagerDetailDTO> detailDTOList = managerService.retrieveAll().stream()
-                .map(ManagerDetailDTO::new).collect(Collectors.toList());
+    public ResponseEntity<List<ManagerDetailResponse>> getAll() {
+        List<ManagerDetailResponse> detailDTOList = managerService.retrieveAll().stream()
+                .map(ManagerDetailResponse::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(detailDTOList);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ManagerDetailDTO> get(@PathVariable @Min(1) Long id) {
-        return ResponseEntity.ok(new ManagerDetailDTO(managerService.retrieveById(id)));
+    public ResponseEntity<ManagerDetailResponse> get(@PathVariable @Min(1) Long id) {
+        return ResponseEntity.ok(new ManagerDetailResponse(managerService.retrieveById(id)));
     }
 
     @PostMapping()
-    public ResponseEntity<String> add(@RequestBody @Valid AddManagerDTO addManagerDTO) {
-        Long id = managerService.add(new Manager(addManagerDTO));
-        return new ResponseEntity<>("Manager with ID = " + id + " added!",
-                HttpStatus.CREATED);
+    public ResponseEntity<String> add(@RequestBody @Valid AddManagerRequest addManagerRequest) {
+        Manager manager = new Manager(addManagerRequest);
+        managerService.add(manager);
+        return new ResponseEntity<>("Manager with ID = " + manager.getId() + " added!", HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ResponseEntity<String> update(@RequestBody @Valid UpdateManagerDTO updateManagerDTO) {
-        managerService.update(new Manager(updateManagerDTO));
-        return new ResponseEntity<>("Manager with ID = " + updateManagerDTO.getId() + " updated!",
+    public ResponseEntity<String> update(@RequestBody @Valid UpdateManagerRequest updateManagerRequest) {
+        managerService.update(new Manager(updateManagerRequest));
+        return new ResponseEntity<>(String.format("Manager with ID = %d updated!", updateManagerRequest.getId()),
                 HttpStatus.ACCEPTED);
     }
 

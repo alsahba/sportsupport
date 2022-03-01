@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class UpdatePaymentDTO {
+public class AddUpdatePaymentRequest {
 
     private BigDecimal poolMembership;
 

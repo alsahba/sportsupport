@@ -1,33 +1,24 @@
 package com.sport.support.infrastructure.abstractions.entity;
 
+import com.sport.support.appuser.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
 public abstract class AbstractSystemUser extends AbstractAuditableEntity {
 
-    @Column(name = "NAME")
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "APP_USER_ID")
+    private AppUser appUser;
 
-    @Column(name = "SURNAME")
-    private String surname;
-
-    @Column(name = "USERNAME", unique = true)
-    private String username;
-
-    @Column(name = "PASSWORD")
-    private String password;
-
-    @Column(name = "PHONE_NUMBER", unique = true)
-    private String phoneNumber;
-
-    @Column(name = "E_MAIL", unique = true)
-    private String eMail;
 }

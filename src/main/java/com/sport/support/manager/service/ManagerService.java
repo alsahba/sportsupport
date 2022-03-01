@@ -8,6 +8,7 @@ import com.sport.support.manager.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -22,31 +23,23 @@ public class ManagerService {
     }
 
     public Manager retrieveById(Long id) {
-        return managerRepository.findById(id).orElse(new Manager());
+        return managerRepository.findById(id)
+                .orElseThrow(() -> new RecordDoesNotExistException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST));
     }
 
-    public Long add(Manager manager) {
+    @Transactional
+    public void add(Manager manager) {
         manager.setBranch(branchService.retrieveById(manager.getBranch().getId()));
-        if (manager.isBranchExists()) {
-            managerRepository.save(manager);
-        }
-        return manager.getId();
+        managerRepository.save(manager);
     }
 
     public void update(Manager manager) {
-        managerRepository.findById(manager.getId()).ifPresentOrElse(managerDb -> {
-            if (manager.isBranchExists()) {
-                managerDb.update(manager);
-                managerRepository.save(managerDb);
-            }
-        }, () -> {
-            throw new RecordDoesNotExistException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST);
-        });
+        Manager managerDb = retrieveById(manager.getId());
+        manager.setBranch(branchService.retrieveById(manager.getBranch().getId()));
+        managerRepository.save(managerDb);
     }
 
     public void delete(Long id) {
-        managerRepository.findById(id).ifPresentOrElse(managerRepository::delete, () -> {
-            throw new RecordDoesNotExistException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST);
-        });
+        managerRepository.delete(retrieveById(id));
     }
 }

@@ -3,10 +3,7 @@ package com.sport.support.branch.service;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.branch.messages.BranchErrorMessages;
 import com.sport.support.branch.repository.BranchRepository;
-import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
 import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
-import com.sport.support.infrastructure.specifications.SpecificationFactory;
-import com.sport.support.infrastructure.specifications.SpecificationName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +16,6 @@ import java.util.List;
 public class BranchService {
 
     private final BranchRepository branchRepository;
-    private final SpecificationFactory<AbstractEntity> specificationFactory;
 
     public Long add(Branch branch) {
         return branchRepository.save(branch).getId();
@@ -35,17 +31,12 @@ public class BranchService {
     }
 
     public void update(Branch branch) {
-        Branch branchDb = branchRepository.findById(branch.getId()).get();
-        if (specificationFactory.execute(SpecificationName.BRANCH_EXISTS, branchDb)) {
-            branchDb.update(branch);
-            branchRepository.save(branchDb);
-        }
+        Branch branchDb = retrieveById(branch.getId());
+        branchDb.update(branch);
+        branchRepository.save(branchDb);
     }
 
     public void delete(Long id) {
-        Branch branchDb = branchRepository.findById(id).get();
-        if (specificationFactory.execute(SpecificationName.BRANCH_EXISTS, branchDb)) {
-            branchRepository.delete(branchDb);
-        }
+        branchRepository.delete(retrieveById(id));
     }
 }

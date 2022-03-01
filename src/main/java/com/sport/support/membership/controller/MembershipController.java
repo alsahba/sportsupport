@@ -1,6 +1,6 @@
 package com.sport.support.membership.controller;
 
-import com.sport.support.membership.controller.dto.AddMembershipDTO;
+import com.sport.support.membership.controller.dto.AddMembershipRequest;
 import com.sport.support.membership.entity.Membership;
 import com.sport.support.membership.service.MembershipService;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +23,11 @@ public class MembershipController {
 
     @PostMapping
     public ResponseEntity<String> add(
-            @RequestBody @Valid AddMembershipDTO addMembershipDTO,
+            @RequestBody @Valid AddMembershipRequest addMembershipDTO,
             Authentication authentication) {
         Membership membership = new Membership(Long.valueOf(authentication.getName()), addMembershipDTO);
         membershipService.add(membership);
-        return new ResponseEntity<>(String.format("Membership added, id = %d", membership.getId()),
-                HttpStatus.CREATED);
+        return new ResponseEntity<>(String.format("Membership added, id = %d", membership.getId()), HttpStatus.CREATED);
     }
 
 }

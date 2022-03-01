@@ -17,7 +17,7 @@ public class MembershipService {
     private final BranchService branchService;
 
     public void add(Membership membership) {
-        branchService.retrieveById(membership.getBranch().getId());
+        membership.setBranch(branchService.retrieveById(membership.getBranch().getId()));
         // TODO: 1.03.2022 wallet development wrt branch membership payment
         membershipRepository.save(membership);
         membershipHistoryRepository.save(new MembershipHistory(membership));

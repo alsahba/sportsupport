@@ -25,6 +25,6 @@ public class UpdateBranchDTO {
     private String address;
 
     @Valid
-    private AddUpdatePaymentDTO payment;
+    private AddUpdatePaymentRequest payment;
 
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class AddMembershipDTO {
+public class AddMembershipRequest {
 
     @NotNull
     private Long branchId;

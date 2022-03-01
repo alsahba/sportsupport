@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class AddBranchDTO {
+public class AddBranchRequest {
 
     @NotBlank
     private String name;
@@ -28,5 +28,5 @@ public class AddBranchDTO {
     private String address;
 
     @Valid
-    private AddUpdatePaymentDTO payment;
+    private AddUpdatePaymentRequest payment;
 }

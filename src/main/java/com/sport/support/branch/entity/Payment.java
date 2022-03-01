@@ -1,6 +1,6 @@
 package com.sport.support.branch.entity;
 
-import com.sport.support.branch.controller.dto.AddUpdatePaymentDTO;
+import com.sport.support.branch.controller.dto.AddUpdatePaymentRequest;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,11 +31,11 @@ public class Payment extends AbstractAuditableEntity {
     @Column(name = "ONE_TIME_PASS", precision = 19)
     private BigDecimal oneTimePass;
 
-    public Payment(AddUpdatePaymentDTO addUpdatePaymentDTO) {
-        this.poolMembership = addUpdatePaymentDTO.getPoolMembership();
-        this.bronzeMembership = addUpdatePaymentDTO.getBronzeMembership();
-        this.silverMembership = addUpdatePaymentDTO.getSilverMembership();
-        this.goldMembership = addUpdatePaymentDTO.getGoldMembership();
-        this.oneTimePass = addUpdatePaymentDTO.getOneTimePass();
+    public Payment(AddUpdatePaymentRequest addUpdatePaymentRequest) {
+        this.poolMembership = addUpdatePaymentRequest.getPoolMembership();
+        this.bronzeMembership = addUpdatePaymentRequest.getBronzeMembership();
+        this.silverMembership = addUpdatePaymentRequest.getSilverMembership();
+        this.goldMembership = addUpdatePaymentRequest.getGoldMembership();
+        this.oneTimePass = addUpdatePaymentRequest.getOneTimePass();
     }
 }

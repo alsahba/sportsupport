@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PaymentDetailDTO {
+public class PaymentDetailResponse {
 
     private String poolMembership;
     private String bronzeMembership;
@@ -15,7 +15,7 @@ public class PaymentDetailDTO {
     private String goldMembership;
     private String oneTimePass;
 
-    public PaymentDetailDTO(Payment payment) {
+    public PaymentDetailResponse(Payment payment) {
         if (payment.getPoolMembership() != null) {
             // TODO: 5/19/2021 will be refactored!
             this.poolMembership = Util.convertToFormattedMoney(payment.getPoolMembership());

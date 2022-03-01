@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class BranchDetailDTO {
+public class BranchDetailResponse {
 
     private String name;
     private String address;
-    private PaymentDetailDTO paymentDetail;
+    private PaymentDetailResponse paymentDetail;
 
-    public BranchDetailDTO(Branch branch) {
+    public BranchDetailResponse(Branch branch) {
         this.name = branch.getName();
         this.address = branch.getAddress();
-        this.paymentDetail = new PaymentDetailDTO(branch.getPayment());
+        this.paymentDetail = new PaymentDetailResponse(branch.getPayment());
     }
 
 }
