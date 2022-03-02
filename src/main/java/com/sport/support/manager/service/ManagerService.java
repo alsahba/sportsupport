@@ -2,7 +2,7 @@ package com.sport.support.manager.service;
 
 import com.sport.support.appuser.service.AppUserService;
 import com.sport.support.branch.service.BranchService;
-import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
+import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import com.sport.support.manager.entity.Manager;
 import com.sport.support.manager.messages.ManagerErrorMessages;
@@ -27,7 +27,7 @@ public class ManagerService {
 
     public Manager retrieveById(Long id) {
         return managerRepository.findById(id)
-                .orElseThrow(() -> new RecordDoesNotExistException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordIsNotFoundException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST));
     }
 
     @Transactional

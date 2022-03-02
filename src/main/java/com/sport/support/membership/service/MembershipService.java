@@ -8,6 +8,8 @@ import com.sport.support.membership.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class MembershipService {
@@ -16,6 +18,7 @@ public class MembershipService {
     private final MembershipHistoryRepository membershipHistoryRepository;
     private final BranchService branchService;
 
+    @Transactional
     public void add(Membership membership) {
         membership.setBranch(branchService.retrieveById(membership.getBranch().getId()));
         // TODO: 1.03.2022 wallet development wrt branch membership payment

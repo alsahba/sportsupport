@@ -4,7 +4,7 @@ import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
 import com.sport.support.appuser.repository.PermissionRepository;
-import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
+import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -23,16 +24,17 @@ public class AppUserService {
     private final PermissionRepository permissionRepository;
     private final RedisTemplate<Long, AppUser> redisTemplate;
 
-    public Long register(AppUser user) {
+    @Transactional
+    public void register(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.USER.getPermissionNames()));
-        return appUserRepository.save(user).getId();
+        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.USER.getPermissions()));
+        appUserRepository.save(user);
     }
 
     // TODO: 2.03.2022 - to be dele
     public void addOwner(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissionNames()));
+        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissions()));
         appUserRepository.save(user).getId();
     }
 
@@ -44,7 +46,7 @@ public class AppUserService {
 
     public void updatePermissions(Long id, RoleEnum role) {
         AppUser user = retrieveById(id);
-        user.setPermissions(permissionRepository.findByNameIn(role.getPermissionNames()));
+        user.setPermissions(permissionRepository.findByNameIn(role.getPermissions()));
         appUserRepository.save(user);
     }
 
@@ -65,6 +67,6 @@ public class AppUserService {
 
     private AppUser getFromDatabase(Long id) {
         return appUserRepository.findById(id)
-                .orElseThrow(() -> new RecordDoesNotExistException(UserErrorMessages.USER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordIsNotFoundException(UserErrorMessages.USER_DOES_NOT_EXIST));
     }
 }

@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.configuration;
 
-import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
+import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
-    @ExceptionHandler(RecordDoesNotExistException.class)
+    @ExceptionHandler(RecordIsNotFoundException.class)
     public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                 messageSource.getMessage(e.getMessage(), null, Locale.US));

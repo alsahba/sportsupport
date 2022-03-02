@@ -23,7 +23,7 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAuthority('MANAGER_READ')")
     public ResponseEntity<List<ManagerDetailResponse>> getAll() {
         List<ManagerDetailResponse> detailDTOList = managerService.retrieveAll().stream()
@@ -38,7 +38,7 @@ public class ManagerController {
         return ResponseEntity.ok(new ManagerDetailResponse(managerService.retrieveById(id)));
     }
 
-    @PostMapping()
+    @PostMapping
     @PreAuthorize("hasAuthority('MANAGER_WRITE')")
     public ResponseEntity<String> add(@RequestBody @Valid AddManagerRequest addManagerRequest) {
         Manager manager = new Manager(addManagerRequest);
@@ -46,7 +46,7 @@ public class ManagerController {
         return new ResponseEntity<>("Manager with ID = " + manager.getId() + " added!", HttpStatus.CREATED);
     }
 
-    @PutMapping()
+    @PutMapping
     @PreAuthorize("hasAuthority('MANAGER_WRITE')")
     public ResponseEntity<String> update(@RequestBody @Valid UpdateManagerRequest updateManagerRequest) {
         managerService.update(new Manager(updateManagerRequest));

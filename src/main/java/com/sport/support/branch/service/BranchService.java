@@ -3,7 +3,7 @@ package com.sport.support.branch.service;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.branch.messages.BranchErrorMessages;
 import com.sport.support.branch.repository.BranchRepository;
-import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
+import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class BranchService {
 
     public Branch retrieveById(Long id) {
         return branchRepository.findById(id)
-                .orElseThrow(() -> new RecordDoesNotExistException(BranchErrorMessages.BRANCH_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordIsNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
     }
 
     public void update(Branch branch) {

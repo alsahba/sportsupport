@@ -1,8 +1,5 @@
 package com.sport.support.infrastructure.security.enumeration;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,19 +17,7 @@ public enum RoleEnum {
         this.permissions = permissions;
     }
 
-    public Set<PermissionEnum> getPermissions() {
-        return permissions;
-    }
-
-    public Set<String> getPermissionNames() {
+    public Set<String> getPermissions() {
         return permissions.stream().map(PermissionEnum::name).collect(Collectors.toSet());
-    }
-
-    public Set<GrantedAuthority> getGrantedAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = getPermissions().stream().map(
-                p -> new SimpleGrantedAuthority(p.name())
-        ).collect(Collectors.toSet());
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return grantedAuthorities;
     }
 }

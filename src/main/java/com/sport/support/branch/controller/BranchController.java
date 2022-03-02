@@ -25,7 +25,7 @@ public class BranchController {
 
     private final BranchService branchService;
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAuthority('BRANCH_READ')")
     public ResponseEntity<List<BranchDetailResponse>> getAll() {
         List<BranchDetailResponse> detailDTOList = branchService.retrieveAll().stream()
@@ -47,7 +47,7 @@ public class BranchController {
         return new ResponseEntity<>(String.format("Branch with ID = %d added!", id), HttpStatus.CREATED);
     }
 
-    @PutMapping()
+    @PutMapping
     @PreAuthorize("hasAuthority('BRANCH_WRITE')")
     public ResponseEntity<String> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
         branchService.update(new Branch(updateBranchRequest));
@@ -59,6 +59,6 @@ public class BranchController {
     @PreAuthorize("hasAuthority('BRANCH_WRITE')")
     public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
         branchService.delete(id);
-        return new ResponseEntity<>("Branch with ID = " + id + " deleted!", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);
     }
 }
