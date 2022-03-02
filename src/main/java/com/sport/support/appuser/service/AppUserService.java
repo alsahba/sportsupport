@@ -1,9 +1,11 @@
 package com.sport.support.appuser.service;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
+import com.sport.support.appuser.repository.PermissionRepository;
 import com.sport.support.infrastructure.exception.RecordDoesNotExistException;
+import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,17 +20,32 @@ public class AppUserService {
 
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PermissionRepository permissionRepository;
     private final RedisTemplate<Long, AppUser> redisTemplate;
 
     public Long register(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.USER.getPermissionNames()));
         return appUserRepository.save(user).getId();
+    }
+
+    // TODO: 2.03.2022 - to be dele
+    public void addOwner(AppUser user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissionNames()));
+        appUserRepository.save(user).getId();
     }
 
     public void update(Long id, String name, String surname) {
         AppUser appUser = retrieveById(id);
         appUser.update(name, surname);
         appUserRepository.save(appUser);
+    }
+
+    public void updatePermissions(Long id, RoleEnum role) {
+        AppUser user = retrieveById(id);
+        user.setPermissions(permissionRepository.findByNameIn(role.getPermissionNames()));
+        appUserRepository.save(user);
     }
 
     public void delete(Long id) {

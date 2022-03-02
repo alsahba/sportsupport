@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.configuration;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

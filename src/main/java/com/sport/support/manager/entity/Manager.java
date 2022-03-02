@@ -1,31 +1,25 @@
 package com.sport.support.manager.entity;
 
+import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractEmployee;
 import com.sport.support.manager.controller.dto.AddManagerRequest;
 import com.sport.support.manager.controller.dto.UpdateManagerRequest;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "MANAGER")
 @Data
-@NoArgsConstructor
+@Entity
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@Table(name = "MANAGER")
 public class Manager extends AbstractEmployee {
 
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "ID", nullable = false)
-    private Branch branch;
-
     public Manager(AddManagerRequest addManagerRequest) {
+        setAppUser(new AppUser(addManagerRequest.getUserId()));
         setBranch(new Branch(addManagerRequest.getBranchId()));
     }
 

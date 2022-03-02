@@ -1,6 +1,6 @@
 package com.sport.support.appuser.repository;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

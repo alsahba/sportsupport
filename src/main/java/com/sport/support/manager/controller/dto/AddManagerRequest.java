@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 public class AddManagerRequest {
 
     @NotNull
+    private Long userId;
+
+    @NotNull
     private Long branchId;
 
 }

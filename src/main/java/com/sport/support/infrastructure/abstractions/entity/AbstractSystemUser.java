@@ -1,10 +1,7 @@
 package com.sport.support.infrastructure.abstractions.entity;
 
-import com.sport.support.appuser.AppUser;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.sport.support.appuser.entity.AppUser;
+import lombok.*;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;

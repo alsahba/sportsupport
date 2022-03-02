@@ -1,7 +1,7 @@
 package com.sport.support.branch.entity;
 
 import com.sport.support.branch.controller.dto.AddBranchRequest;
-import com.sport.support.branch.controller.dto.UpdateBranchDTO;
+import com.sport.support.branch.controller.dto.UpdateBranchRequest;
 import com.sport.support.infrastructure.entity.City;
 import com.sport.support.infrastructure.entity.District;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
@@ -63,12 +63,12 @@ public class Branch extends AbstractAuditableEntity {
         this.payment = new Payment(addBranchRequest.getPayment());
     }
 
-    public Branch (UpdateBranchDTO updateBranchDTO) {
-        super.setId(updateBranchDTO.getId());
-        this.name = updateBranchDTO.getName();
-        this.quota = updateBranchDTO.getQuota();
-        this.address = updateBranchDTO.getAddress();
-        this.payment = new Payment(updateBranchDTO.getPayment());
+    public Branch (UpdateBranchRequest updateBranchRequest) {
+        super.setId(updateBranchRequest.getId());
+        this.name = updateBranchRequest.getName();
+        this.quota = updateBranchRequest.getQuota();
+        this.address = updateBranchRequest.getAddress();
+        this.payment = new Payment(updateBranchRequest.getPayment());
     }
 
     public Branch(Long id) {

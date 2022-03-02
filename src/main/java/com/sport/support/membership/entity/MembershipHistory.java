@@ -1,6 +1,6 @@
 package com.sport.support.membership.entity;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.membership.entity.enumeration.Duration;

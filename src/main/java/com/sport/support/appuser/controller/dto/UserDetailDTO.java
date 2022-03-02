@@ -1,6 +1,6 @@
 package com.sport.support.appuser.controller.dto;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import lombok.Data;
 
 @Data

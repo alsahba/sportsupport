@@ -1,8 +1,7 @@
 package com.sport.support.infrastructure.security;
 
-import com.sport.support.appuser.AppUser;
+import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.appuser.repository.AppUserRepository;
-import com.sport.support.infrastructure.security.enumeration.AppRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +23,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
         return new AppUserPrincipal(
                 appUser,
-                AppRole.ADMIN.getGrantedAuthorities(),
+                appUser.getGrantedAuthorities(),
                 true,
                 true,
                 true,

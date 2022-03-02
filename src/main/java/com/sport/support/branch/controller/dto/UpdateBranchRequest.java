@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class UpdateBranchDTO {
+public class UpdateBranchRequest {
 
     @NotNull
     private Long id;
