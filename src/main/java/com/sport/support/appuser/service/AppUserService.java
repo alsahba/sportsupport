@@ -5,11 +5,11 @@ import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
 import com.sport.support.appuser.repository.PermissionRepository;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
+import com.sport.support.infrastructure.security.AppPasswordEncoder;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class AppUserService {
 
     private final AppUserRepository appUserRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AppPasswordEncoder passwordEncoder;
     private final PermissionRepository permissionRepository;
     private final RedisTemplate<Long, AppUser> redisTemplate;
 
@@ -31,7 +31,7 @@ public class AppUserService {
         appUserRepository.save(user);
     }
 
-    // TODO: 2.03.2022 - to be dele
+    // TODO: 2.03.2022 - to be deleted
     public void addOwner(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissions()));
@@ -67,6 +67,6 @@ public class AppUserService {
 
     private AppUser getFromDatabase(Long id) {
         return appUserRepository.findById(id)
-                .orElseThrow(() -> new RecordIsNotFoundException(UserErrorMessages.USER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordIsNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
     }
 }

@@ -27,7 +27,7 @@ public class ManagerService {
 
     public Manager retrieveById(Long id) {
         return managerRepository.findById(id)
-                .orElseThrow(() -> new RecordIsNotFoundException(ManagerErrorMessages.MANAGER_DOES_NOT_EXIST));
+                .orElseThrow(() -> new RecordIsNotFoundException(ManagerErrorMessages.ERROR_MANAGER_IS_NOT_FOUND));
     }
 
     @Transactional
