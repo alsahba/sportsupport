@@ -3,13 +3,12 @@ package com.sport.support.infrastructure.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,35 +20,32 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-@Slf4j
-public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtEmailPasswordAuthFilter extends AbstractAuthenticationProcessingFilter {
 
     private final String secretKey;
     private final long ttl;
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
-    public JwtUsernamePasswordAuthenticationFilter(
+    public JwtEmailPasswordAuthFilter(
             AuthenticationManager authenticationManager,
             String secretKey,
             long ttl) {
-        super(authenticationManager);
+        super(DEFAULT_ANT_PATH_REQUEST_MATCHER, authenticationManager);
         this.secretKey = secretKey;
         this.ttl = ttl;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        LoginRequest loginRequest;
         try {
-            LoginRequest loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
+            loginRequest = new ObjectMapper().readValue(request.getInputStream(), LoginRequest.class);
+            EmailPasswordAuthToken emailPasswordAuthToken
+                    = new EmailPasswordAuthToken(loginRequest.getEmail(), loginRequest.getPassword());
 
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(),
-                    loginRequest.getPassword()
-            );
-
-            return getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
-
-        } catch (Exception e) {
-            log.error("bad things happened");
+            return getAuthenticationManager().authenticate(emailPasswordAuthToken);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -69,5 +65,4 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
     private Date convertLocalDateTimeToDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
-
 }

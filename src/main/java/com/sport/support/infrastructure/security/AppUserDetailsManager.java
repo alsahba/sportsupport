@@ -23,8 +23,14 @@ public class AppUserDetailsManager implements UserDetailsManager {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AppUser> user = appUserRepository.findByUsername(username);
-        AppUser appUser = user.orElseThrow(() -> new UsernameNotFoundException(username));
-        return new AppUserDetails(appUser);
+        return user.map(AppUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        Optional<AppUser> user = appUserRepository.findByEmail(email);
+        return user.map(AppUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
     @Override

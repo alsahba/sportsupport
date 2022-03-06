@@ -18,7 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final AppUserDetailsManager userDetailsManager;
+    private final EmailPasswordAuthProvider emailPasswordAuthProvider;
+    private final UsernamePasswordAuthProvider usernamePasswordAuthProvider;
 
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -31,8 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager(), secretKey, tokenTtl))
-                .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtEmailPasswordAuthFilter(authenticationManager(), secretKey, tokenTtl), JwtUsernamePasswordAuthFilter.class)
+                .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), secretKey, tokenTtl))
+                .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernamePasswordAuthFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/owner").permitAll()
@@ -50,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsManager);
+        auth.authenticationProvider(usernamePasswordAuthProvider)
+                .authenticationProvider(emailPasswordAuthProvider);
     }
 }
