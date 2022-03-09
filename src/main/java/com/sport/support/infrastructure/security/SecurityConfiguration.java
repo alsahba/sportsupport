@@ -1,5 +1,6 @@
 package com.sport.support.infrastructure.security;
 
+import com.sport.support.appuser.service.OtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final EmailPasswordAuthProvider emailPasswordAuthProvider;
     private final UsernamePasswordAuthProvider usernamePasswordAuthProvider;
+    private final OtpAuthProvider otpAuthProvider;
+    private final OtpService otpService;
 
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -32,9 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtEmailPasswordAuthFilter(authenticationManager(), secretKey, tokenTtl), JwtUsernamePasswordAuthFilter.class)
-                .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), secretKey, tokenTtl))
-                .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernamePasswordAuthFilter.class)
+                .addFilterAt(new CustomAuthenticationFilter(authenticationManager(), otpService, secretKey, tokenTtl), BasicAuthenticationFilter.class)
+                .addFilterAfter(new BearerTokenAuthorizationFilter(secretKey), CustomAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/owner").permitAll()
@@ -53,6 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(usernamePasswordAuthProvider)
-                .authenticationProvider(emailPasswordAuthProvider);
+                .authenticationProvider(emailPasswordAuthProvider)
+                .authenticationProvider(otpAuthProvider);
     }
 }

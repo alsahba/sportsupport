@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class JwtTokenVerifier extends OncePerRequestFilter {
+public class BearerTokenAuthorizationFilter extends OncePerRequestFilter {
 
     private final String secretKey;
 
@@ -43,9 +43,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(body.getSubject(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            chain.doFilter(request, response);
-        } else {
-            chain.doFilter(request, response);
         }
+
+        chain.doFilter(request, response);
     }
 }
