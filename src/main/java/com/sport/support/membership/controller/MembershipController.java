@@ -32,4 +32,10 @@ public class MembershipController {
         return new ResponseEntity<>(String.format("Membership added, id = %d", membership.getId()), HttpStatus.CREATED);
     }
 
+    @PostMapping("/cancel")
+    @PreAuthorize("hasAuthority('MEMBER_WRITE')")
+    public ResponseEntity<String> cancel(Authentication authentication) {
+        membershipService.cancel(Long.valueOf(authentication.getName()));
+        return new ResponseEntity<>("Membership canceled", HttpStatus.ACCEPTED);
+    }
 }

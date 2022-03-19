@@ -1,19 +1,18 @@
 package com.sport.support.appuser.entity;
 
 import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-@NoArgsConstructor
+@Table
+@Getter
+@Setter
 public class Permission extends AbstractEntity {
 
-    @Column(name = "NAME")
     private String name;
 
 }

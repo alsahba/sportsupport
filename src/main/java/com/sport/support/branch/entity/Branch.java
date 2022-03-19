@@ -2,76 +2,126 @@ package com.sport.support.branch.entity;
 
 import com.sport.support.branch.controller.dto.AddBranchRequest;
 import com.sport.support.branch.controller.dto.UpdateBranchRequest;
+import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.infrastructure.entity.City;
 import com.sport.support.infrastructure.entity.District;
-import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.manager.entity.Manager;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-// TODO: 5/16/2021 fetch types are going to be lazy
 // TODO: 5/16/2021 annotation for phone number is necessary
 
 @Entity
-@Table(name = "BRANCH")
-@Data
-@NoArgsConstructor
+@Table
 public class Branch extends AbstractAuditableEntity {
 
-    @Column(name = "NAME")
-    private String name;
+   private String name;
 
-    @Column(name = "QUOTA")
-    private int quota;
+   private int quota;
 
-    @OneToOne()
-    @JoinColumn(name = "CITY_ID", referencedColumnName = "ID")
-    private City city;
+   @OneToOne()
+   @JoinColumn(name = "CITY_ID", referencedColumnName = "ID")
+   private City city;
 
-    @OneToOne()
-    @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "ID")
-    private District district;
+   @OneToOne()
+   @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "ID")
+   private District district;
 
-    @Column(name = "ADDRESS")
-    private String address;
+   private String address;
 
-    @Column(name = "PHONE_NUMBER")
-    private String phoneNumber;
+   private String phoneNumber;
 
-    @OneToMany(mappedBy = "branch")
-    private Set<Manager> managerList;
+   @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+   private Set<Payment> payments;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PAYMENT_ID", referencedColumnName = "ID")
-    private Payment payment;
+   public Branch(AddBranchRequest addBranchRequest) {
+      setName(addBranchRequest.getName());
+      setQuota(addBranchRequest.getQuota());
+      setAddress(addBranchRequest.getAddress());
+      setCity(new City(addBranchRequest.getCityId()));
+      setDistrict(new District(addBranchRequest.getDistrictId()));
+      setPayments(addBranchRequest.getPayment().stream()
+          .map(p -> new Payment(p, this))
+          .collect(Collectors.toSet()));
+   }
 
-    public void update(Branch branch) {
-        this.name = branch.getName();
-        this.address = branch.getAddress();
-        this.payment = branch.getPayment();
-    }
+   public Branch(UpdateBranchRequest updateBranchRequest) {
+      super.setId(updateBranchRequest.getId());
+      setName(updateBranchRequest.getName());
+      setQuota(updateBranchRequest.getQuota());
+      setAddress(updateBranchRequest.getAddress());
+      setPayments(updateBranchRequest.getPayment().stream()
+          .map(p -> new Payment(p, this))
+          .collect(Collectors.toSet()));
+   }
 
-    public Branch (AddBranchRequest addBranchRequest) {
-        this.name = addBranchRequest.getName();
-        this.quota = addBranchRequest.getQuota();
-        this.address = addBranchRequest.getAddress();
-        this.city = new City(addBranchRequest.getCityId());
-        this.district = new District(addBranchRequest.getDistrictId());
-        this.payment = new Payment(addBranchRequest.getPayment());
-    }
+   public Branch(Long id) {
+      super.setId(id);
+   }
 
-    public Branch (UpdateBranchRequest updateBranchRequest) {
-        super.setId(updateBranchRequest.getId());
-        this.name = updateBranchRequest.getName();
-        this.quota = updateBranchRequest.getQuota();
-        this.address = updateBranchRequest.getAddress();
-        this.payment = new Payment(updateBranchRequest.getPayment());
-    }
+   public void update(Branch branch) {
+      setName(branch.getName());
+      setAddress(branch.getAddress());
+      setPayments(branch.getPayments());
+   }
 
-    public Branch(Long id) {
-        super.setId(id);
-    }
+   public Branch() {
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public int getQuota() {
+      return quota;
+   }
+
+   public void setQuota(int quota) {
+      this.quota = quota;
+   }
+
+   public City getCity() {
+      return city;
+   }
+
+   public void setCity(City city) {
+      this.city = city;
+   }
+
+   public District getDistrict() {
+      return district;
+   }
+
+   public void setDistrict(District district) {
+      this.district = district;
+   }
+
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   public String getPhoneNumber() {
+      return phoneNumber;
+   }
+
+   public void setPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
+   }
+
+   public Set<Payment> getPayments() {
+      return payments;
+   }
+
+   public void setPayments(Set<Payment> payments) {
+      this.payments = payments;
+   }
 }

@@ -1,21 +1,23 @@
 package com.sport.support.infrastructure.abstractions.entity;
 
+import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.branch.entity.Branch;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Getter
+@Setter
 @MappedSuperclass
-public abstract class AbstractEmployee extends AbstractSystemUser {
+public abstract class AbstractEmployee extends AbstractAuditableEntity {
+
+    @OneToOne
+    @JoinColumn(name = "APP_USER_ID")
+    private AppUser appUser;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;

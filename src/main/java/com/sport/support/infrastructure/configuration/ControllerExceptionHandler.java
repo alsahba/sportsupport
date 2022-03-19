@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Locale;
 
-// TODO: 5/16/2021 error messages will be more precise in terms of status codes
+// TODO: ResponseEntity will be changed wrt application, error handling will be changed
 
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ControllerExceptionHandler {
 
-    private final MessageSource messageSource;
+   private final MessageSource messageSource;
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleGeneralException(Exception e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-    }
+   @ExceptionHandler(Exception.class)
+   public ResponseEntity<?> handleGeneralException(Exception e) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+   }
 
-    @ExceptionHandler(RecordIsNotFoundException.class)
-    public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                messageSource.getMessage(e.getMessage(), null, Locale.US));
-    }
+   @ExceptionHandler(RecordIsNotFoundException.class)
+   public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+          messageSource.getMessage(e.getMessage(), null, Locale.US));
+   }
 }

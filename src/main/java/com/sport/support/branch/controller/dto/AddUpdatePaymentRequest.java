@@ -1,26 +1,27 @@
 package com.sport.support.branch.controller.dto;
 
+import com.sport.support.membership.entity.enumeration.Type;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 public class AddUpdatePaymentRequest {
 
-    private BigDecimal poolMembership;
+   @NotNull
+   private Type type;
 
-    @NotNull
-    private BigDecimal bronzeMembership;
+   @NotNull
+   @Min(1)
+   private Double oneTimeAmount;
 
-    @NotNull
-    private BigDecimal silverMembership;
+   @NotNull
+   @Min(1)
+   private Double monthlyAmount;
 
-    @NotNull
-    private BigDecimal goldMembership;
+   @NotNull
+   @Min(1)
+   private Double annualAmount;
 
-    @NotNull
-    private BigDecimal oneTimePass;
 }

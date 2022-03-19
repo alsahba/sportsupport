@@ -8,10 +8,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class AbstractAuditableEntity extends AbstractEntity {
 

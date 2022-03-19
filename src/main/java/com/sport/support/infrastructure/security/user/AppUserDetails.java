@@ -1,4 +1,4 @@
-package com.sport.support.infrastructure.security;
+package com.sport.support.infrastructure.security.user;
 
 import com.sport.support.appuser.entity.AppUser;
 import lombok.RequiredArgsConstructor;

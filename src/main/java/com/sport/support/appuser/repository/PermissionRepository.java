@@ -8,5 +8,6 @@ import java.util.Set;
 
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
 
-    Set<Permission> findByNameIn(Collection<String> names);
+   Set<Permission> findByNameIn(Collection<String> names);
+
 }

@@ -1,11 +1,8 @@
 package com.sport.support.appuser.entity;
 
-import com.sport.support.appuser.controller.dto.AddUserDTO;
+import com.sport.support.appuser.controller.dto.AddUserRequest;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,30 +10,26 @@ import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+@Table
+@Getter
+@Setter
 @NoArgsConstructor
-@Table(name = "APP_USER")
 public class AppUser extends AbstractAuditableEntity {
 
-    @Column(name = "NAME")
     private String name;
 
-    @Column(name = "SURNAME")
     private String surname;
 
-    @Column(name = "USERNAME", unique = true)
+    @Column(unique = true)
     private String username;
 
-    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "PHONE_NUMBER", unique = true)
+    @Column(unique = true)
     private String phoneNumber;
 
-    @Column(name = "E_MAIL", unique = true)
+    @Column(unique = true)
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -47,13 +40,13 @@ public class AppUser extends AbstractAuditableEntity {
     )
     private Set<Permission> permissions;
 
-    public AppUser(AddUserDTO addUserDTO) {
-        setName(addUserDTO.getName());
-        setSurname(addUserDTO.getSurname());
-        setEmail(addUserDTO.getEMail());
-        setUsername(addUserDTO.getUsername());
-        setPassword(addUserDTO.getPassword());
-        setPhoneNumber(addUserDTO.getPhoneNumber());
+    public AppUser(AddUserRequest addUserRequest) {
+        setName(addUserRequest.getName());
+        setSurname(addUserRequest.getSurname());
+        setEmail(addUserRequest.getEMail());
+        setUsername(addUserRequest.getUsername());
+        setPassword(addUserRequest.getPassword());
+        setPhoneNumber(addUserRequest.getPhoneNumber());
     }
 
     public AppUser(Long id) {

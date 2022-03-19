@@ -23,42 +23,43 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/branches")
 public class BranchController {
 
-    private final BranchService branchService;
+   private final BranchService branchService;
 
-    @GetMapping
-    @PreAuthorize("hasAuthority('BRANCH_READ')")
-    public ResponseEntity<List<BranchDetailResponse>> getAll() {
-        List<BranchDetailResponse> detailDTOList = branchService.retrieveAll().stream()
-                .map(BranchDetailResponse::new).collect(Collectors.toList());
+   @GetMapping
+   @PreAuthorize("hasAuthority('BRANCH_READ')")
+   public ResponseEntity<List<BranchDetailResponse>> getAll() {
+      List<BranchDetailResponse> detailDTOList = branchService.retrieveAll().stream()
+          .map(BranchDetailResponse::new).collect(Collectors.toList());
 
-        return ResponseEntity.ok(detailDTOList);
-    }
+      return ResponseEntity.ok(detailDTOList);
+   }
 
-    @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('BRANCH_READ')")
-    public ResponseEntity<BranchDetailResponse> get(@PathVariable @Min(1) Long id) {
-        return ResponseEntity.ok(new BranchDetailResponse(branchService.retrieveById(id)));
-    }
+   @GetMapping(value = "/{id}")
+   @PreAuthorize("hasAuthority('BRANCH_READ')")
+   public ResponseEntity<BranchDetailResponse> get(@PathVariable @Min(1) Long id) {
+      return ResponseEntity.ok(new BranchDetailResponse(branchService.retrieveById(id)));
+   }
 
-    @PostMapping()
-    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
-    public ResponseEntity<String> add(@RequestBody @Valid AddBranchRequest addBranchRequest) {
-        Long id = branchService.add(new Branch(addBranchRequest));
-        return new ResponseEntity<>(String.format("Branch with ID = %d added!", id), HttpStatus.CREATED);
-    }
+   @PostMapping()
+   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   public ResponseEntity<String> add(@RequestBody @Valid AddBranchRequest addBranchRequest) {
+      Branch branch = new Branch(addBranchRequest);
+      branchService.add(branch);
+      return new ResponseEntity<>(String.format("Branch with ID = %d added!", branch.getId()), HttpStatus.CREATED);
+   }
 
-    @PutMapping
-    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
-    public ResponseEntity<String> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
-        branchService.update(new Branch(updateBranchRequest));
-        return new ResponseEntity<>(String.format("Branch with ID = %d added!", updateBranchRequest.getId()),
-                HttpStatus.ACCEPTED);
-    }
+   @PutMapping
+   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   public ResponseEntity<String> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
+      branchService.update(new Branch(updateBranchRequest));
+      return new ResponseEntity<>(String.format("Branch with ID = %d added!", updateBranchRequest.getId()),
+          HttpStatus.ACCEPTED);
+   }
 
-    @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
-    public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
-        branchService.delete(id);
-        return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);
-    }
+   @DeleteMapping(value = "/{id}")
+   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
+      branchService.delete(id);
+      return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);
+   }
 }

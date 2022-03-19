@@ -5,7 +5,7 @@ import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
 import com.sport.support.appuser.repository.PermissionRepository;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
-import com.sport.support.infrastructure.security.AppPasswordEncoder;
+import com.sport.support.infrastructure.security.configuration.AppPasswordEncoder;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,15 +27,8 @@ public class AppUserService {
     @Transactional
     public void register(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPermissions(permissionRepository.findByNameIn(RoleEnum.USER.getPermissions()));
-        appUserRepository.save(user);
-    }
-
-    // TODO: 2.03.2022 - to be deleted
-    public void addOwner(AppUser user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissions()));
-        appUserRepository.save(user).getId();
+        appUserRepository.save(user);
     }
 
     public void update(Long id, String name, String surname) {

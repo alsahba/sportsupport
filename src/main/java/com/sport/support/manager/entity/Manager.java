@@ -5,17 +5,19 @@ import com.sport.support.branch.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractEmployee;
 import com.sport.support.manager.controller.dto.AddManagerRequest;
 import com.sport.support.manager.controller.dto.UpdateManagerRequest;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-@Table(name = "MANAGER")
+@Table
+@Getter
+@Setter
+@NoArgsConstructor
 public class Manager extends AbstractEmployee {
 
     public Manager(AddManagerRequest addManagerRequest) {

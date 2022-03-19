@@ -4,13 +4,13 @@ import com.sport.support.appuser.entity.AppUser;
 import lombok.Data;
 
 @Data
-public class UserDetailDTO {
+public class UserDetailResponse {
 
     private String name;
     private String surname;
     private String email;
 
-    public UserDetailDTO(AppUser appUser) {
+    public UserDetailResponse(AppUser appUser) {
         name = appUser.getName();
         surname = appUser.getSurname();
         email = appUser.getEmail();

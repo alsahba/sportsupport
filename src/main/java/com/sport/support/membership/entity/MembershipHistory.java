@@ -5,16 +5,16 @@ import com.sport.support.branch.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.membership.entity.enumeration.Duration;
 import com.sport.support.membership.entity.enumeration.Type;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "MEMBERSHIP_HISTORY")
-@Data
+@Table
+@Getter
+@Setter
 @NoArgsConstructor
 public class MembershipHistory extends AbstractAuditableEntity {
 
@@ -26,11 +26,9 @@ public class MembershipHistory extends AbstractAuditableEntity {
     @JoinColumn(name = "BRANCH_ID", nullable = false)
     private Branch branch;
 
-    @Column(name = "DURATION")
     @Enumerated(EnumType.STRING)
     private Duration duration;
 
-    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private Type type;
 

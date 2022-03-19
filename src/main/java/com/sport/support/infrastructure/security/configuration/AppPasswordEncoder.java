@@ -1,4 +1,4 @@
-package com.sport.support.infrastructure.security;
+package com.sport.support.infrastructure.security.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

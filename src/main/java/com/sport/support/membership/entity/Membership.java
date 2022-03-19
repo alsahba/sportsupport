@@ -7,63 +7,64 @@ import com.sport.support.branch.specification.BranchExistsSpecification;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.membership.controller.dto.AddMembershipRequest;
 import com.sport.support.membership.entity.enumeration.Duration;
+import com.sport.support.membership.entity.enumeration.Status;
 import com.sport.support.membership.entity.enumeration.Type;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "MEMBERSHIP")
-@Data
+@Table
+@Getter
+@Setter
 @NoArgsConstructor
-public class Membership extends AbstractAuditableEntity {
+public class
+Membership extends AbstractAuditableEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private AppUser user;
+   @ManyToOne
+   @JoinColumn(name = "USER_ID", nullable = false)
+   private AppUser user;
 
-    @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", nullable = false)
-    private Branch branch;
+   @ManyToOne
+   @JoinColumn(name = "BRANCH_ID", nullable = false)
+   private Branch branch;
 
-    @Column(name = "DURATION")
-    @Enumerated(EnumType.STRING)
-    private Duration duration;
+   @Enumerated(EnumType.STRING)
+   private Duration duration;
 
-    @Column(name = "TYPE")
-    @Enumerated(EnumType.STRING)
-    private Type type;
+   @Enumerated(EnumType.STRING)
+   private Type type;
 
-    @Column(name = "LOGIN_ATTEMPT")
-    private int loginAttempt;
+   @Enumerated(EnumType.STRING)
+   private Status status;
 
-    @Column(name = "END_DATE")
-    private LocalDateTime endDate;
+   private int loginAttempt;
 
-    public Membership(Long userId, AddMembershipRequest addRequest) {
-        setBranch(new Branch(addRequest.getBranchId()));
-        setDuration(addRequest.getDuration());
-        setType(addRequest.getType());
-        setUser(new AppUser(userId));
-        setEndDate(calculateEndDate());
-        setLoginAttempt(getType().getLoginAttempt());
-    }
+   private LocalDateTime endDate;
 
-    private LocalDateTime calculateEndDate() {
-        if (getDuration().equals(Duration.MONTHLY)) return LocalDateTime.now().plusMonths(1);
-        else return LocalDateTime.now().plusYears(1);
-    }
+   public Membership(Long userId, AddMembershipRequest addRequest) {
+      setBranch(new Branch(addRequest.getBranchId()));
+      setDuration(addRequest.getDuration());
+      setType(addRequest.getType());
+      setUser(new AppUser(userId));
+      setEndDate(calculateEndDate());
+      setLoginAttempt(getType().getLoginAttempt());
+   }
 
-    public boolean isAddable() {
-        return isBranchExists(); //TODO has wallet sufficient amount?
-    }
+   private LocalDateTime calculateEndDate() {
+      if (getDuration().equals(Duration.MONTHLY)) return LocalDateTime.now().plusMonths(1);
+      else return LocalDateTime.now().plusYears(1);
+   }
 
-    private boolean isBranchExists() {
-        return new BranchExistsSpecification().isSatisfiedBy(getBranch());
-    }
+   public boolean isAddable() {
+      return isBranchExists(); //TODO has wallet sufficient amount?
+   }
+
+   private boolean isBranchExists() {
+      return new BranchExistsSpecification().isSatisfiedBy(getBranch());
+   }
 
 }

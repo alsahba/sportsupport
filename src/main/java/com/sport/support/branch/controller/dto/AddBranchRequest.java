@@ -1,15 +1,14 @@
 package com.sport.support.branch.controller.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class AddBranchRequest {
 
     @NotBlank
@@ -28,5 +27,6 @@ public class AddBranchRequest {
     private String address;
 
     @Valid
-    private AddUpdatePaymentRequest payment;
+    private List<AddUpdatePaymentRequest> payment;
+
 }
