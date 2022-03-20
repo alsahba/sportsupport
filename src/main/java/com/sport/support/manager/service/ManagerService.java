@@ -1,6 +1,6 @@
 package com.sport.support.manager.service;
 
-import com.sport.support.appuser.service.AppUserService;
+import com.sport.support.appuser.service.AppUserDetailsManager;
 import com.sport.support.branch.service.BranchService;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
@@ -19,7 +19,7 @@ public class ManagerService {
 
     private final ManagerRepository managerRepository;
     private final BranchService branchService;
-    private final AppUserService appUserService;
+    private final AppUserDetailsManager userDetailsManager;
 
     public List<Manager> retrieveAll() {
         return managerRepository.findAll();
@@ -33,7 +33,7 @@ public class ManagerService {
     @Transactional
     public void add(Manager manager) {
         manager.setBranch(branchService.retrieveById(manager.getBranch().getId()));
-        appUserService.updatePermissions(manager.getAppUser().getId(), RoleEnum.MANAGER);
+        userDetailsManager.updatePermissions(manager.getAppUser().getId(), RoleEnum.MANAGER);
         managerRepository.save(manager);
     }
 

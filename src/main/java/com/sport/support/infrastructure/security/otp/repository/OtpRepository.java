@@ -1,6 +1,6 @@
-package com.sport.support.appuser.repository;
+package com.sport.support.infrastructure.security.otp.repository;
 
-import com.sport.support.appuser.entity.Otp;
+import com.sport.support.infrastructure.security.otp.entity.Otp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

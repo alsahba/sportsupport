@@ -6,14 +6,14 @@ import lombok.Data;
 @Data
 public class UserDetailResponse {
 
-    private String name;
-    private String surname;
-    private String email;
+   private String name;
+   private String surname;
+   private String email;
 
-    public UserDetailResponse(AppUser appUser) {
-        name = appUser.getName();
-        surname = appUser.getSurname();
-        email = appUser.getEmail();
-    }
+   public UserDetailResponse(AppUser appUser) {
+      name = appUser.getName();
+      surname = appUser.getSurname();
+      email = appUser.getEmail();
+   }
 
 }

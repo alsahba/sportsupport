@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.configuration;
 
-import com.sport.support.appuser.entity.AppUser;
+import com.sport.support.wallet.entity.Wallet;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +17,15 @@ import java.time.Duration;
 public class RedisConfiguration {
 
    @Bean
-   public RedisTemplate<Long, AppUser> redisTemplate(RedisConnectionFactory connectionFactory) {
-      RedisTemplate<Long, AppUser> template = new RedisTemplate<>();
+   public RedisTemplate<Long, Wallet> redisTemplate(RedisConnectionFactory connectionFactory) {
+      RedisTemplate<Long, Wallet> template = new RedisTemplate<>();
       template.setConnectionFactory(connectionFactory);
       return template;
    }
 
    @Bean
    public CacheManager timeoutCacheManager(RedisConnectionFactory connectionFactory) {
-      Duration expiration = Duration.ofSeconds(10);
+      Duration expiration = Duration.ofSeconds(60);
       return RedisCacheManager.builder(connectionFactory)
           .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig().entryTtl(expiration)).build();
    }

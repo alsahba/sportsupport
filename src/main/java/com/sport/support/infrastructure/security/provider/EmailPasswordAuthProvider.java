@@ -2,7 +2,7 @@ package com.sport.support.infrastructure.security.provider;
 
 import com.sport.support.infrastructure.security.configuration.AppPasswordEncoder;
 import com.sport.support.infrastructure.security.token.EmailPasswordAuthToken;
-import com.sport.support.infrastructure.security.user.AppUserDetailsManager;
+import com.sport.support.appuser.service.AppUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

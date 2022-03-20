@@ -1,10 +1,12 @@
 package com.sport.support.branch.controller.dto;
 
+import com.sport.support.membership.entity.enumeration.Duration;
 import com.sport.support.membership.entity.enumeration.Type;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 public class AddUpdatePaymentRequest {
@@ -13,15 +15,10 @@ public class AddUpdatePaymentRequest {
    private Type type;
 
    @NotNull
-   @Min(1)
-   private Double oneTimeAmount;
+   private Duration duration;
 
    @NotNull
    @Min(1)
-   private Double monthlyAmount;
-
-   @NotNull
-   @Min(1)
-   private Double annualAmount;
+   private BigDecimal cost;
 
 }

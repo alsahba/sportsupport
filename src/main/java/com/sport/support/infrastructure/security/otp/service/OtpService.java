@@ -1,7 +1,7 @@
-package com.sport.support.appuser.service;
+package com.sport.support.infrastructure.security.otp.service;
 
-import com.sport.support.appuser.entity.Otp;
-import com.sport.support.appuser.repository.OtpRepository;
+import com.sport.support.infrastructure.security.otp.entity.Otp;
+import com.sport.support.infrastructure.security.otp.repository.OtpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

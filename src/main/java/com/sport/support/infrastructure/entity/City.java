@@ -1,20 +1,18 @@
 package com.sport.support.infrastructure.entity;
 
 import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "CITY")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class City extends AbstractEntity {
 

@@ -17,6 +17,5 @@ public class AddMembershipRequest {
     @NotNull
     private Type type;
 
-    // TODO: 5/19/2021 Nullable if type is one time pass
     private Duration duration;
 }

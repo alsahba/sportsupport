@@ -4,7 +4,7 @@ import com.sport.support.infrastructure.security.filter.BearerTokenAuthorization
 import com.sport.support.infrastructure.security.filter.CustomAuthenticationFilter;
 import com.sport.support.infrastructure.security.provider.EmailPasswordAuthProvider;
 import com.sport.support.infrastructure.security.provider.UsernamePasswordAuthProvider;
-import com.sport.support.infrastructure.security.user.AppUserDetailsManager;
+import com.sport.support.appuser.service.AppUserDetailsManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

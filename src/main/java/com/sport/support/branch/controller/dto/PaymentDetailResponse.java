@@ -12,15 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PaymentDetailResponse {
 
-   private MoneyDTO oneTimeCost;
-   private MoneyDTO monthlyCost;
-   private MoneyDTO annualCost;
+   private MoneyDTO cost;
    private Type type;
 
    public PaymentDetailResponse(Payment payment) {
       setType(payment.getType());
-      setOneTimeCost(new MoneyDTO(payment.getOneTime()));
-      setMonthlyCost(new MoneyDTO(payment.getMonthly()));
-      setAnnualCost(new MoneyDTO(payment.getAnnual()));
+      setCost(new MoneyDTO(payment.getCost()));
    }
 }

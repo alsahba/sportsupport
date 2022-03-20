@@ -3,12 +3,12 @@ package com.sport.support.branch.entity;
 import com.sport.support.branch.controller.dto.AddUpdatePaymentRequest;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.infrastructure.common.Money;
+import com.sport.support.membership.entity.enumeration.Duration;
 import com.sport.support.membership.entity.enumeration.Type;
 
 import javax.persistence.*;
 
 @Entity
-@Table
 public class Payment extends AbstractAuditableEntity {
 
    @ManyToOne
@@ -17,21 +17,12 @@ public class Payment extends AbstractAuditableEntity {
 
    @Embedded
    @AttributeOverrides(value = {
-       @AttributeOverride( name = "amount", column = @Column(name = "ONE_TIME_COST")),
+       @AttributeOverride( name = "amount", column = @Column(name = "COST_AMOUNT")),
    })
-   private Money oneTime;
+   private Money cost;
 
-   @Embedded
-   @AttributeOverrides(value = {
-       @AttributeOverride( name = "amount", column = @Column(name = "MONTHLY_COST")),
-   })
-   private Money monthly;
-
-   @Embedded
-   @AttributeOverrides(value = {
-       @AttributeOverride( name = "amount", column = @Column(name = "ANNUAL_COST")),
-   })
-   private Money annual;
+   @Enumerated(EnumType.STRING)
+   private Duration duration;
 
    @Enumerated(EnumType.STRING)
    private Type type;
@@ -39,9 +30,8 @@ public class Payment extends AbstractAuditableEntity {
    public Payment(AddUpdatePaymentRequest addUpdatePaymentRequest, Branch branch) {
       setBranch(branch);
       setType(addUpdatePaymentRequest.getType());
-      setOneTime(new Money(addUpdatePaymentRequest.getOneTimeAmount()));
-      setMonthly(new Money(addUpdatePaymentRequest.getMonthlyAmount()));
-      setAnnual(new Money(addUpdatePaymentRequest.getAnnualAmount()));
+      setDuration(addUpdatePaymentRequest.getDuration());
+      setCost(Money.of(addUpdatePaymentRequest.getCost()));
    }
 
    public Payment() {}
@@ -54,28 +44,20 @@ public class Payment extends AbstractAuditableEntity {
       this.branch = branch;
    }
 
-   public Money getOneTime() {
-      return oneTime;
+   public Money getCost() {
+      return cost;
    }
 
-   public void setOneTime(Money oneTime) {
-      this.oneTime = oneTime;
+   public void setCost(Money cost) {
+      this.cost = cost;
    }
 
-   public Money getMonthly() {
-      return monthly;
+   public Duration getDuration() {
+      return duration;
    }
 
-   public void setMonthly(Money monthly) {
-      this.monthly = monthly;
-   }
-
-   public Money getAnnual() {
-      return annual;
-   }
-
-   public void setAnnual(Money annual) {
-      this.annual = annual;
+   public void setDuration(Duration duration) {
+      this.duration = duration;
    }
 
    public Type getType() {

@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.security.filter;
 
-import com.sport.support.infrastructure.security.user.AppUserDetailsManager;
+import com.sport.support.appuser.service.AppUserDetailsManager;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -32,12 +32,12 @@ public class BearerTokenAuthorizationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasLength(authorizationHeader) && authorizationHeader.startsWith(prefix)) {
             String token = authorizationHeader.substring(7);
+            Long userId = getIdFromJWT(token);
 
-            UserDetails userDetails = appUserDetailsManager.loadUserById(getIdFromJWT(token));
+            UserDetails userDetails = appUserDetailsManager.loadUserById(userId);
 
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                    null, userDetails.getAuthorities());
+                    = new UsernamePasswordAuthenticationToken(userId, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 

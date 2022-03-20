@@ -1,14 +1,16 @@
-package com.sport.support.appuser.entity;
+package com.sport.support.infrastructure.security.otp.entity;
 
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Otp extends AbstractAuditableEntity {
 

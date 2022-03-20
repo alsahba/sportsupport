@@ -1,29 +1,36 @@
 package com.sport.support.appuser.controller.dto;
 
+import com.sport.support.infrastructure.common.annotations.MobilePhoneNumber;
+import com.sport.support.infrastructure.common.annotations.Password;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 public class AddUserRequest {
 
     @NotBlank
+    @Size(min = 1, max = 64)
     private String name;
 
     @NotBlank
+    @Size(min = 1, max = 64)
     private String surname;
 
     @NotBlank
+    @Size(min = 1, max = 16)
     private String username;
 
-    @NotBlank
+    @Password
     private String password;
 
-    @NotBlank
+    @MobilePhoneNumber
     private String phoneNumber;
 
-    @NotBlank
-    private String eMail;
+    @Email
+    private String email;
 }

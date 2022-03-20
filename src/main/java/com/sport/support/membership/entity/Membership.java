@@ -17,12 +17,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
 @Getter
 @Setter
 @NoArgsConstructor
-public class
-Membership extends AbstractAuditableEntity {
+public class Membership extends AbstractAuditableEntity {
 
    @ManyToOne
    @JoinColumn(name = "USER_ID", nullable = false)
@@ -48,6 +46,7 @@ Membership extends AbstractAuditableEntity {
    public Membership(Long userId, AddMembershipRequest addRequest) {
       setBranch(new Branch(addRequest.getBranchId()));
       setDuration(addRequest.getDuration());
+      setStatus(Status.ACTIVE);
       setType(addRequest.getType());
       setUser(new AppUser(userId));
       setEndDate(calculateEndDate());

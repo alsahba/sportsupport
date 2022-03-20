@@ -2,25 +2,40 @@ package com.sport.support.wallet.entity;
 
 import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.sport.support.infrastructure.common.Money;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Wallet extends AbstractAuditableEntity {
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @OneToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false)
     private AppUser user;
 
-    private Double balance;
+    @Embedded
+    @AttributeOverrides(value = {
+        @AttributeOverride( name = "amount", column = @Column(name = "BALANCE_AMOUNT")),
+    })
+    private Money balance;
 
-    private Double totalSpent;
+    @Embedded
+    @AttributeOverrides(value = {
+        @AttributeOverride( name = "amount", column = @Column(name = "TOTAL_SPENT_AMOUNT")),
+    })
+    private Money totalSpent;
 
+    public Wallet(AppUser user) {
+        // TODO: 19.03.2022 zero amount for balance and total spent
+        setBalance(Money.of(1_000_000_000));
+        setTotalSpent(Money.zero());
+        setUser(user);
+    }
 }
