@@ -43,6 +43,7 @@ public class Branch extends AbstractAuditableEntity {
       setAddress(addBranchRequest.getAddress());
       setCity(new City(addBranchRequest.getCityId()));
       setDistrict(new District(addBranchRequest.getDistrictId()));
+      setPhoneNumber(addBranchRequest.getPhoneNumber());
       setPayments(addBranchRequest.getPayment().stream()
           .map(p -> new Payment(p, this))
           .collect(Collectors.toSet()));
@@ -53,6 +54,7 @@ public class Branch extends AbstractAuditableEntity {
       setName(updateBranchRequest.getName());
       setQuota(updateBranchRequest.getQuota());
       setAddress(updateBranchRequest.getAddress());
+      setPhoneNumber(updateBranchRequest.getPhoneNumber());
       setPayments(updateBranchRequest.getPayment().stream()
           .map(p -> new Payment(p, this))
           .collect(Collectors.toSet()));
@@ -69,6 +71,7 @@ public class Branch extends AbstractAuditableEntity {
    }
 
    public Money getCost(Type type, Duration duration) {
+      // TODO: 20.03.2022 custom exception
       Payment payment = getPayments().stream()
           .filter(p -> p.getType().equals(type) || p.getDuration().equals(duration))
           .findFirst()

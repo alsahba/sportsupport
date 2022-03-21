@@ -1,5 +1,6 @@
 package com.sport.support.infrastructure.configuration;
 
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -26,6 +27,12 @@ public class ControllerExceptionHandler {
    @ExceptionHandler(RecordIsNotFoundException.class)
    public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+          messageSource.getMessage(e.getMessage(), null, Locale.US));
+   }
+
+   @ExceptionHandler(BusinessRuleException.class)
+   public ResponseEntity<?> handleBusinessRuleException(Exception e) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
           messageSource.getMessage(e.getMessage(), null, Locale.US));
    }
 }
