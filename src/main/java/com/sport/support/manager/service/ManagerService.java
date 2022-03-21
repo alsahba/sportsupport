@@ -8,10 +8,11 @@ import com.sport.support.manager.entity.Manager;
 import com.sport.support.manager.messages.ManagerErrorMessages;
 import com.sport.support.manager.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +22,8 @@ public class ManagerService {
     private final BranchService branchService;
     private final AppUserDetailsManager userDetailsManager;
 
-    public List<Manager> retrieveAll() {
-        return managerRepository.findAll();
+    public Page<Manager> retrieveAll(PageRequest pageRequest) {
+        return managerRepository.findAll(pageRequest);
     }
 
     public Manager retrieveById(Long id) {
@@ -32,14 +33,14 @@ public class ManagerService {
 
     @Transactional
     public void add(Manager manager) {
-        manager.setBranch(branchService.retrieveById(manager.getBranch().getId()));
+        manager.setBranch(branchService.findById(manager.getBranch().getId()));
         userDetailsManager.updatePermissions(manager.getAppUser().getId(), RoleEnum.MANAGER);
         managerRepository.save(manager);
     }
 
     public void update(Manager manager) {
         Manager managerDb = retrieveById(manager.getId());
-        manager.setBranch(branchService.retrieveById(manager.getBranch().getId()));
+        manager.setBranch(branchService.findById(manager.getBranch().getId()));
         managerRepository.save(managerDb);
     }
 

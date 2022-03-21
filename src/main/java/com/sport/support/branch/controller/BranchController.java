@@ -6,6 +6,7 @@ import com.sport.support.branch.controller.dto.UpdateBranchRequest;
 import com.sport.support.branch.entity.Branch;
 import com.sport.support.branch.service.BranchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,8 +17,6 @@ import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: 5/15/2021 pagination
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/branches")
@@ -27,17 +26,20 @@ public class BranchController {
 
    @GetMapping
    @PreAuthorize("hasAuthority('BRANCH_READ')")
-   public ResponseEntity<List<BranchDetailResponse>> getAll() {
-      List<BranchDetailResponse> detailDTOList = branchService.retrieveAll().stream()
-          .map(BranchDetailResponse::new).collect(Collectors.toList());
+   public ResponseEntity<List<BranchDetailResponse>> getAll(
+       @Valid @RequestParam(defaultValue = "5") @Min(1) int limit,
+       @Valid @RequestParam(defaultValue = "0") @Min(0) int pageNumber) {
 
+      PageRequest pageRequest = PageRequest.of(pageNumber, limit);
+      List<BranchDetailResponse> detailDTOList = branchService.findAll(pageRequest).stream()
+          .map(BranchDetailResponse::new).collect(Collectors.toList());
       return ResponseEntity.ok(detailDTOList);
    }
 
    @GetMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('BRANCH_READ')")
    public ResponseEntity<BranchDetailResponse> get(@PathVariable @Min(1) Long id) {
-      return ResponseEntity.ok(new BranchDetailResponse(branchService.retrieveById(id)));
+      return ResponseEntity.ok(new BranchDetailResponse(branchService.findById(id)));
    }
 
    @PostMapping()

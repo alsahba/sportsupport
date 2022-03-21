@@ -23,6 +23,10 @@ public class Money implements Serializable {
       return moneyWithFractionalPart.toPlainString();
    }
 
+   public Money(MoneyDTO moneyDTO) {
+      this.amount = moneyDTO.getAmount().doubleValue();
+   }
+
    public static Money of(double amount) {
       return new Money(amount);
    }
@@ -33,6 +37,10 @@ public class Money implements Serializable {
 
    public static Money zero() {
       return new Money(0);
+   }
+
+   public Money negate() {
+      return new Money(-amount);
    }
 
    public Money add(Money money) {

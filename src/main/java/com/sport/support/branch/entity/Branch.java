@@ -2,18 +2,18 @@ package com.sport.support.branch.entity;
 
 import com.sport.support.branch.controller.dto.AddBranchRequest;
 import com.sport.support.branch.controller.dto.UpdateBranchRequest;
+import com.sport.support.branch.messages.BranchErrorMessages;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.infrastructure.common.Money;
 import com.sport.support.infrastructure.entity.City;
 import com.sport.support.infrastructure.entity.District;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.entity.enumeration.Duration;
 import com.sport.support.membership.entity.enumeration.Type;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-// TODO: 5/16/2021 annotation for phone number is necessary
 
 @Entity
 public class Branch extends AbstractAuditableEntity {
@@ -71,11 +71,10 @@ public class Branch extends AbstractAuditableEntity {
    }
 
    public Money getCost(Type type, Duration duration) {
-      // TODO: 20.03.2022 custom exception
       Payment payment = getPayments().stream()
-          .filter(p -> p.getType().equals(type) || p.getDuration().equals(duration))
+          .filter(p -> p.getType().equals(type) && p.getDuration().equals(duration))
           .findFirst()
-          .orElseThrow(() -> new IllegalArgumentException("Payment not found"));
+          .orElseThrow(() -> new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_PAYMENT_INFO_IS_NOT_FOUND));
       return payment.getCost();
    }
 

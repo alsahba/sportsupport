@@ -1,8 +1,10 @@
 package com.sport.support.infrastructure.configuration;
 
 import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.infrastructure.exception.DatabaseException;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.Locale;
 
 @ControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class ControllerExceptionHandler {
 
    private final MessageSource messageSource;
@@ -34,5 +37,11 @@ public class ControllerExceptionHandler {
    public ResponseEntity<?> handleBusinessRuleException(Exception e) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
           messageSource.getMessage(e.getMessage(), null, Locale.US));
+   }
+
+   @ExceptionHandler(DatabaseException.class)
+   public ResponseEntity<?> handleDatabaseException(Exception e) {
+      log.error("DatabaseException ", e);
+      return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service is unavailable");
    }
 }

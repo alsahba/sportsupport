@@ -1,4 +1,4 @@
-package com.sport.support.branch.repository;
+package com.sport.support.branch.dao;
 
 import com.sport.support.branch.entity.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;

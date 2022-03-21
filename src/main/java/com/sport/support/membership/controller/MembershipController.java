@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +27,8 @@ public class MembershipController {
     @PreAuthorize("hasAuthority('MEMBER_WRITE')")
     public ResponseEntity<String> add(
             @RequestBody @Valid AddMembershipRequest addMembershipDTO,
-            Authentication authentication) {
-        Membership membership = new Membership(Long.valueOf(authentication.getName()), addMembershipDTO);
+            Principal principal) {
+        Membership membership = new Membership(Long.valueOf(principal.getName()), addMembershipDTO);
         membershipService.add(membership);
         return new ResponseEntity<>(String.format("Membership added, id = %d", membership.getId()), HttpStatus.CREATED);
     }

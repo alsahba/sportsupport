@@ -1,88 +1,59 @@
 package com.sport.support.branch.service;
 
+import com.sport.support.branch.dao.BranchDAO;
+import com.sport.support.branch.dao.PaymentRepository;
 import com.sport.support.branch.entity.Branch;
-import com.sport.support.branch.messages.BranchErrorMessages;
-import com.sport.support.branch.repository.BranchRepository;
-import com.sport.support.branch.repository.PaymentRepository;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
-import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import com.sport.support.membership.entity.Membership;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
 
 // TODO: 5/16/2021 branch stats
 // TODO: 5/19/2021 if a branch is closed, members should be transfered to other branches
 @Service
+@RequiredArgsConstructor
 public class BranchService {
 
-   private final BranchRepository branchRepository;
    private final PaymentRepository paymentRepository;
-
-   @Qualifier(value = "branchQuotaCache")
-   private final RedisTemplate<Long, Integer> redisTemplate;
-
-   private final Duration duration = Duration.ofSeconds(60);
-
-   public BranchService(BranchRepository branchRepository, PaymentRepository paymentRepository, RedisTemplate<Long, Integer> redisTemplate) {
-      this.branchRepository = branchRepository;
-      this.paymentRepository = paymentRepository;
-      this.redisTemplate = redisTemplate;
-   }
+   private final BranchDAO branchDAO;
 
    @Transactional
    public void add(Branch branch) {
-      branchRepository.save(branch);
+      branchDAO.save(branch);
       paymentRepository.saveAll(branch.getPayments());
    }
 
-   public List<Branch> retrieveAll() {
-      return branchRepository.findAll();
+   public Page<Branch> findAll(PageRequest pageRequest) {
+      return branchDAO.findAll(pageRequest);
    }
 
-   public Branch retrieveById(Long id) {
-      return branchRepository.findById(id)
-          .orElseThrow(() -> new RecordIsNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
+   public Branch findById(Long id) {
+      return branchDAO.findById(id);
    }
 
+   @Transactional
    public void update(Branch branch) {
-      Branch branchDb = retrieveById(branch.getId());
+      Branch branchDb = findById(branch.getId());
       branchDb.update(branch);
-      branchRepository.save(branchDb);
+      branchDAO.save(branchDb);
    }
 
    public void delete(Long id) {
-      branchRepository.delete(retrieveById(id));
+      branchDAO.delete(id);
    }
 
+   @Transactional
    public void checkout(Membership membership) {
-      Branch branch = retrieveById(membership.getBranch().getId());
+      Branch branch = findById(membership.getBranch().getId());
       membership.setBranch(branch);
-      captureQuota(branch);
+      branchDAO.updateQuota(branch, -1);
    }
 
-   private void captureQuota(Branch branch) {
-      int quota = Optional.ofNullable(redisTemplate.opsForValue().get(branch.getId()))
-          .orElseGet(branch::getQuota);
-
-      if (quota == 0) throw new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_QUOTA_IS_EMPTY);
-
-      redisTemplate.opsForValue().set(branch.getId(), quota - 1, duration);
-      branch.setQuota(quota - 1);
-      branchRepository.save(branch);
-   }
-
+   @Transactional
    public void releaseQuota(Branch branch) {
-      int quota = Optional.ofNullable(redisTemplate.opsForValue().get(branch.getId()))
-          .orElseGet(branch::getQuota);
-
-      redisTemplate.opsForValue().set(branch.getId(), quota + 1, duration);
-      branch.setQuota(quota + 1);
-      branchRepository.save(branch);
+      branchDAO.updateQuota(branch, 1);
    }
 }

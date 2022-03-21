@@ -33,8 +33,7 @@ public class Wallet extends AbstractAuditableEntity {
     private Money totalSpent;
 
     public Wallet(AppUser user) {
-        // TODO: 19.03.2022 zero amount for balance and total spent
-        setBalance(Money.of(1_000_000_000));
+        setBalance(Money.zero());
         setTotalSpent(Money.zero());
         setUser(user);
     }

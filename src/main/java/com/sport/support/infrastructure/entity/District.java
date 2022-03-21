@@ -20,7 +20,7 @@ public class District extends AbstractEntity {
     @JoinColumn(name = "CITY_ID", nullable = false, insertable = false, updatable = false)
     private City city;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     public District(Long id) {

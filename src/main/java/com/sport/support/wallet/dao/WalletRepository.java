@@ -1,4 +1,4 @@
-package com.sport.support.wallet.repository;
+package com.sport.support.wallet.dao;
 
 import com.sport.support.wallet.entity.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;

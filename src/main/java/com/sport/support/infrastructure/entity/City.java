@@ -7,8 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -16,13 +14,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class City extends AbstractEntity {
 
-    @OneToMany(mappedBy = "city")
-    private Set<District> districtList;
-
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "AREA_CODE")
+    @Column(name = "AREA_CODE", nullable = false)
     private int areaCode;
 
     public City(Long id) {

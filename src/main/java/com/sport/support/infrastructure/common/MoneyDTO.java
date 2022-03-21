@@ -4,16 +4,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class MoneyDTO {
 
    private String currency;
-   private String amount;
+   private BigDecimal amount;
 
    public MoneyDTO(Money money) {
-      setAmount(money.format());
+      setAmount(BigDecimal.valueOf(money.getAmount()));
       setCurrency("TRY");
    }
 }

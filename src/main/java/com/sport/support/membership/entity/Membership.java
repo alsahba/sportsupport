@@ -3,7 +3,6 @@ package com.sport.support.membership.entity;
 
 import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.branch.entity.Branch;
-import com.sport.support.branch.specification.BranchExistsSpecification;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.membership.controller.dto.AddMembershipRequest;
 import com.sport.support.membership.entity.enumeration.Duration;
@@ -57,13 +56,4 @@ public class Membership extends AbstractAuditableEntity {
       if (getDuration().equals(Duration.MONTHLY)) return LocalDateTime.now().plusMonths(1);
       else return LocalDateTime.now().plusYears(1);
    }
-
-   public boolean isAddable() {
-      return isBranchExists(); //TODO has wallet sufficient amount?
-   }
-
-   private boolean isBranchExists() {
-      return new BranchExistsSpecification().isSatisfiedBy(getBranch());
-   }
-
 }
