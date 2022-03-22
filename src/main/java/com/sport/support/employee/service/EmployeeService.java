@@ -16,7 +16,7 @@ public class EmployeeService {
    private final EmployeeRepository employeeRepository;
 
    @Transactional
-   public void makeEmployee(Employee employee) {
+   public void add(Employee employee) {
       appUserDetailsManager.updatePermissions(employee);
       employeeRepository.save(employee);
    }

@@ -5,6 +5,7 @@ import com.sport.support.employee.entity.Employee;
 import com.sport.support.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class EmployeeController {
    private final EmployeeService employeeService;
 
    @PostMapping
-   // TODO: 21.03.2022 authorisation
-   public ResponseEntity makeManager(@Valid @RequestBody AddEmployeeRequest request) {
-      employeeService.makeEmployee(new Employee(request));
+   @PreAuthorize("hasPermission(#request, 'WRITE')")
+   public ResponseEntity addEmployee(@Valid @RequestBody AddEmployeeRequest request) {
+      employeeService.add(new Employee(request));
       return ResponseEntity.ok().build();
    }
 }
