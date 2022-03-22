@@ -15,3 +15,5 @@ insert into permission(id, name) values (7, 'ADMIN_READ');
 insert into permission(id, name) values (8, 'ADMIN_WRITE');
 insert into permission(id, name) values (9, 'BRANCH_READ');
 insert into permission(id, name) values (10, 'BRANCH_WRITE');
+insert into permission(id, name) values (11, 'TRAINER_WRITE');
+insert into permission(id, name) values (12, 'TRAINER_READ');

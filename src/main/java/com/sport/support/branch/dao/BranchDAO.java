@@ -32,7 +32,7 @@ public class BranchDAO {
    public void updateQuota(Branch branch, int change) {
       int quota = Optional.ofNullable(redisTemplate.opsForValue().get(branch.getId()))
           .orElseGet(branch::getQuota);
-      int newQuota = quota + change;
+      var newQuota = quota + change;
 
       if (newQuota < 0) {
          throw new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_QUOTA_IS_EMPTY);

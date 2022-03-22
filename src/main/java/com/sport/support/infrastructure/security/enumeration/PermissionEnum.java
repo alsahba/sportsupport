@@ -10,5 +10,7 @@ public enum PermissionEnum {
   ADMIN_READ,
   ADMIN_WRITE,
   BRANCH_READ,
-  BRANCH_WRITE
+  BRANCH_WRITE,
+  TRAINER_READ,
+  TRAINER_WRITE
 }

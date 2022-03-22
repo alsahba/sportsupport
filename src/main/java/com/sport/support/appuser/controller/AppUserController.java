@@ -34,7 +34,7 @@ public class AppUserController {
    @GetMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('USER_READ')")
    public ResponseEntity<UserDetailResponse> get(@PathVariable @Min(1) Long id) {
-      return ResponseEntity.ok(new UserDetailResponse(appUserDetailsManager.retrieveById(id)));
+      return ResponseEntity.ok(new UserDetailResponse(appUserDetailsManager.findById(id)));
    }
 
    @PutMapping(value = "/name")

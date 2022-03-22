@@ -33,7 +33,7 @@ public class MembershipService {
       checkUserIsAlreadyMember(membership.getUser().getId());
       branchService.checkout(membership);
 
-      AppUser user = appUserDetailsManager.retrieveById(membership.getUser().getId());
+      AppUser user = appUserDetailsManager.findById(membership.getUser().getId());
       membership.setUser(user);
 
       Money cost = membership.getBranch().getCost(membership.getType(), membership.getDuration());

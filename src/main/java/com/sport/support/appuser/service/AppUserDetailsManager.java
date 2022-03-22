@@ -4,6 +4,7 @@ import com.sport.support.appuser.entity.AppUser;
 import com.sport.support.appuser.messages.UserErrorMessages;
 import com.sport.support.appuser.repository.AppUserRepository;
 import com.sport.support.appuser.repository.PermissionRepository;
+import com.sport.support.employee.entity.Employee;
 import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import com.sport.support.infrastructure.security.user.AppUserDetails;
@@ -51,7 +52,7 @@ public class AppUserDetailsManager implements UserDetailsManager {
    }
 
    public void update(Long id, String name, String surname) {
-      AppUser appUser = retrieveById(id);
+      AppUser appUser = findById(id);
       appUser.update(name, surname);
       appUserRepository.save(appUser);
    }
@@ -73,7 +74,7 @@ public class AppUserDetailsManager implements UserDetailsManager {
          throw new AccessDeniedException("Can't change password as no Authentication object found in context for current user.");
       }
       Long userId = Long.valueOf(currentUser.getName());
-      AppUser user = retrieveById(userId);
+      AppUser user = findById(userId);
 
       if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
          throw new AccessDeniedException("Wrong password");
@@ -89,19 +90,25 @@ public class AppUserDetailsManager implements UserDetailsManager {
       return appUserRepository.existsByUsername(username);
    }
 
-   public AppUser retrieveById(Long id) {
+   public AppUser findById(Long id) {
       return appUserRepository.findById(id)
           .orElseThrow(() -> new RecordIsNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
    }
 
-   public void updatePermissions(Long id, RoleEnum role) {
-      AppUser user = retrieveById(id);
-      user.setPermissions(permissionRepository.findByNameIn(role.getPermissions()));
+   private AppUser findByUsername(String username) {
+      return appUserRepository.findByUsername(username)
+          .orElseThrow(() -> new RecordIsNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
+   }
+
+   public void updatePermissions(Employee employee) {
+      AppUser user = findByUsername(employee.getUser().getUsername());
+      user.setPermissions(permissionRepository.findByNameIn(employee.getType().getRole().getPermissions()));
+      employee.setUser(user);
       appUserRepository.save(user);
    }
 
    public void delete(Long id) {
-      AppUser appUserDb = retrieveById(id);
+      AppUser appUserDb = findById(id);
       appUserRepository.delete(appUserDb);
    }
 
