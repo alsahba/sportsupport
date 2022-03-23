@@ -51,14 +51,6 @@ public class Money implements Serializable {
       return new Money(amount - money.amount);
    }
 
-   public Money multiply(double multiplier) {
-      return new Money(amount * multiplier);
-   }
-
-   public Money divide(double divider) {
-      return new Money(amount / divider);
-   }
-
    public boolean isGreaterThan(Money money) {
       return amount > money.amount;
    }
@@ -79,5 +71,7 @@ public class Money implements Serializable {
       return amount <= money.amount;
    }
 
-
+   public boolean isNegative() {
+      return amount < 0;
+   }
 }

@@ -1,0 +1,20 @@
+package com.sport.support.wallet.application.port.in;
+
+import com.sport.support.infrastructure.common.Money;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@AllArgsConstructor
+public class WithdrawMoneyCommand {
+
+   @NotNull
+   private final Long userId;
+
+   @Valid
+   private final Money money;
+
+}

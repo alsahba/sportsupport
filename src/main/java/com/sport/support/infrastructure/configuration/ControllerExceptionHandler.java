@@ -2,7 +2,6 @@ package com.sport.support.infrastructure.configuration;
 
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.infrastructure.exception.DatabaseException;
-import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Locale;
 
 // TODO: ResponseEntity will be changed wrt application, error handling will be changed
@@ -27,7 +27,7 @@ public class ControllerExceptionHandler {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
    }
 
-   @ExceptionHandler(RecordIsNotFoundException.class)
+   @ExceptionHandler(EntityNotFoundException.class)
    public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
           messageSource.getMessage(e.getMessage(), null, Locale.US));

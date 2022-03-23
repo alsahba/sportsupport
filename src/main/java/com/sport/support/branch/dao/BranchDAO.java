@@ -4,13 +4,13 @@ import com.sport.support.branch.entity.Branch;
 import com.sport.support.branch.messages.BranchErrorMessages;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.infrastructure.exception.DatabaseException;
-import com.sport.support.infrastructure.exception.RecordIsNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.util.Optional;
 
@@ -51,7 +51,7 @@ public class BranchDAO {
 
    public Branch findById(Long id) {
       return branchRepository.findById(id)
-          .orElseThrow(() -> new RecordIsNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
+          .orElseThrow(() -> new EntityNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
    }
 
    public void delete(Long id) {

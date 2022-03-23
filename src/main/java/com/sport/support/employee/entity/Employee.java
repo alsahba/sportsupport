@@ -1,6 +1,6 @@
 package com.sport.support.employee.entity;
 
-import com.sport.support.appuser.entity.AppUser;
+import com.sport.support.appuser.adapter.out.entity.AppUser;
 import com.sport.support.employee.controller.dto.AddEmployeeRequest;
 import com.sport.support.employee.entity.enumeration.EmployeeType;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;

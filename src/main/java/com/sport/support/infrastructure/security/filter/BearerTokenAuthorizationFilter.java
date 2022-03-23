@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.security.filter;
 
-import com.sport.support.appuser.service.AppUserDetailsManager;
+import com.sport.support.appuser.application.service.AppUserDetailsManager;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

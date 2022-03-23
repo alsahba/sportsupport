@@ -1,6 +1,6 @@
 package com.sport.support.employee.service;
 
-import com.sport.support.appuser.service.AppUserDetailsManager;
+import com.sport.support.appuser.application.service.AppUserDetailsManager;
 import com.sport.support.employee.entity.Employee;
 import com.sport.support.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
