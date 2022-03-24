@@ -1,14 +1,14 @@
 package com.sport.support.appuser.application.service;
 
-import com.sport.support.appuser.adapter.out.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.domain.UserErrorMessages;
-import com.sport.support.appuser.adapter.out.repository.AppUserRepository;
-import com.sport.support.appuser.adapter.out.repository.PermissionRepository;
-import com.sport.support.employee.entity.Employee;
+import com.sport.support.appuser.adapter.out.persistence.repository.AppUserRepository;
+import com.sport.support.appuser.adapter.out.persistence.repository.PermissionRepository;
+import com.sport.support.employee.adapter.out.persistence.Employee;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import com.sport.support.infrastructure.security.user.AppUserDetails;
-import com.sport.support.wallet.application.port.in.CreateWalletCommand;
-import com.sport.support.wallet.application.port.in.CreateWalletUC;
+import com.sport.support.wallet.application.port.in.command.CreateWalletCommand;
+import com.sport.support.wallet.application.port.in.usecase.CreateWalletUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;

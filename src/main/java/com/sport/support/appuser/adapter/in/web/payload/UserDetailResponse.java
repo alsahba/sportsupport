@@ -1,6 +1,6 @@
 package com.sport.support.appuser.adapter.in.web.payload;
 
-import com.sport.support.appuser.adapter.out.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import lombok.Data;
 
 @Data

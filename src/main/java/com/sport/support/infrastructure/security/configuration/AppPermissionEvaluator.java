@@ -1,7 +1,7 @@
 package com.sport.support.infrastructure.security.configuration;
 
-import com.sport.support.employee.controller.dto.AddEmployeeRequest;
-import com.sport.support.employee.entity.enumeration.EmployeeType;
+import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
+import com.sport.support.employee.adapter.out.persistence.EmployeeType;
 import com.sport.support.infrastructure.security.enumeration.PermissionEnum;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;

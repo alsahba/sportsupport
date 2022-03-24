@@ -1,15 +1,15 @@
 package com.sport.support.wallet.application.service;
 
-import com.sport.support.wallet.adapter.out.persistence.Wallet;
-import com.sport.support.wallet.application.port.in.CreateWalletUC;
-import com.sport.support.wallet.application.port.in.CreateWalletCommand;
+import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
+import com.sport.support.wallet.application.port.in.command.CreateWalletCommand;
+import com.sport.support.wallet.application.port.in.usecase.CreateWalletUC;
 import com.sport.support.wallet.application.port.out.CreateWalletPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
-public class CreateWalletService implements CreateWalletUC {
+class CreateWalletService implements CreateWalletUC {
 
    private final CreateWalletPort createWalletPort;
 

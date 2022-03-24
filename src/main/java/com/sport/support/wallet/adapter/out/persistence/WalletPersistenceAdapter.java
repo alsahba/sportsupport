@@ -1,7 +1,9 @@
 package com.sport.support.wallet.adapter.out.persistence;
 
 import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.infrastructure.exception.DatabaseException;
+import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
 import com.sport.support.wallet.application.port.out.CreateWalletPort;
 import com.sport.support.wallet.application.port.out.DepositMoneyPort;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
@@ -9,14 +11,13 @@ import com.sport.support.wallet.application.port.out.WithdrawMoneyPort;
 import com.sport.support.wallet.domain.WalletErrorMessages;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.util.Optional;
 
-@Component
-public class WalletPersistenceAdapter implements DepositMoneyPort, WithdrawMoneyPort, CreateWalletPort, LoadWalletPort {
+@PersistenceAdapter
+class WalletPersistenceAdapter implements DepositMoneyPort, WithdrawMoneyPort, CreateWalletPort, LoadWalletPort {
 
    private final WalletRepository walletRepository;
 

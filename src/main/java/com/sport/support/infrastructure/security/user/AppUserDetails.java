@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.security.user;
 
-import com.sport.support.appuser.adapter.out.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

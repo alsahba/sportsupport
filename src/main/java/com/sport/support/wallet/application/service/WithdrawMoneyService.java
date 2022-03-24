@@ -1,15 +1,15 @@
 package com.sport.support.wallet.application.service;
 
-import com.sport.support.wallet.application.port.in.WithdrawMoneyCommand;
-import com.sport.support.wallet.application.port.in.WithdrawMoneyUC;
+import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
+import com.sport.support.wallet.application.port.in.usecase.WithdrawMoneyUC;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
 import com.sport.support.wallet.application.port.out.WithdrawMoneyPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
-public class WithdrawMoneyService implements WithdrawMoneyUC {
+class WithdrawMoneyService implements WithdrawMoneyUC {
 
    private final LoadWalletPort loadWalletPort;
    private final WithdrawMoneyPort withdrawMoneyPort;

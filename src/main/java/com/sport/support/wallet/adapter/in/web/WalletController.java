@@ -1,8 +1,8 @@
 package com.sport.support.wallet.adapter.in.web;
 
-import com.sport.support.wallet.adapter.in.web.payload.TransferMoneyRequest;
-import com.sport.support.wallet.application.port.in.DepositMoneyCommand;
-import com.sport.support.wallet.application.port.in.DepositMoneyUC;
+import com.sport.support.wallet.adapter.in.web.payload.DepositMoneyRequest;
+import com.sport.support.wallet.application.port.in.command.DepositMoneyCommand;
+import com.sport.support.wallet.application.port.in.usecase.DepositMoneyUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,14 +17,14 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/wallets")
 @RequiredArgsConstructor
-public class WalletController {
+class WalletController {
 
    private final DepositMoneyUC depositMoneyUC;
 
    @PostMapping
    @PreAuthorize("hasRole('USER_WRITE')")
-   public ResponseEntity<String> transfer(@Valid @RequestBody TransferMoneyRequest request, Principal principal) {
+   public ResponseEntity<String> deposit(@Valid @RequestBody DepositMoneyRequest request, Principal principal) {
       depositMoneyUC.deposit(new DepositMoneyCommand(Long.valueOf(principal.getName()), request));
-      return ResponseEntity.ok("Balance loaded");
+      return ResponseEntity.ok("Money deposited");
    }
 }

@@ -4,7 +4,7 @@ import com.sport.support.appuser.adapter.in.web.payload.AddUserRequest;
 import com.sport.support.appuser.adapter.in.web.payload.ChangeUserNameInfoRequest;
 import com.sport.support.appuser.adapter.in.web.payload.ChangeUserPasswordRequest;
 import com.sport.support.appuser.adapter.in.web.payload.UserDetailResponse;
-import com.sport.support.appuser.adapter.out.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.application.service.AppUserDetailsManager;
 import com.sport.support.infrastructure.security.user.AppUserDetails;
 import lombok.RequiredArgsConstructor;
