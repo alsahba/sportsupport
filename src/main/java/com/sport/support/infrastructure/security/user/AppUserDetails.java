@@ -1,6 +1,7 @@
 package com.sport.support.infrastructure.security.user;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Getter
 public class AppUserDetails implements UserDetails {
 
     private final AppUser appUser;
@@ -47,7 +49,4 @@ public class AppUserDetails implements UserDetails {
         return true;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
-    }
 }

@@ -3,57 +3,49 @@ package com.sport.support.branch.adapter.out.persistence;
 import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.branch.adapter.out.persistence.repository.BranchRepository;
 import com.sport.support.branch.adapter.out.persistence.repository.PaymentRepository;
-import com.sport.support.branch.application.port.out.DeleteBranchPort;
-import com.sport.support.branch.application.port.out.LoadBranchPort;
-import com.sport.support.branch.application.port.out.SaveBranchPort;
-import com.sport.support.branch.application.port.out.UpdateQuotaPort;
+import com.sport.support.branch.application.port.out.*;
 import com.sport.support.branch.domain.BranchErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
-import com.sport.support.infrastructure.exception.DatabaseException;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.Duration;
-import java.util.Optional;
 
 @PersistenceAdapter
-public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort, DeleteBranchPort {
+@RequiredArgsConstructor
+public class BranchPersistenceAdapter
+    implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort, DeleteBranchPort, UpdateBranchPort {
 
    private final BranchRepository branchRepository;
    private final PaymentRepository paymentRepository;
+   private final RedissonClient redissonClient;
 
-   @Qualifier(value = "branchQuotaCache")
-   private final RedisTemplate<Long, Integer> redisTemplate;
-
-   private final Duration duration = Duration.ofSeconds(60);
-
-   public BranchPersistenceAdapter(BranchRepository branchRepository, PaymentRepository paymentRepository, RedisTemplate<Long, Integer> redisTemplate) {
-      this.branchRepository = branchRepository;
-      this.paymentRepository = paymentRepository;
-      this.redisTemplate = redisTemplate;
-   }
+   private final String LOCK_PREFIX = "branch-quota-lock-";
 
    @Override
    public void updateQuota(Branch branch, int change) {
-      int quota = Optional.ofNullable(redisTemplate.opsForValue().get(branch.getId()))
-          .orElseGet(branch::getQuota);
-      var newQuota = quota + change;
+      acquireLock(branch.getId());
 
-      if (newQuota < 0) {
-         throw new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_QUOTA_IS_EMPTY);
-      }
-      branch.setQuota(newQuota);
-      save(branch, change);
+      branch.setQuota(branch.getQuota() + change);
+      branchRepository.save(branch);
+
+      releaseLock(branch.getId());
    }
 
    @Override
    public void save(Branch branch) {
       branchRepository.save(branch);
       paymentRepository.saveAll(branch.getPayments());
+   }
+
+   @Override
+   public void update(Branch branch) {
+      acquireLock(branch.getId());
+      save(branch);
+      releaseLock(branch.getId());
    }
 
    @Override
@@ -72,13 +64,13 @@ public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort,
       branchRepository.delete(branch);
    }
 
-   private void save(Branch branch, int quota) {
-      try {
-         redisTemplate.opsForValue().set(branch.getId(), branch.getQuota(), duration);
-         branchRepository.save(branch);
-      } catch (Exception e) {
-         redisTemplate.opsForValue().set(branch.getId(), branch.getQuota() + quota, duration);
-         throw new DatabaseException(e);
-      }
+   private void acquireLock(Long id) {
+      RLock lock = redissonClient.getLock(LOCK_PREFIX + id);
+      lock.lock();
+   }
+
+   private void releaseLock(Long id) {
+      RLock lock = redissonClient.getLock(LOCK_PREFIX + id);
+      lock.unlock();
    }
 }

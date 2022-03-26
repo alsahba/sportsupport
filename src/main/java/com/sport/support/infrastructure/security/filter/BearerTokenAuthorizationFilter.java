@@ -1,6 +1,6 @@
 package com.sport.support.infrastructure.security.filter;
 
-import com.sport.support.appuser.application.service.AppUserDetailsManager;
+import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,7 +23,7 @@ public class BearerTokenAuthorizationFilter extends OncePerRequestFilter {
 
     private final String prefix;
     private final String secretKey;
-    private final AppUserDetailsManager appUserDetailsManager;
+    private final LoadUserUC loadUserUC;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -34,10 +33,10 @@ public class BearerTokenAuthorizationFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             Long userId = getIdFromJWT(token);
 
-            UserDetails userDetails = appUserDetailsManager.loadUserById(userId);
+            var user = loadUserUC.loadById(userId);
 
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(userId, null, userDetails.getAuthorities());
+                    = new UsernamePasswordAuthenticationToken(userId, null, user.getGrantedAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 

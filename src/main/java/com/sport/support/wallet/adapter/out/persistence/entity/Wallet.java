@@ -2,7 +2,7 @@ package com.sport.support.wallet.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.wallet.domain.WalletErrorMessages;
 import lombok.Getter;

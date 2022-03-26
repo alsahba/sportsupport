@@ -2,7 +2,7 @@ package com.sport.support.branch.adapter.out.persistence.entity;
 
 import com.sport.support.branch.application.port.in.command.PaymentCommand;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
 

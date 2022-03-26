@@ -6,4 +6,8 @@ public interface LoadUserUC {
 
    AppUser loadById(Long id);
 
+   AppUser loadByEmail(String email);
+
+   AppUser loadByUsername(String username);
+
 }

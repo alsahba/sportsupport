@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
    private final AddEmployeeUC addEmployeeUC;
 
    @PostMapping
-   @PreAuthorize("hasPermission(#request, 'MANAGER_WRITE', 'TRAINER_WRITE')")
+   @PreAuthorize("hasPermission(#request, 'WRITE')")
    public ResponseEntity addEmployee(@Valid @RequestBody AddEmployeeRequest request) {
       addEmployeeUC.add(new AddEmployeeCommand(request));
       return ResponseEntity.ok().build();

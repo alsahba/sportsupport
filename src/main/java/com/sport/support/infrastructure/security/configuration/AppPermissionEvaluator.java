@@ -20,8 +20,6 @@ public class AppPermissionEvaluator implements PermissionEvaluator {
           .map(authority -> PermissionEnum.valueOf(authority.getAuthority()))
           .collect(Collectors.toSet());
 
-      String[] allowedPermissions = (String[]) o1;
-
       if (o instanceof AddEmployeeRequest) {
          AddEmployeeRequest request = (AddEmployeeRequest) o;
          if (EmployeeType.TRAINER.equals(request.getType())) {

@@ -28,7 +28,7 @@ public class ControllerExceptionHandler {
    }
 
    @ExceptionHandler(EntityNotFoundException.class)
-   public ResponseEntity<?> handleRecordDoesNotFoundException(Exception e) {
+   public ResponseEntity<?> handleEntityNotFoundException(Exception e) {
       return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
           messageSource.getMessage(e.getMessage(), null, Locale.US));
    }

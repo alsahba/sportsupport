@@ -5,7 +5,7 @@ import com.sport.support.branch.application.port.in.command.AddBranchCommand;
 import com.sport.support.branch.application.port.in.command.UpdateBranchCommand;
 import com.sport.support.branch.domain.BranchErrorMessages;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
@@ -94,6 +94,9 @@ public class Branch extends AbstractAuditableEntity {
 
    public void setQuota(int quota) {
       this.quota = quota;
+      if (quota < 0) {
+         throw new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_QUOTA_IS_EMPTY);
+      }
    }
 
    public City getCity() {

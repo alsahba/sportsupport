@@ -4,7 +4,7 @@ import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
 import com.sport.support.employee.application.port.in.AddEmployeeCommand;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

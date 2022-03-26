@@ -22,7 +22,7 @@ class WalletController {
    private final DepositMoneyUC depositMoneyUC;
 
    @PostMapping
-   @PreAuthorize("hasRole('USER_WRITE')")
+   @PreAuthorize("hasAuthority('USER_WRITE')")
    public ResponseEntity<String> deposit(@Valid @RequestBody DepositMoneyRequest request, Principal principal) {
       depositMoneyUC.deposit(new DepositMoneyCommand(Long.valueOf(principal.getName()), request));
       return ResponseEntity.ok("Money deposited");

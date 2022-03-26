@@ -2,10 +2,13 @@ package com.sport.support.membership.application.service;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
+import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.branch.application.port.in.command.BranchMembershipCommand;
+import com.sport.support.branch.application.port.in.command.FindBranchQuery;
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
+import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
 import com.sport.support.branch.application.port.in.usecase.ReleaseQuotaUC;
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.entity.Membership;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
@@ -30,6 +33,7 @@ public class MembershipService implements AddMembershipUC, CancelMembershipUC {
    private final DecreaseQuotaUC decreaseQuotaUC;
    private final ReleaseQuotaUC releaseQuotaUC;
    private final LoadUserUC loadUserUC;
+   private final FindBranchUC findBranchUC;
    private final SaveMembershipPort saveMembershipPort;
    private final LoadMembershipPort loadMembershipPort;
 
@@ -37,26 +41,31 @@ public class MembershipService implements AddMembershipUC, CancelMembershipUC {
    public void add(AddMembershipCommand command) {
       Membership membership = new Membership(command);
       checkUserIsAlreadyMember(membership.getUser().getId());
-      decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(membership.getBranch().getId()));
+
+      Branch branch = findBranchUC.findById(new FindBranchQuery(membership.getBranch().getId()));
+      membership.setBranch(branch);
+
+      decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(branch));
 
       AppUser user = loadUserUC.loadById(membership.getUser().getId());
       membership.setUser(user);
 
-      Money cost = membership.getBranch().getCost(membership.getType(), membership.getDuration());
+      Money cost = branch.getCost(membership.getType(), membership.getDuration());
       withdrawMoneyUC.withdraw(new WithdrawMoneyCommand(user.getId(), cost));
       saveMembershipPort.save(membership);
    }
 
    @Override
    public void cancel(Long userId) {
-      Membership membership = loadMembershipPort.loadByUserId(userId);
+      Membership membership = loadMembershipPort.loadByUserId(userId)
+          .orElseThrow(() -> new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_NOT_FOUND));
       membership.cancel();
-      releaseQuotaUC.releaseQuota(new BranchMembershipCommand(membership.getBranch().getId()));
+      releaseQuotaUC.releaseQuota(new BranchMembershipCommand(membership.getBranch()));
       saveMembershipPort.save(membership);
    }
 
    private void checkUserIsAlreadyMember(Long userId) {
-      if (loadMembershipPort.loadByUserId(userId) != null)
+      if (loadMembershipPort.loadByUserId(userId).isPresent())
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
    }
 }

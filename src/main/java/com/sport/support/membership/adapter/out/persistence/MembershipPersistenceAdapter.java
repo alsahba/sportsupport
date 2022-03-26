@@ -7,10 +7,9 @@ import com.sport.support.membership.adapter.out.persistence.repository.Membershi
 import com.sport.support.membership.adapter.out.persistence.repository.MembershipRepository;
 import com.sport.support.membership.application.port.out.LoadMembershipPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
-import com.sport.support.membership.domain.MembershipErrorMessages;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -26,8 +25,7 @@ public class MembershipPersistenceAdapter implements SaveMembershipPort, LoadMem
    }
 
    @Override
-   public Membership loadByUserId(Long userId) {
-      return membershipRepository.findByUserId(userId)
-          .orElseThrow(() -> new EntityNotFoundException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_NOT_FOUND));
+   public Optional<Membership> loadByUserId(Long userId) {
+      return membershipRepository.findByUserId(userId);
    }
 }

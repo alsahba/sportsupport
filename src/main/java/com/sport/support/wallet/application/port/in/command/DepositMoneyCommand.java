@@ -1,6 +1,6 @@
 package com.sport.support.wallet.application.port.in.command;
 
-import com.sport.support.infrastructure.common.Money;
+import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.wallet.adapter.in.web.payload.DepositMoneyRequest;
 import lombok.Getter;
 

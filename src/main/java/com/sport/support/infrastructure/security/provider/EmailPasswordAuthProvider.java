@@ -1,8 +1,9 @@
 package com.sport.support.infrastructure.security.provider;
 
+import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import com.sport.support.infrastructure.security.configuration.AppPasswordEncoder;
 import com.sport.support.infrastructure.security.token.EmailPasswordAuthToken;
-import com.sport.support.appuser.application.service.AppUserDetailsManager;
+import com.sport.support.infrastructure.security.user.AppUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,14 +15,14 @@ import org.springframework.security.core.AuthenticationException;
 @RequiredArgsConstructor
 public class EmailPasswordAuthProvider implements AuthenticationProvider {
 
-   private final AppUserDetailsManager appUserDetailsManager;
+   private final LoadUserUC loadUserUC;
    private final AppPasswordEncoder appPasswordEncoder;
 
    @Override
    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
       var email = authentication.getName();
       var password = authentication.getCredentials().toString();
-      var user = appUserDetailsManager.loadUserByEmail(email);
+      var user = new AppUserDetails(loadUserUC.loadByEmail(email));
 
       if (!appPasswordEncoder.matches(password, user.getPassword())) {
          throw new BadCredentialsException("Bad credentials");

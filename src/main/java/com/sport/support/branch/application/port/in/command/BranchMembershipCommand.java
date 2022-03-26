@@ -1,12 +1,13 @@
 package com.sport.support.branch.application.port.in.command;
 
+import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import lombok.Getter;
 
 @Getter
 public class BranchMembershipCommand {
-   private final Long branchId;
+   private final Branch branch;
 
-   public BranchMembershipCommand(Long branchId) {
-      this.branchId = branchId;
+   public BranchMembershipCommand(Branch branch) {
+      this.branch = branch;
    }
 }

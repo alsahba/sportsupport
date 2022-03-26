@@ -1,39 +1,29 @@
 package com.sport.support.infrastructure.abstractions.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.Version;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditableEntity extends AbstractEntity {
 
-    @Column(name = "CREATION_TIMESTAMP")
+    @CreatedDate
     private LocalDateTime creationTimestamp;
 
-    @Column(name = "UPDATE_TIMESTAMP")
+    @LastModifiedDate
     private LocalDateTime updateTimestamp;
 
-    @Column(name = "VERSION")
+    @Version
     private int version;
 
-    @PrePersist
-    void preInsert() {
-        if (this.creationTimestamp == null) {
-            this.creationTimestamp = LocalDateTime.now();
-            this.version = 0;
-        }
-        this.version = getVersion() + 1;
-    }
-
-    @PreUpdate
-    void preUpdate() {
-        this.updateTimestamp = LocalDateTime.now();
-        this.version = getVersion() + 1;
-    }
 }

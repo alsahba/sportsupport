@@ -1,4 +1,4 @@
-package com.sport.support.infrastructure.common;
+package com.sport.support.infrastructure.common.money;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

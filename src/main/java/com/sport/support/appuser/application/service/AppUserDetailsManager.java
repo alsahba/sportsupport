@@ -41,17 +41,19 @@ public class AppUserDetailsManager implements UserDetailsService,
       return new AppUserDetails(loadUserPort.loadByUsername(username));
    }
 
-   public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
-      return new AppUserDetails(loadUserPort.loadById(id));
-   }
-
-   public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-      return new AppUserDetails(loadUserPort.loadByEmail(email));
-   }
-
    @Override
    public AppUser loadById(Long id) {
       return loadUserPort.loadById(id);
+   }
+
+   @Override
+   public AppUser loadByEmail(String email) {
+      return loadUserPort.loadByEmail(email);
+   }
+
+   @Override
+   public AppUser loadByUsername(String username) {
+      return loadUserPort.loadByUsername(username);
    }
 
    @Override

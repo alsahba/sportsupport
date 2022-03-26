@@ -1,12 +1,11 @@
 package com.sport.support.employee.adapter.in.web.payload;
 
 import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
-import com.sport.support.infrastructure.common.MoneyDTO;
 import lombok.Data;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,11 +17,9 @@ public class AddEmployeeRequest {
    @NotNull
    private EmployeeType type;
 
-   @Valid
-   private MoneyDTO baseSalary;
+   private BigDecimal baseSalary;
 
-   @Valid
-   private MoneyDTO bonus;
+   private BigDecimal bonus;
 
    @NotNull
    private LocalDateTime startDate;
