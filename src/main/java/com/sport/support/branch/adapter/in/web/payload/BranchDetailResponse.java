@@ -1,6 +1,6 @@
 package com.sport.support.branch.adapter.in.web.payload;
 
-import com.sport.support.branch.adapter.out.persistence.Branch;
+import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

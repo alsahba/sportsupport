@@ -1,7 +1,7 @@
 package com.sport.support.infrastructure.security.configuration;
 
 import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
-import com.sport.support.employee.adapter.out.persistence.EmployeeType;
+import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
 import com.sport.support.infrastructure.security.enumeration.PermissionEnum;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
@@ -19,6 +19,8 @@ public class AppPermissionEvaluator implements PermissionEvaluator {
       Set<PermissionEnum> permissions = authentication.getAuthorities().stream()
           .map(authority -> PermissionEnum.valueOf(authority.getAuthority()))
           .collect(Collectors.toSet());
+
+      String[] allowedPermissions = (String[]) o1;
 
       if (o instanceof AddEmployeeRequest) {
          AddEmployeeRequest request = (AddEmployeeRequest) o;

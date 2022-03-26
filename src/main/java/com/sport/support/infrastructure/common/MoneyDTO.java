@@ -25,4 +25,9 @@ public class MoneyDTO {
       setAmount(BigDecimal.valueOf(money.getAmount()));
       setCurrency("TRY");
    }
+
+   public MoneyDTO(BigDecimal amount) {
+      setAmount(amount);
+      setCurrency("TRY");
+   }
 }

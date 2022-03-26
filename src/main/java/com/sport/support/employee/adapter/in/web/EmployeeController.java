@@ -1,8 +1,8 @@
 package com.sport.support.employee.adapter.in.web;
 
 import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
-import com.sport.support.employee.adapter.out.persistence.Employee;
-import com.sport.support.employee.application.service.EmployeeService;
+import com.sport.support.employee.application.port.in.AddEmployeeCommand;
+import com.sport.support.employee.application.port.in.AddEmployeeUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +18,12 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-   private final EmployeeService employeeService;
+   private final AddEmployeeUC addEmployeeUC;
 
    @PostMapping
-   @PreAuthorize("hasPermission(#request, 'WRITE')")
+   @PreAuthorize("hasPermission(#request, 'MANAGER_WRITE', 'TRAINER_WRITE')")
    public ResponseEntity addEmployee(@Valid @RequestBody AddEmployeeRequest request) {
-      employeeService.add(new Employee(request));
+      addEmployeeUC.add(new AddEmployeeCommand(request));
       return ResponseEntity.ok().build();
    }
 }

@@ -3,14 +3,12 @@ package com.sport.support.appuser.adapter.in.web.payload;
 import com.sport.support.infrastructure.common.annotations.validation.MobilePhoneNumber;
 import com.sport.support.infrastructure.common.annotations.validation.Password;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-@NoArgsConstructor
 public class AddUserRequest {
 
     @NotBlank

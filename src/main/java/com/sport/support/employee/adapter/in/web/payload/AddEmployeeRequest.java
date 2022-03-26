@@ -1,6 +1,6 @@
 package com.sport.support.employee.adapter.in.web.payload;
 
-import com.sport.support.employee.adapter.out.persistence.EmployeeType;
+import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
 import com.sport.support.infrastructure.common.MoneyDTO;
 import lombok.Data;
 

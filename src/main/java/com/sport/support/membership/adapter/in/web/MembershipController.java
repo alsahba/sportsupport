@@ -1,8 +1,9 @@
 package com.sport.support.membership.adapter.in.web;
 
 import com.sport.support.membership.adapter.in.web.payload.AddMembershipRequest;
-import com.sport.support.membership.adapter.out.persistence.Membership;
-import com.sport.support.membership.application.service.MembershipService;
+import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
+import com.sport.support.membership.application.port.in.usecase.AddMembershipUC;
+import com.sport.support.membership.application.port.in.usecase.CancelMembershipUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +22,22 @@ import java.security.Principal;
 @RequestMapping("/memberships")
 public class MembershipController {
 
-    private final MembershipService membershipService;
+    private final AddMembershipUC addMembershipUC;
+    private final CancelMembershipUC cancelMembershipUC;
 
     @PostMapping
     @PreAuthorize("hasAuthority('MEMBER_WRITE')")
     public ResponseEntity<String> add(
-            @RequestBody @Valid AddMembershipRequest addMembershipDTO,
+            @RequestBody @Valid AddMembershipRequest request,
             Principal principal) {
-        Membership membership = new Membership(Long.valueOf(principal.getName()), addMembershipDTO);
-        membershipService.add(membership);
-        return new ResponseEntity<>(String.format("Membership added, id = %d", membership.getId()), HttpStatus.CREATED);
+        addMembershipUC.add(new AddMembershipCommand(Long.valueOf(principal.getName()), request));
+        return new ResponseEntity<>("Membership added!", HttpStatus.CREATED);
     }
 
     @PostMapping("/cancel")
     @PreAuthorize("hasAuthority('MEMBER_WRITE')")
     public ResponseEntity<String> cancel(Authentication authentication) {
-        membershipService.cancel(Long.valueOf(authentication.getName()));
+        cancelMembershipUC.cancel(Long.valueOf(authentication.getName()));
         return new ResponseEntity<>("Membership canceled", HttpStatus.ACCEPTED);
     }
 }

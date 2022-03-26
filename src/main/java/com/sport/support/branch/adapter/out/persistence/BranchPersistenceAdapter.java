@@ -1,5 +1,12 @@
 package com.sport.support.branch.adapter.out.persistence;
 
+import com.sport.support.branch.adapter.out.persistence.entity.Branch;
+import com.sport.support.branch.adapter.out.persistence.repository.BranchRepository;
+import com.sport.support.branch.adapter.out.persistence.repository.PaymentRepository;
+import com.sport.support.branch.application.port.out.DeleteBranchPort;
+import com.sport.support.branch.application.port.out.LoadBranchPort;
+import com.sport.support.branch.application.port.out.SaveBranchPort;
+import com.sport.support.branch.application.port.out.UpdateQuotaPort;
 import com.sport.support.branch.domain.BranchErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
@@ -14,20 +21,23 @@ import java.time.Duration;
 import java.util.Optional;
 
 @PersistenceAdapter
-public class BranchPersistenceAdapter {
+public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort, DeleteBranchPort {
 
    private final BranchRepository branchRepository;
+   private final PaymentRepository paymentRepository;
 
    @Qualifier(value = "branchQuotaCache")
    private final RedisTemplate<Long, Integer> redisTemplate;
 
    private final Duration duration = Duration.ofSeconds(60);
 
-   public BranchPersistenceAdapter(BranchRepository branchRepository, RedisTemplate<Long, Integer> redisTemplate) {
+   public BranchPersistenceAdapter(BranchRepository branchRepository, PaymentRepository paymentRepository, RedisTemplate<Long, Integer> redisTemplate) {
       this.branchRepository = branchRepository;
+      this.paymentRepository = paymentRepository;
       this.redisTemplate = redisTemplate;
    }
 
+   @Override
    public void updateQuota(Branch branch, int change) {
       int quota = Optional.ofNullable(redisTemplate.opsForValue().get(branch.getId()))
           .orElseGet(branch::getQuota);
@@ -40,21 +50,26 @@ public class BranchPersistenceAdapter {
       save(branch, change);
    }
 
+   @Override
    public void save(Branch branch) {
       branchRepository.save(branch);
+      paymentRepository.saveAll(branch.getPayments());
    }
 
-   public Page<Branch> findAll(PageRequest pageRequest) {
+   @Override
+   public Page<Branch> loadAll(PageRequest pageRequest) {
       return branchRepository.findAll(pageRequest);
    }
 
-   public Branch findById(Long id) {
+   @Override
+   public Branch loadById(Long id) {
       return branchRepository.findById(id)
           .orElseThrow(() -> new EntityNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
    }
 
-   public void delete(Long id) {
-      branchRepository.delete(findById(id));
+   @Override
+   public void delete(Branch branch) {
+      branchRepository.delete(branch);
    }
 
    private void save(Branch branch, int quota) {

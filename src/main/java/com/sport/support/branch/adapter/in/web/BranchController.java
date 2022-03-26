@@ -3,8 +3,13 @@ package com.sport.support.branch.adapter.in.web;
 import com.sport.support.branch.adapter.in.web.payload.AddBranchRequest;
 import com.sport.support.branch.adapter.in.web.payload.BranchDetailResponse;
 import com.sport.support.branch.adapter.in.web.payload.UpdateBranchRequest;
-import com.sport.support.branch.adapter.out.persistence.Branch;
-import com.sport.support.branch.application.service.BranchService;
+import com.sport.support.branch.application.port.in.command.AddBranchCommand;
+import com.sport.support.branch.application.port.in.command.FindBranchQuery;
+import com.sport.support.branch.application.port.in.command.UpdateBranchCommand;
+import com.sport.support.branch.application.port.in.usecase.AddBranchUC;
+import com.sport.support.branch.application.port.in.usecase.DeleteBranchUC;
+import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
+import com.sport.support.branch.application.port.in.usecase.UpdateBranchUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -22,7 +27,10 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/branches")
 public class BranchController {
 
-   private final BranchService branchService;
+   private final AddBranchUC addBranchUC;
+   private final FindBranchUC findBranchUC;
+   private final UpdateBranchUC updateBranchUC;
+   private final DeleteBranchUC deleteBranchUC;
 
    @GetMapping
    @PreAuthorize("hasAuthority('BRANCH_READ')")
@@ -31,7 +39,7 @@ public class BranchController {
        @Valid @RequestParam(defaultValue = "0") @Min(0) int pageNumber) {
 
       PageRequest pageRequest = PageRequest.of(pageNumber, limit);
-      List<BranchDetailResponse> detailDTOList = branchService.findAll(pageRequest).stream()
+      List<BranchDetailResponse> detailDTOList = findBranchUC.findAll(new FindBranchQuery(pageRequest)).stream()
           .map(BranchDetailResponse::new).collect(Collectors.toList());
       return ResponseEntity.ok(detailDTOList);
    }
@@ -39,29 +47,28 @@ public class BranchController {
    @GetMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('BRANCH_READ')")
    public ResponseEntity<BranchDetailResponse> get(@PathVariable @Min(1) Long id) {
-      return ResponseEntity.ok(new BranchDetailResponse(branchService.findById(id)));
+      return ResponseEntity.ok(new BranchDetailResponse(findBranchUC.findById(new FindBranchQuery(id))));
    }
 
-   @PostMapping()
+   @PostMapping
    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
    public ResponseEntity<String> add(@RequestBody @Valid AddBranchRequest addBranchRequest) {
-      Branch branch = new Branch(addBranchRequest);
-      branchService.add(branch);
-      return new ResponseEntity<>(String.format("Branch with ID = %d added!", branch.getId()), HttpStatus.CREATED);
+      addBranchUC.add(new AddBranchCommand(addBranchRequest));
+      return new ResponseEntity<>("Branch added!", HttpStatus.CREATED);
    }
 
    @PutMapping
    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
    public ResponseEntity<String> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
-      branchService.update(new Branch(updateBranchRequest));
-      return new ResponseEntity<>(String.format("Branch with ID = %d added!", updateBranchRequest.getId()),
+      updateBranchUC.update(new UpdateBranchCommand(updateBranchRequest));
+      return new ResponseEntity<>(String.format("Branch with ID = %d updated!", updateBranchRequest.getId()),
           HttpStatus.ACCEPTED);
    }
 
    @DeleteMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('BRANCH_WRITE')")
    public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
-      branchService.delete(id);
+      deleteBranchUC.delete(id);
       return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);
    }
 }

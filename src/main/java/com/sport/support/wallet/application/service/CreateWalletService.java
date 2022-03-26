@@ -15,7 +15,7 @@ class CreateWalletService implements CreateWalletUC {
 
    @Override
    public void create(CreateWalletCommand command) {
-      Wallet wallet = new Wallet(command.getUserId());
+      var wallet = new Wallet(command.getUserId());
       createWalletPort.create(wallet);
    }
 }
