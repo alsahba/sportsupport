@@ -29,6 +29,8 @@ import javax.transaction.Transactional;
 @Transactional
 public class MembershipService implements AddMembershipUC, CancelMembershipUC {
 
+   // TODO: 27.03.2022 trainer assign to member uc
+
    private final WithdrawMoneyUC withdrawMoneyUC;
    private final DecreaseQuotaUC decreaseQuotaUC;
    private final ReleaseQuotaUC releaseQuotaUC;
@@ -47,6 +49,7 @@ public class MembershipService implements AddMembershipUC, CancelMembershipUC {
 
       decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(branch));
 
+      // TODO: 27.03.2022 upgrade user permissions to member
       AppUser user = loadUserUC.loadById(membership.getUser().getId());
       membership.setUser(user);
 

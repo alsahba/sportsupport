@@ -1,6 +1,5 @@
 package com.sport.support.branch.adapter.out.persistence.entity;
 
-import com.sport.support.branch.adapter.in.web.payload.UpdateBranchRequest;
 import com.sport.support.branch.application.port.in.command.AddBranchCommand;
 import com.sport.support.branch.application.port.in.command.UpdateBranchCommand;
 import com.sport.support.branch.domain.BranchErrorMessages;
@@ -44,17 +43,6 @@ public class Branch extends AbstractAuditableEntity {
       setDistrict(new District(command.getDistrictId()));
       setPhoneNumber(command.getPhoneNumber());
       setPayments(command.getPayments().stream().map(p -> new Payment(p, this)).collect(Collectors.toSet()));
-   }
-
-   public Branch(UpdateBranchRequest updateBranchRequest) {
-      super.setId(updateBranchRequest.getId());
-      setName(updateBranchRequest.getName());
-      setQuota(updateBranchRequest.getQuota());
-      setAddress(updateBranchRequest.getAddress());
-      setPhoneNumber(updateBranchRequest.getPhoneNumber());
-//      setPayments(updateBranchRequest.getPayment().stream()
-//          .map(p -> new Payment(p, this))
-//          .collect(Collectors.toSet()));
    }
 
    public Branch(Long id) {

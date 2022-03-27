@@ -1,6 +1,8 @@
 package com.sport.support.infrastructure.abstractions.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class AbstractEntity implements Serializable {
 
     @Id
