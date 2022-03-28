@@ -9,6 +9,6 @@ public interface MembershipRepository extends JpaRepository<Membership, Long> {
 
    Optional<Membership> findByUserId(Long userId);
 
-   boolean existsByUserId(Long userId);
+   boolean existsByUserIdAndTrainerId(Long userId, Long trainerId);
 
 }

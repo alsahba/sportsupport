@@ -8,24 +8,19 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
 import java.io.Serializable;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Configuration
 public class AppPermissionEvaluator implements PermissionEvaluator {
 
    @Override
    public boolean hasPermission(Authentication authentication, Object o, Object o1) {
-      Set<PermissionEnum> permissions = authentication.getAuthorities().stream()
-          .map(authority -> PermissionEnum.valueOf(authority.getAuthority()))
-          .collect(Collectors.toSet());
-
+      var authorities = authentication.getAuthorities();
       if (o instanceof AddEmployeeRequest) {
          AddEmployeeRequest request = (AddEmployeeRequest) o;
          if (EmployeeType.TRAINER.equals(request.getType())) {
-            return permissions.contains(PermissionEnum.TRAINER_WRITE);
+            return authorities.contains(PermissionEnum.TRAINER_WRITE.toGrantedAuthority());
          } else {
-            return permissions.contains(PermissionEnum.MANAGER_WRITE);
+            return authorities.contains(PermissionEnum.MANAGER_WRITE.toGrantedAuthority());
          }
       }
       return false;

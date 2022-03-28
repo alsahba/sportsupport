@@ -2,6 +2,7 @@ package com.sport.support.plan.adapter.out.persistence;
 
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.plan.adapter.out.persistence.entity.Plan;
+import com.sport.support.plan.adapter.out.persistence.entity.PlanExercise;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanExerciseRepository;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanRepository;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
@@ -12,6 +13,8 @@ import com.sport.support.plan.domain.PlanErrorMessages;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,9 +32,19 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
    }
 
    @Override
+   public Optional<Plan> loadByUserIdAndDate(Long userId, LocalDate date) {
+      return planRepository.findByUserIdAndAndDate(userId, date);
+   }
+
+   @Override
    public void save(Set<Plan> plans) {
       planRepository.saveAll(plans);
       planExerciseRepository.saveAll(plans.stream().flatMap(plan -> plan.getPlanExercises().stream()).collect(Collectors.toSet()));
+   }
+
+   @Override
+   public void savePlanExercises(Set<PlanExercise> exercises) {
+      planExerciseRepository.saveAll(exercises);
    }
 
    @Override

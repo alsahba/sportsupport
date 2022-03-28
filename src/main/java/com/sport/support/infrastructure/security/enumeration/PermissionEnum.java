@@ -1,5 +1,7 @@
 package com.sport.support.infrastructure.security.enumeration;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 public enum PermissionEnum {
   USER_READ,
   USER_WRITE,
@@ -19,5 +21,9 @@ public enum PermissionEnum {
   PLAN_READ,
   PLAN_WRITE,
   MEMBERSHIP_READ,
-  MEMBERSHIP_WRITE
+  MEMBERSHIP_WRITE;
+
+  public SimpleGrantedAuthority toGrantedAuthority() {
+    return new SimpleGrantedAuthority(this.name());
+  }
 }
