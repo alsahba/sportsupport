@@ -27,6 +27,8 @@ public class PlanExercise extends AbstractEntity {
 
    private int sets;
 
+   // TODO: 27.03.2022 completion use case
+
    public PlanExercise(DailyPlanExerciseCommand command, Plan plan) {
       setSets(command.getSets());
       setPlan(plan);
