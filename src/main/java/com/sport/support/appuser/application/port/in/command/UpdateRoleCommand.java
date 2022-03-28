@@ -4,16 +4,14 @@ import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.Getter;
 
-import java.util.Set;
-
 @Getter
-public class UpdatePermissionCommand {
+public class UpdateRoleCommand {
 
    private final AppUser user;
-   private final Set<String> permissions;
+   private final RoleEnum role;
 
-   public UpdatePermissionCommand(AppUser user, RoleEnum role) {
+   public UpdateRoleCommand(AppUser user, RoleEnum role) {
       this.user = user;
-      this.permissions = role.getPermissions();
+      this.role = role;
    }
 }

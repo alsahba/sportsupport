@@ -32,6 +32,8 @@ public class BranchController {
    private final UpdateBranchUC updateBranchUC;
    private final DeleteBranchUC deleteBranchUC;
 
+   // TODO: 28.03.2022 managers can update only their branches but owner can update all branches
+
    @GetMapping
    @PreAuthorize("hasAuthority('BRANCH_READ')")
    public ResponseEntity<List<BranchDetailResponse>> getAll(
@@ -51,14 +53,14 @@ public class BranchController {
    }
 
    @PostMapping
-   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   @PreAuthorize("hasAuthority('BRANCH_CREATE')")
    public ResponseEntity<String> add(@RequestBody @Valid AddBranchRequest addBranchRequest) {
       addBranchUC.add(new AddBranchCommand(addBranchRequest));
       return new ResponseEntity<>("Branch added!", HttpStatus.CREATED);
    }
 
    @PutMapping
-   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   @PreAuthorize("hasAuthority('BRANCH_UPDATE')")
    public ResponseEntity<String> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
       updateBranchUC.update(new UpdateBranchCommand(updateBranchRequest));
       return new ResponseEntity<>(String.format("Branch with ID = %d updated!", updateBranchRequest.getId()),
@@ -66,7 +68,7 @@ public class BranchController {
    }
 
    @DeleteMapping(value = "/{id}")
-   @PreAuthorize("hasAuthority('BRANCH_WRITE')")
+   @PreAuthorize("hasAuthority('BRANCH_UPDATE')")
    public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
       deleteBranchUC.delete(id);
       return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);

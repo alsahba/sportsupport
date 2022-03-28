@@ -2,9 +2,9 @@ package com.sport.support.employee.application.service;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.application.port.in.command.AddUserToBranchCommand;
-import com.sport.support.appuser.application.port.in.command.UpdatePermissionCommand;
+import com.sport.support.appuser.application.port.in.command.UpdateRoleCommand;
 import com.sport.support.appuser.application.port.in.usecase.AddUserToBranchUC;
-import com.sport.support.appuser.application.port.in.usecase.UpdatePermissionUC;
+import com.sport.support.appuser.application.port.in.usecase.UpdateRoleUC;
 import com.sport.support.appuser.application.port.out.LoadUserPort;
 import com.sport.support.employee.adapter.out.persistence.entity.Employee;
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
@@ -19,7 +19,7 @@ public class AddEmployeeService implements AddEmployeeUC {
 
    private final LoadUserPort loadUserPort;
    private final SaveEmployeePort saveEmployeePort;
-   private final UpdatePermissionUC updatePermissionUC;
+   private final UpdateRoleUC updateRoleUC;
    private final AddUserToBranchUC addUserToBranchUC;
 
    public void add(AddEmployeeCommand command) {
@@ -27,7 +27,7 @@ public class AddEmployeeService implements AddEmployeeUC {
       Employee employee = new Employee(command, appUser);
       employee.setUser(appUser);
       addUserToBranchUC.addUserToBranch(new AddUserToBranchCommand(appUser, command.getBranchId()));
-      updatePermissionUC.update(new UpdatePermissionCommand(appUser, employee.getType().getRole()));
+      updateRoleUC.update(new UpdateRoleCommand(appUser, employee.getType().getRole()));
       saveEmployeePort.save(employee);
    }
 }

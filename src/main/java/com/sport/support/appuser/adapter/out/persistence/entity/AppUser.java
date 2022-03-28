@@ -5,13 +5,8 @@ import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -36,13 +31,8 @@ public class AppUser extends AbstractAuditableEntity {
    @Column(unique = true)
    private String email;
 
-   @ManyToMany(fetch = FetchType.EAGER)
-   @JoinTable(
-       name = "PERMISSION_APP_USER",
-       joinColumns = @JoinColumn(name = "APP_USER_ID"),
-       inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID")
-   )
-   private Set<Permission> permissions = new HashSet<>();
+   @ManyToOne
+   private Role role;
 
    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
    private Wallet wallet;
@@ -67,13 +57,6 @@ public class AppUser extends AbstractAuditableEntity {
    public void update(String name, String surname) {
       setName(name);
       setSurname(surname);
-   }
-
-   public Set<GrantedAuthority> getGrantedAuthorities() {
-      return getPermissions()
-          .stream()
-          .map(p -> new SimpleGrantedAuthority(p.getName()))
-          .collect(Collectors.toSet());
    }
 
    public void addToBranch(Branch branch) {

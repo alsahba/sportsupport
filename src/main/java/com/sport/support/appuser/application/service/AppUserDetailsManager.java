@@ -1,9 +1,9 @@
 package com.sport.support.appuser.application.service;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.appuser.adapter.out.persistence.repository.PermissionRepository;
 import com.sport.support.appuser.application.port.in.command.*;
 import com.sport.support.appuser.application.port.in.usecase.*;
+import com.sport.support.appuser.application.port.out.LoadAuthorityPort;
 import com.sport.support.appuser.application.port.out.LoadUserPort;
 import com.sport.support.appuser.application.port.out.RemoveUserPort;
 import com.sport.support.appuser.application.port.out.SaveUserPort;
@@ -15,7 +15,7 @@ import com.sport.support.infrastructure.security.user.AppUserDetails;
 import com.sport.support.wallet.application.port.in.command.CreateWalletCommand;
 import com.sport.support.wallet.application.port.in.usecase.CreateWalletUC;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +28,7 @@ import javax.transaction.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC, ChangeUserNameUC,
-    ChangePasswordUC, RemoveUserUC, LoadUserUC, UpdatePermissionUC, AddUserToBranchUC {
+    ChangePasswordUC, RemoveUserUC, LoadUserUC, UpdateRoleUC, AddUserToBranchUC {
 
    private final CreateWalletUC createWalletUC;
    private final FindBranchUC findBranchUC;
@@ -36,7 +36,7 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    private final SaveUserPort saveUserPort;
    private final LoadUserPort loadUserPort;
    private final PasswordEncoder passwordEncoder;
-   private final PermissionRepository permissionRepository;
+   private final LoadAuthorityPort loadAuthorityPort;
 
    @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -59,10 +59,15 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    }
 
    @Override
+   public UserDetails loadUserDetailsById(Long id) {
+      return new AppUserDetails(loadUserPort.loadById(id));
+   }
+
+   @Override
    public void register(RegisterUserCommand command) {
       AppUser user = new AppUser(command);
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setPermissions(permissionRepository.findByNameIn(RoleEnum.OWNER.getPermissions()));
+      user.setRole(loadAuthorityPort.loadRole(RoleEnum.OWNER));
       saveUserPort.save(user);
       createWalletUC.create(new CreateWalletCommand(user.getId()));
    }
@@ -79,7 +84,7 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
       AppUser user = findById(command.getId());
 
       if (!passwordEncoder.matches(command.getPassword(), user.getPassword())) {
-         throw new AccessDeniedException("Wrong password");
+         throw new BadCredentialsException("Invalid credentials");
       }
 
       user.setPassword(command.getNewPassword());
@@ -92,9 +97,9 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    }
 
    @Override
-   public void update(UpdatePermissionCommand command) {
+   public void update(UpdateRoleCommand command) {
       AppUser user = command.getUser();
-      user.setPermissions(permissionRepository.findByNameIn(command.getPermissions()));
+      user.setRole(loadAuthorityPort.loadRole(command.getRole()));
       saveUserPort.save(user);
    }
 

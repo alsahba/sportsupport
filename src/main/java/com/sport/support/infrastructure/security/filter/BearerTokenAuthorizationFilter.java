@@ -33,10 +33,10 @@ public class BearerTokenAuthorizationFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             Long userId = getIdFromJWT(token);
 
-            var user = loadUserUC.loadById(userId);
+            var user = loadUserUC.loadUserDetailsById(userId);
 
             UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(userId, null, user.getGrantedAuthorities());
+                    = new UsernamePasswordAuthenticationToken(userId, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 
