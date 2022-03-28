@@ -15,6 +15,9 @@ public class AddMembershipRequest {
     private Long branchId;
 
     @NotNull
+    private Long trainerId;
+
+    @NotNull
     private Type type;
 
     private Duration duration;

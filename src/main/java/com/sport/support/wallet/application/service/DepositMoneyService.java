@@ -14,6 +14,8 @@ class DepositMoneyService implements DepositMoneyUC {
    private final LoadWalletPort loadWalletPort;
    private final UpdateWalletBalancePort depositPort;
 
+   // TODO: 28.03.2022 wallet activity development
+
    @Override
    public void deposit(DepositMoneyCommand command) {
       var wallet = loadWalletPort.load(command.getUserId());

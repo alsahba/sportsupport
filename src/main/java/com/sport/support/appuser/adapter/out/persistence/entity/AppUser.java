@@ -76,4 +76,7 @@ public class AppUser extends AbstractAuditableEntity {
           .collect(Collectors.toSet());
    }
 
+   public void addToBranch(Branch branch) {
+      setBranch(branch);
+   }
 }

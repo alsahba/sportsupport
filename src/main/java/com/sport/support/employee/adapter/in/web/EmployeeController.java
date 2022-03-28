@@ -1,8 +1,8 @@
 package com.sport.support.employee.adapter.in.web;
 
 import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
-import com.sport.support.employee.application.port.in.AddEmployeeCommand;
-import com.sport.support.employee.application.port.in.AddEmployeeUC;
+import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
+import com.sport.support.employee.application.port.in.usecase.AddEmployeeUC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

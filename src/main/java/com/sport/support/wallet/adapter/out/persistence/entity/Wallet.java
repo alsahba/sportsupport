@@ -18,7 +18,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Wallet extends AbstractAuditableEntity {
 
-    // TODO: 23.03.2022 create a domain object and delegate domain ops to it
     @OneToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false)
     private AppUser user;

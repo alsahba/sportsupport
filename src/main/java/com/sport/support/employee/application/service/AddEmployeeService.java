@@ -1,17 +1,17 @@
 package com.sport.support.employee.application.service;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
+import com.sport.support.appuser.application.port.in.command.AddUserToBranchCommand;
 import com.sport.support.appuser.application.port.in.command.UpdatePermissionCommand;
+import com.sport.support.appuser.application.port.in.usecase.AddUserToBranchUC;
 import com.sport.support.appuser.application.port.in.usecase.UpdatePermissionUC;
 import com.sport.support.appuser.application.port.out.LoadUserPort;
 import com.sport.support.employee.adapter.out.persistence.entity.Employee;
-import com.sport.support.employee.application.port.in.AddEmployeeCommand;
-import com.sport.support.employee.application.port.in.AddEmployeeUC;
+import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
+import com.sport.support.employee.application.port.in.usecase.AddEmployeeUC;
 import com.sport.support.employee.application.port.out.SaveEmployeePort;
 import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
 import lombok.RequiredArgsConstructor;
-
-import javax.transaction.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
@@ -20,12 +20,13 @@ public class AddEmployeeService implements AddEmployeeUC {
    private final LoadUserPort loadUserPort;
    private final SaveEmployeePort saveEmployeePort;
    private final UpdatePermissionUC updatePermissionUC;
+   private final AddUserToBranchUC addUserToBranchUC;
 
-   @Transactional
    public void add(AddEmployeeCommand command) {
       AppUser appUser = loadUserPort.loadByUsername(command.getUsername());
-      Employee employee = new Employee(command);
+      Employee employee = new Employee(command, appUser);
       employee.setUser(appUser);
+      addUserToBranchUC.addUserToBranch(new AddUserToBranchCommand(appUser, command.getBranchId()));
       updatePermissionUC.update(new UpdatePermissionCommand(appUser, employee.getType().getRole()));
       saveEmployeePort.save(employee);
    }

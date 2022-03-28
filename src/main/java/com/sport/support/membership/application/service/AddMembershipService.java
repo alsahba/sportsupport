@@ -7,35 +7,32 @@ import com.sport.support.branch.application.port.in.command.BranchMembershipComm
 import com.sport.support.branch.application.port.in.command.FindBranchQuery;
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
 import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
-import com.sport.support.branch.application.port.in.usecase.ReleaseQuotaUC;
+import com.sport.support.employee.adapter.out.persistence.entity.Employee;
+import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
+import com.sport.support.employee.application.port.in.command.FindEmployeeQuery;
+import com.sport.support.employee.application.port.in.usecase.FindEmployeeUC;
+import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
 import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.entity.Membership;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
 import com.sport.support.membership.application.port.in.usecase.AddMembershipUC;
-import com.sport.support.membership.application.port.in.usecase.CancelMembershipUC;
 import com.sport.support.membership.application.port.out.LoadMembershipPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
 import com.sport.support.membership.domain.MembershipErrorMessages;
 import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
 import com.sport.support.wallet.application.port.in.usecase.WithdrawMoneyUC;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
-@Service
+@UseCase
 @RequiredArgsConstructor
-@Transactional
-public class MembershipService implements AddMembershipUC, CancelMembershipUC {
-
-   // TODO: 27.03.2022 trainer assign to member uc
+public class AddMembershipService implements AddMembershipUC {
 
    private final WithdrawMoneyUC withdrawMoneyUC;
    private final DecreaseQuotaUC decreaseQuotaUC;
-   private final ReleaseQuotaUC releaseQuotaUC;
    private final LoadUserUC loadUserUC;
    private final FindBranchUC findBranchUC;
+   private final FindEmployeeUC findEmployeeUC;
    private final SaveMembershipPort saveMembershipPort;
    private final LoadMembershipPort loadMembershipPort;
 
@@ -49,26 +46,21 @@ public class MembershipService implements AddMembershipUC, CancelMembershipUC {
 
       decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(branch));
 
-      // TODO: 27.03.2022 upgrade user permissions to member
-      AppUser user = loadUserUC.loadById(membership.getUser().getId());
+      AppUser user = loadUserUC.loadById(command.getUserId());
       membership.setUser(user);
+
+      Employee employee = findEmployeeUC.find(new FindEmployeeQuery(command.getUserId(), EmployeeType.TRAINER));
+      membership.setTrainer(employee.getUser());
 
       Money cost = branch.getCost(membership.getType(), membership.getDuration());
       withdrawMoneyUC.withdraw(new WithdrawMoneyCommand(user.getId(), cost));
       saveMembershipPort.save(membership);
    }
 
-   @Override
-   public void cancel(Long userId) {
-      Membership membership = loadMembershipPort.loadByUserId(userId)
-          .orElseThrow(() -> new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_NOT_FOUND));
-      membership.cancel();
-      releaseQuotaUC.releaseQuota(new BranchMembershipCommand(membership.getBranch()));
-      saveMembershipPort.save(membership);
-   }
-
    private void checkUserIsAlreadyMember(Long userId) {
-      if (loadMembershipPort.loadByUserId(userId).isPresent())
-         throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
+      loadMembershipPort.loadByUserId(userId).ifPresent(membership -> {
+             throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
+          }
+      );
    }
 }

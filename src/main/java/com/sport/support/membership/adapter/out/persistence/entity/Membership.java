@@ -23,9 +23,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Membership extends AbstractAuditableEntity {
 
-   @ManyToOne
+   @OneToOne
    @JoinColumn(name = "USER_ID", nullable = false)
    private AppUser user;
+
+   @OneToOne
+   @JoinColumn(name = "TRAINER_ID", nullable = false)
+   private AppUser trainer;
 
    @ManyToOne
    @JoinColumn(name = "BRANCH_ID", nullable = false)

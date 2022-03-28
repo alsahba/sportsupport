@@ -9,12 +9,14 @@ import lombok.Getter;
 public class AddMembershipCommand {
 
    private final Long userId;
+   private final Long trainerId;
    private final Long branchId;
    private final Type type;
    private final Duration duration;
 
    public AddMembershipCommand(Long userId, AddMembershipRequest request) {
       this.userId = userId;
+      this.trainerId = request.getTrainerId();
       this.branchId = request.getBranchId();
       this.type = request.getType();
       this.duration = request.getDuration();

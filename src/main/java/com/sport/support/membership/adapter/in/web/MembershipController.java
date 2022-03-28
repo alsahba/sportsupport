@@ -22,6 +22,9 @@ import java.security.Principal;
 @RequestMapping("/memberships")
 public class MembershipController {
 
+    // TODO: 28.03.2022 members can request for change of trainer
+    //  after trainer approved the request, membership will be updated with new trainer
+
     private final AddMembershipUC addMembershipUC;
     private final CancelMembershipUC cancelMembershipUC;
 

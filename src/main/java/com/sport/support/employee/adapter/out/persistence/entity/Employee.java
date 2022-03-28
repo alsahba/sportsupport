@@ -2,7 +2,7 @@ package com.sport.support.employee.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
-import com.sport.support.employee.application.port.in.AddEmployeeCommand;
+import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.infrastructure.common.money.Money;
 import lombok.Getter;
@@ -39,8 +39,8 @@ public class Employee extends AbstractAuditableEntity {
    })
    private Money bonus;
 
-   public Employee(AddEmployeeCommand request) {
-      setUser(AppUser.builder().username(request.getUsername()).build());
+   public Employee(AddEmployeeCommand request, AppUser user) {
+      setUser(user);
       setType(request.getType());
       setStartDate(LocalDateTime.now());
       setBaseSalary(request.getBaseSalary());

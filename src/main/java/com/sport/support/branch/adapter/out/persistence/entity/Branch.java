@@ -46,7 +46,7 @@ public class Branch extends AbstractAuditableEntity {
    }
 
    public Branch(Long id) {
-      super.setId(id);
+      super(id);
    }
 
    public void update(UpdateBranchCommand command) {

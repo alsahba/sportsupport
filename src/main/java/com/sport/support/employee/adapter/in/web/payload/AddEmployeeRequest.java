@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Data
 public class AddEmployeeRequest {
 
-   // TODO: 27.03.2022 branch id?
+   @NotNull
+   private Long branchId;
 
    @NotBlank
-
    private String username;
 
    @NotNull

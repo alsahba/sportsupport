@@ -1,4 +1,4 @@
-package com.sport.support.employee.application.port.in;
+package com.sport.support.employee.application.port.in.command;
 
 import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
 import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class AddEmployeeCommand {
 
+   private final Long branchId;
    private final String username;
    private final EmployeeType type;
    private final Money baseSalary;
@@ -17,6 +18,7 @@ public class AddEmployeeCommand {
    private final LocalDateTime startDate;
 
    public AddEmployeeCommand(AddEmployeeRequest request) {
+      this.branchId = request.getBranchId();
       this.username = request.getUsername();
       this.type = request.getType();
       this.baseSalary = new Money(request.getBaseSalary().doubleValue());
