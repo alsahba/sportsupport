@@ -3,8 +3,7 @@ package com.sport.support.wallet.adapter.out.persistence.entity;
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.infrastructure.common.money.Money;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
-import com.sport.support.wallet.domain.WalletErrorMessages;
+import com.sport.support.wallet.domain.Wallet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,10 +12,11 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "WALLET")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Wallet extends AbstractAuditableEntity {
+public class WalletEntity extends AbstractAuditableEntity {
 
     @OneToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false)
@@ -34,21 +34,12 @@ public class Wallet extends AbstractAuditableEntity {
     })
     private Money totalSpent;
 
-    public Wallet(Long userId) {
-        setBalance(Money.zero());
-        setTotalSpent(Money.zero());
-        setUser(new AppUser(userId));
-    }
-
-    public void withdraw(Money change) {
-        setBalance(getBalance().subtract(change));
-        setTotalSpent(getTotalSpent().add(change));
-        if (getBalance().isNegative()) {
-            throw new BusinessRuleException(WalletErrorMessages.ERROR_WALLET_INSUFFICIENT_BALANCE);
-        }
-    }
-
-    public void deposit(Money change) {
-        setBalance(getBalance().add(change));
+    public Wallet toDomain() {
+        return Wallet.builder()
+            .id(getId())
+            .userId(getUser().getId())
+            .balance(getBalance())
+            .totalSpent(getTotalSpent())
+            .build();
     }
 }

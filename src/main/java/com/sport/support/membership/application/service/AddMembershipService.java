@@ -53,7 +53,7 @@ public class AddMembershipService implements AddMembershipUC {
       AppUser user = loadUserUC.loadById(command.getUserId());
       membership.setUser(user);
 
-      Employee employee = findEmployeeUC.find(new FindEmployeeQuery(command.getUserId(), EmployeeType.TRAINER));
+      Employee employee = findEmployeeUC.find(new FindEmployeeQuery(command.getTrainerId(), EmployeeType.TRAINER));
       membership.setTrainer(employee.getUser());
 
       decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(branch));

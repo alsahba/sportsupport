@@ -37,6 +37,11 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
    }
 
    @Override
+   public Optional<Plan> loadByIdAndUserId(Long id, Long userId) {
+      return planRepository.findByIdAndUserId(id, userId);
+   }
+
+   @Override
    public void save(Set<Plan> plans) {
       planRepository.saveAll(plans);
       planExerciseRepository.saveAll(plans.stream().flatMap(plan -> plan.getPlanExercises().stream()).collect(Collectors.toSet()));
@@ -53,7 +58,7 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
    }
 
    @Override
-   public void removeExercise(Set<Long> ids) {
-      planExerciseRepository.deleteByIdIn(ids);
+   public void removeExercise(Set<PlanExercise> planExercises) {
+      planExerciseRepository.deleteAll(planExercises);
    }
 }

@@ -7,5 +7,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
+
    Optional<Plan> findByUserIdAndAndDate(Long userId, LocalDate date);
+
+   Optional<Plan> findByIdAndUserId(Long id, Long userId);
 }

@@ -16,7 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.security.Principal;
 
 @RestController
@@ -38,7 +38,7 @@ public class AppUserController {
 
    @GetMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('USER_READ')")
-   public ResponseEntity<UserDetailResponse> get(@PathVariable @Min(1) Long id) {
+   public ResponseEntity<UserDetailResponse> get(@PathVariable @Positive Long id) {
       return ResponseEntity.ok(new UserDetailResponse(loadUserUC.loadById(id)));
    }
 

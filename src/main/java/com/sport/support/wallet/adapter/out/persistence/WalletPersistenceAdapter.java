@@ -1,10 +1,13 @@
 package com.sport.support.wallet.adapter.out.persistence;
 
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
+import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import com.sport.support.wallet.application.port.out.CreateWalletPort;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
 import com.sport.support.wallet.application.port.out.UpdateWalletBalancePort;
+import com.sport.support.wallet.domain.Wallet;
 import com.sport.support.wallet.domain.WalletErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
@@ -22,21 +25,23 @@ class WalletPersistenceAdapter implements UpdateWalletBalancePort, CreateWalletP
    private final String LOCK_PREFIX = "wallet-lock-";
 
    @Override
-   public void create(Wallet wallet) {
-      walletRepository.save(wallet);
+   public Wallet create(Long userId) {
+      var entity = createNewEntity(userId);
+      return walletRepository.save(entity).toDomain();
    }
 
    @Override
    public void update(Wallet wallet) {
       acquireLock(wallet.getId());
-      walletRepository.save(wallet);
+      updateBalance(wallet);
       releaseLock(wallet.getId());
    }
 
    @Override
    public Wallet load(Long userId) {
       return walletRepository.findByUserId(userId)
-          .orElseThrow(() -> new EntityNotFoundException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND));
+          .orElseThrow(() -> new EntityNotFoundException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND))
+          .toDomain();
    }
 
    private void acquireLock(Long id) {
@@ -47,5 +52,25 @@ class WalletPersistenceAdapter implements UpdateWalletBalancePort, CreateWalletP
    private void releaseLock(Long id) {
       RLock lock = redissonClient.getLock(LOCK_PREFIX + id);
       lock.unlock();
+   }
+
+   private WalletEntity createNewEntity(Long userId) {
+      var entity = new WalletEntity();
+      entity.setBalance(Money.zero());
+      entity.setTotalSpent(Money.zero());
+      entity.setUser(new AppUser(userId));
+      return entity;
+   }
+
+   private void updateBalance(Wallet wallet) {
+      WalletEntity entity = findById(wallet.getId());
+      entity.setBalance(wallet.getBalance());
+      entity.setTotalSpent(wallet.getTotalSpent());
+      walletRepository.save(entity);
+   }
+
+   private WalletEntity findById(Long id) {
+      return walletRepository.findById(id)
+          .orElseThrow(() -> new EntityNotFoundException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND));
    }
 }

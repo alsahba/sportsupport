@@ -5,6 +5,7 @@ import com.sport.support.wallet.application.port.in.command.DepositMoneyCommand;
 import com.sport.support.wallet.application.port.in.usecase.DepositMoneyUC;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
 import com.sport.support.wallet.application.port.out.UpdateWalletBalancePort;
+import com.sport.support.wallet.domain.Wallet;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -17,9 +18,10 @@ class DepositMoneyService implements DepositMoneyUC {
    // TODO: 28.03.2022 wallet activity development
 
    @Override
-   public void deposit(DepositMoneyCommand command) {
+   public Wallet deposit(DepositMoneyCommand command) {
       var wallet = loadWalletPort.load(command.getUserId());
       wallet.deposit(command.getMoney());
       depositPort.update(wallet);
+      return wallet;
    }
 }

@@ -11,4 +11,6 @@ public interface LoadPlanPort {
 
    Optional<Plan> loadByUserIdAndDate(Long userId, LocalDate date);
 
+   Optional<Plan> loadByIdAndUserId(Long id, Long userId);
+
 }

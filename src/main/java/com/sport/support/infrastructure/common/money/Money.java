@@ -23,6 +23,10 @@ public class Money implements Serializable {
       return moneyWithFractionalPart.toPlainString();
    }
 
+   public MoneyDTO toDTO() {
+      return new MoneyDTO(BigDecimal.valueOf(amount));
+   }
+
    public Money(MoneyDTO moneyDTO) {
       this.amount = moneyDTO.getAmount().doubleValue();
    }

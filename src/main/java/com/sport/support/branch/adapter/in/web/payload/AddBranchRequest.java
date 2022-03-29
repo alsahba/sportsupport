@@ -4,10 +4,7 @@ import com.sport.support.infrastructure.common.annotations.validation.FixedPhone
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Data
@@ -17,15 +14,15 @@ public class AddBranchRequest {
     @Size(max = 64)
     private String name;
 
-    @Min(1)
+    @Positive
     private int quota;
 
     @NotNull
-    @Min(1)
+    @Positive
     private Long cityId;
 
     @NotNull
-    @Min(1)
+    @Positive
     private Long districtId;
 
     @NotBlank

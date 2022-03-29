@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class BranchController {
    @GetMapping
    @PreAuthorize("hasAuthority('BRANCH_READ')")
    public ResponseEntity<List<BranchDetailResponse>> getAll(
-       @Valid @RequestParam(defaultValue = "5") @Min(1) int limit,
+       @Valid @RequestParam(defaultValue = "5") @Positive int limit,
        @Valid @RequestParam(defaultValue = "0") @Min(0) int pageNumber) {
 
       PageRequest pageRequest = PageRequest.of(pageNumber, limit);
@@ -48,7 +49,7 @@ public class BranchController {
 
    @GetMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('BRANCH_READ')")
-   public ResponseEntity<BranchDetailResponse> get(@PathVariable @Min(1) Long id) {
+   public ResponseEntity<BranchDetailResponse> get(@PathVariable @Positive Long id) {
       return ResponseEntity.ok(new BranchDetailResponse(findBranchUC.findById(new FindBranchQuery(id))));
    }
 
@@ -69,7 +70,7 @@ public class BranchController {
 
    @DeleteMapping(value = "/{id}")
    @PreAuthorize("hasAuthority('BRANCH_UPDATE')")
-   public ResponseEntity<String> delete(@PathVariable @Min(1) Long id) {
+   public ResponseEntity<String> delete(@PathVariable @Positive Long id) {
       deleteBranchUC.delete(id);
       return new ResponseEntity<>(String.format("Branch with ID = %d deleted!", id), HttpStatus.ACCEPTED);
    }

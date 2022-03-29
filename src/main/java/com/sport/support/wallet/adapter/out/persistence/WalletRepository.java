@@ -1,12 +1,12 @@
 package com.sport.support.wallet.adapter.out.persistence;
 
-import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
+import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-interface WalletRepository extends JpaRepository<Wallet, Long> {
+interface WalletRepository extends JpaRepository<WalletEntity, Long> {
 
-   Optional<Wallet> findByUserId(Long userId);
+   Optional<WalletEntity> findByUserId(Long userId);
 
 }

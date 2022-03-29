@@ -3,7 +3,7 @@ package com.sport.support.appuser.adapter.out.persistence.entity;
 import com.sport.support.appuser.application.port.in.command.RegisterUserCommand;
 import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.wallet.adapter.out.persistence.entity.Wallet;
+import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,7 +35,7 @@ public class AppUser extends AbstractAuditableEntity {
    private Role role;
 
    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-   private Wallet wallet;
+   private WalletEntity walletEntity;
 
    @ManyToOne
    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "ID")

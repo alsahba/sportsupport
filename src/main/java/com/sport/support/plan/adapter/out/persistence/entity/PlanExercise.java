@@ -27,11 +27,12 @@ public class PlanExercise extends AbstractEntity {
 
    private int sets;
 
-   // TODO: 27.03.2022 completion use case
+   private boolean completed;
 
    public PlanExercise(DailyPlanExerciseCommand command, Plan plan) {
       setSets(command.getSets());
       setPlan(plan);
       setExercise(new Exercise(command.getId()));
+      setCompleted(false);
    }
 }

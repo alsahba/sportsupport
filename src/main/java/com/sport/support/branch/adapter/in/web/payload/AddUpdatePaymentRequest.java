@@ -4,8 +4,8 @@ import com.sport.support.membership.adapter.out.persistence.enumeration.Duration
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Data
@@ -18,7 +18,7 @@ public class AddUpdatePaymentRequest {
    private Duration duration;
 
    @NotNull
-   @Min(1)
+   @Positive
    private BigDecimal cost;
 
 }
