@@ -1,6 +1,5 @@
 package com.sport.support.membership.application.service;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.application.port.in.command.UpdateRoleCommand;
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import com.sport.support.appuser.application.port.in.usecase.UpdateRoleUC;
@@ -9,7 +8,6 @@ import com.sport.support.branch.application.port.in.command.BranchMembershipComm
 import com.sport.support.branch.application.port.in.command.FindBranchQuery;
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
 import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
-import com.sport.support.employee.adapter.out.persistence.entity.Employee;
 import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
 import com.sport.support.employee.application.port.in.command.FindEmployeeQuery;
 import com.sport.support.employee.application.port.in.usecase.FindEmployeeUC;
@@ -17,13 +15,13 @@ import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
 import com.sport.support.infrastructure.common.money.Money;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
-import com.sport.support.membership.adapter.out.persistence.entity.Membership;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
 import com.sport.support.membership.application.port.in.usecase.AddMembershipUC;
-import com.sport.support.membership.application.port.out.LoadMembershipPort;
+import com.sport.support.membership.application.port.out.DoesMembershipExistPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
+import com.sport.support.membership.domain.Membership;
 import com.sport.support.membership.domain.MembershipErrorMessages;
 import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
 import com.sport.support.wallet.application.port.in.usecase.WithdrawMoneyUC;
@@ -39,27 +37,27 @@ public class AddMembershipService implements AddMembershipUC {
    private final LoadUserUC loadUserUC;
    private final FindBranchUC findBranchUC;
    private final FindEmployeeUC findEmployeeUC;
+   private final DoesMembershipExistPort doesMembershipExistPort;
    private final SaveMembershipPort saveMembershipPort;
-   private final LoadMembershipPort loadMembershipPort;
+
+   // TODO: 29.03.2022 activate the passive membership
+   // TODO: 29.03.2022 renewal of the membership
 
    @Override
-   public void add(AddMembershipCommand command) {
-      Membership membership = new Membership(command);
-      checkUserIsAlreadyMember(membership.getUser().getId());
+   public Membership add(AddMembershipCommand command) {
+      var membership = new Membership(command);
+      checkUserIsAlreadyMember(membership.getUserId());
 
-      Branch branch = findBranchUC.findById(new FindBranchQuery(membership.getBranch().getId()));
-      membership.setBranch(branch);
+      var branch = findBranchUC.findById(new FindBranchQuery(membership.getBranchId()));
+      var user = loadUserUC.loadById(membership.getUserId());
 
-      AppUser user = loadUserUC.loadById(command.getUserId());
-      membership.setUser(user);
+      // TODO: 29.03.2022 change load to does exist
+      findEmployeeUC.find(new FindEmployeeQuery(membership.getTrainerId(), EmployeeType.TRAINER));
 
-      Employee employee = findEmployeeUC.find(new FindEmployeeQuery(command.getTrainerId(), EmployeeType.TRAINER));
-      membership.setTrainer(employee.getUser());
-
-      decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(branch));
+      decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(membership.getBranchId()));
       updateRoleUC.update(new UpdateRoleCommand(user, RoleEnum.MEMBER));
       recievePayment(user.getId(), branch, membership.getType(), membership.getDuration());
-      saveMembershipPort.save(membership);
+      return saveMembershipPort.save(membership);
    }
 
    private void recievePayment(Long userId, Branch branch, Type type, Duration duration) {
@@ -68,9 +66,8 @@ public class AddMembershipService implements AddMembershipUC {
    }
 
    private void checkUserIsAlreadyMember(Long userId) {
-      loadMembershipPort.loadByUserId(userId).ifPresent(membership -> {
-             throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
-          }
-      );
+      if (doesMembershipExistPort.doesExistByUser(userId)) {
+         throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
+      }
    }
 }

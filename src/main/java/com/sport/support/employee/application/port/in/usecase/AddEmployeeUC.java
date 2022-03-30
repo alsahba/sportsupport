@@ -1,7 +1,8 @@
 package com.sport.support.employee.application.port.in.usecase;
 
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
+import com.sport.support.employee.domain.Employee;
 
 public interface AddEmployeeUC {
-   void add(AddEmployeeCommand addEmployeeCommand);
+   Employee add(AddEmployeeCommand addEmployeeCommand);
 }

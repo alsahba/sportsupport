@@ -12,10 +12,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "MEMBERSHIP_HISTORY")
 @Getter
 @Setter
 @NoArgsConstructor
-public class MembershipHistory extends AbstractAuditableEntity {
+public class MembershipHistoryEntity extends AbstractAuditableEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBERSHIP_ID", nullable = false)
+    private MembershipEntity membership;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -31,10 +36,11 @@ public class MembershipHistory extends AbstractAuditableEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    public MembershipHistory(Membership membership) {
-        setType(membership.getType());
-        setBranch(membership.getBranch());
-        setUser(membership.getUser());
-        setDuration(membership.getDuration());
+    public MembershipHistoryEntity(MembershipEntity membershipEntity) {
+        setMembership(membershipEntity);
+        setType(membershipEntity.getType());
+        setBranch(membershipEntity.getBranch());
+        setUser(membershipEntity.getUser());
+        setDuration(membershipEntity.getDuration());
     }
 }

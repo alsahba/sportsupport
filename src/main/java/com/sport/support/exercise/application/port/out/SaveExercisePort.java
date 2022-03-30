@@ -1,7 +1,7 @@
 package com.sport.support.exercise.application.port.out;
 
-import com.sport.support.exercise.adapter.out.persistence.Exercise;
+import com.sport.support.exercise.domain.Exercise;
 
 public interface SaveExercisePort {
-   void save(Exercise exercise);
+   Exercise save(Exercise exercise);
 }

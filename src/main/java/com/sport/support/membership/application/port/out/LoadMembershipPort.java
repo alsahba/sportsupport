@@ -1,9 +1,7 @@
 package com.sport.support.membership.application.port.out;
 
-import com.sport.support.membership.adapter.out.persistence.entity.Membership;
-
-import java.util.Optional;
+import com.sport.support.membership.domain.Membership;
 
 public interface LoadMembershipPort {
-   Optional<Membership> loadByUserId(Long userId);
+   Membership loadByUserId(Long userId);
 }

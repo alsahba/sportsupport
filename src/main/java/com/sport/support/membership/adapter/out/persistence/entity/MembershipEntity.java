@@ -4,12 +4,10 @@ package com.sport.support.membership.adapter.out.persistence.entity;
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Status;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
-import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
-import com.sport.support.membership.domain.MembershipErrorMessages;
+import com.sport.support.membership.domain.Membership;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +16,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "MEMBERSHIP")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Membership extends AbstractAuditableEntity {
+public class MembershipEntity extends AbstractAuditableEntity {
 
    @OneToOne
    @JoinColumn(name = "USER_ID", nullable = false)
@@ -48,25 +47,28 @@ public class Membership extends AbstractAuditableEntity {
 
    private LocalDateTime endDate;
 
-   public Membership(AddMembershipCommand command) {
-      setBranch(new Branch(command.getBranchId()));
-      setDuration(command.getDuration());
-      setStatus(Status.ACTIVE);
-      setType(command.getType());
-      setUser(new AppUser(command.getUserId()));
-      setEndDate(calculateEndDate());
-      setLoginAttempt(getType().getLoginAttempt());
+   public MembershipEntity(Membership membership) {
+      this.user = new AppUser(membership.getUserId());
+      this.trainer = new AppUser(membership.getTrainerId());
+      this.branch = new Branch(membership.getBranchId());
+      this.duration = membership.getDuration();
+      this.type = membership.getType();
+      this.status = membership.getStatus();
+      this.loginAttempt = membership.getLoginAttempt();
+      this.endDate = membership.getEndDate();
    }
 
-   private LocalDateTime calculateEndDate() {
-      if (getDuration().equals(Duration.MONTHLY)) return LocalDateTime.now().plusMonths(1);
-      else return LocalDateTime.now().plusYears(1);
-   }
-
-   public void cancel() {
-      if (Status.CANCELLED.equals(getStatus())) {
-         throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_ALREADY_CANCELLED);
-      }
-      setStatus(Status.CANCELLED);
+   public Membership toDomain() {
+      return new Membership(
+          getId(),
+          user.getId(),
+          branch.getId(),
+          trainer.getId(),
+          status,
+          type,
+          duration,
+          loginAttempt,
+          endDate
+      );
    }
 }

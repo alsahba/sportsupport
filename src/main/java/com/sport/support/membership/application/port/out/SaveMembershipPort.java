@@ -1,7 +1,11 @@
 package com.sport.support.membership.application.port.out;
 
-import com.sport.support.membership.adapter.out.persistence.entity.Membership;
+import com.sport.support.membership.domain.Membership;
 
 public interface SaveMembershipPort {
-   void save(Membership membership);
+
+   Membership save(Membership membership);
+
+   void update(Membership membership);
+
 }

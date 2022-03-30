@@ -1,15 +1,15 @@
 package com.sport.support.appuser.application.service;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.appuser.application.port.in.command.*;
+import com.sport.support.appuser.application.port.in.command.ChangePasswordCommand;
+import com.sport.support.appuser.application.port.in.command.ChangeUserNameCommand;
+import com.sport.support.appuser.application.port.in.command.RegisterUserCommand;
+import com.sport.support.appuser.application.port.in.command.UpdateRoleCommand;
 import com.sport.support.appuser.application.port.in.usecase.*;
 import com.sport.support.appuser.application.port.out.LoadAuthorityPort;
 import com.sport.support.appuser.application.port.out.LoadUserPort;
 import com.sport.support.appuser.application.port.out.RemoveUserPort;
 import com.sport.support.appuser.application.port.out.SaveUserPort;
-import com.sport.support.branch.adapter.out.persistence.entity.Branch;
-import com.sport.support.branch.application.port.in.command.FindBranchQuery;
-import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import com.sport.support.infrastructure.security.user.AppUserDetails;
 import com.sport.support.wallet.application.port.in.command.CreateWalletCommand;
@@ -28,10 +28,9 @@ import javax.transaction.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC, ChangeUserNameUC,
-    ChangePasswordUC, RemoveUserUC, LoadUserUC, UpdateRoleUC, AddUserToBranchUC {
+    ChangePasswordUC, RemoveUserUC, LoadUserUC, UpdateRoleUC {
 
    private final CreateWalletUC createWalletUC;
-   private final FindBranchUC findBranchUC;
    private final RemoveUserPort removeUserPort;
    private final SaveUserPort saveUserPort;
    private final LoadUserPort loadUserPort;
@@ -100,14 +99,6 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    public void update(UpdateRoleCommand command) {
       AppUser user = command.getUser();
       user.setRole(loadAuthorityPort.loadRole(command.getRole()));
-      saveUserPort.save(user);
-   }
-
-   @Override
-   public void addUserToBranch(AddUserToBranchCommand command) {
-      AppUser user = command.getUser();
-      Branch branch = findBranchUC.findById(new FindBranchQuery(command.getBranchId()));
-      user.addToBranch(branch);
       saveUserPort.save(user);
    }
 

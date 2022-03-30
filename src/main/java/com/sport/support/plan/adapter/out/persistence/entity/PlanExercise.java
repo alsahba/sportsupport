@@ -1,6 +1,6 @@
 package com.sport.support.plan.adapter.out.persistence.entity;
 
-import com.sport.support.exercise.adapter.out.persistence.Exercise;
+import com.sport.support.exercise.adapter.out.persistence.ExerciseEntity;
 import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
 import com.sport.support.plan.application.port.in.command.DailyPlanExerciseCommand;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class PlanExercise extends AbstractEntity {
 
    @ManyToOne
    @JoinColumn(name = "EXERCISE_ID", referencedColumnName = "ID")
-   private Exercise exercise;
+   private ExerciseEntity exerciseEntity;
 
    private int sets;
 
@@ -32,7 +32,7 @@ public class PlanExercise extends AbstractEntity {
    public PlanExercise(DailyPlanExerciseCommand command, Plan plan) {
       setSets(command.getSets());
       setPlan(plan);
-      setExercise(new Exercise(command.getId()));
+      setExerciseEntity(new ExerciseEntity(command.getId()));
       setCompleted(false);
    }
 }

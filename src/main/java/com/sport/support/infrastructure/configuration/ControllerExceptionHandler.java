@@ -22,10 +22,11 @@ public class ControllerExceptionHandler {
 
    private final MessageSource messageSource;
 
+   /*
    @ExceptionHandler(Exception.class)
    public ResponseEntity<?> handleGeneralException(Exception e) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-   }
+   }*/
 
    @ExceptionHandler(EntityNotFoundException.class)
    public ResponseEntity<?> handleEntityNotFoundException(Exception e) {

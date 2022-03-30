@@ -1,7 +1,8 @@
 package com.sport.support.membership.application.port.in.usecase;
 
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
+import com.sport.support.membership.domain.Membership;
 
 public interface AddMembershipUC {
-   void add(AddMembershipCommand command);
+   Membership add(AddMembershipCommand command);
 }

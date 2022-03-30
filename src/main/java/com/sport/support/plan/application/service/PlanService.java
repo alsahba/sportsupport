@@ -98,7 +98,7 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
    }
 
    private void isTrainerAuthorized(Long userId, Long trainerId) {
-      if (!doesMembershipExistUC.doesExist(new FindMembershipQuery(userId, trainerId))) {
+      if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId, trainerId))) {
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_TRAINER_IS_UNAUTHORIZED);
       }
    }

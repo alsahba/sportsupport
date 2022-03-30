@@ -7,16 +7,14 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class DepositMoneyResponse {
+public class WalletResponse {
 
-   private String message;
    private Long id;
    private Long userId;
    private MoneyDTO balance;
 
-   public static DepositMoneyResponse success(Wallet wallet) {
-      return DepositMoneyResponse.builder()
-          .message("Deposit money successfully")
+   public static WalletResponse success(Wallet wallet) {
+      return WalletResponse.builder()
           .id(wallet.getId())
           .userId(wallet.getUserId())
           .balance(wallet.getBalance().toDTO())

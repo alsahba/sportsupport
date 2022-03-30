@@ -1,5 +1,7 @@
 package com.sport.support.exercise.application.port.out;
 
+import com.sport.support.exercise.domain.Exercise;
+
 public interface RemoveExercisePort {
-   void remove(Long id);
+   Exercise remove(Long id);
 }

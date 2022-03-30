@@ -1,5 +1,7 @@
 package com.sport.support.exercise.application.port.in.usecase;
 
+import com.sport.support.exercise.domain.Exercise;
+
 public interface RemoveExerciseUC {
-   void remove(Long id);
+   Exercise remove(Long id);
 }

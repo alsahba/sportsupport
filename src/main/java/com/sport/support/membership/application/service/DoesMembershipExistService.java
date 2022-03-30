@@ -13,7 +13,12 @@ public class DoesMembershipExistService implements DoesMembershipExistUC {
    private final DoesMembershipExistPort doesMembershipExistPort;
 
    @Override
-   public boolean doesExist(FindMembershipQuery query) {
-      return doesMembershipExistPort.doesExist(query.getUserId(), query.getTrainerId());
+   public boolean doesExistByUserAndTrainer(FindMembershipQuery query) {
+      return doesMembershipExistPort.doesExistByUserAndTrainer(query.getUserId(), query.getTrainerId());
+   }
+
+   @Override
+   public boolean doesExistByUser(FindMembershipQuery query) {
+      return doesMembershipExistPort.doesExistByUser(query.getUserId());
    }
 }

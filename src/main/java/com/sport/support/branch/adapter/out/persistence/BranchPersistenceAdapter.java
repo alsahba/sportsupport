@@ -26,9 +26,10 @@ public class BranchPersistenceAdapter
    private final String LOCK_PREFIX = "branch-quota-lock-";
 
    @Override
-   public void updateQuota(Branch branch, int change) {
-      acquireLock(branch.getId());
+   public void updateQuota(Long branchId, int change) {
+      acquireLock(branchId);
 
+      Branch branch = loadById(branchId);
       branch.setQuota(branch.getQuota() + change);
       branchRepository.save(branch);
 

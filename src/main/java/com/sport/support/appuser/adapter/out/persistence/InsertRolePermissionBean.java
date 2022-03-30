@@ -16,13 +16,9 @@ public class InsertRolePermissionBean {
 
    // TODO: 28.03.2022 deleted after the role and permissions are finalized
 
-   private final RoleRepository roleRepository;
-   private final PermissionRepository permissionRepository;
    private final RolePermissionRepository rolePermissionRepository;
 
    public InsertRolePermissionBean(RoleRepository roleRepository, PermissionRepository permissionRepository, RolePermissionRepository rolePermissionRepository) {
-      this.roleRepository = roleRepository;
-      this.permissionRepository = permissionRepository;
       this.rolePermissionRepository = rolePermissionRepository;
 
       RoleEnum.getAll().forEach(roleEnum -> {
