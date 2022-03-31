@@ -7,23 +7,22 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "CITY")
 @Getter
 @Setter
 @NoArgsConstructor
-public class District extends AbstractEntity {
-
-    @ManyToOne
-    @JoinColumn(name = "CITY_ID", nullable = false, insertable = false, updatable = false)
-    private City city;
+public class CityEntity extends AbstractEntity {
 
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    public District(Long id) {
+    @Column(name = "AREA_CODE", nullable = false)
+    private int areaCode;
+
+    public CityEntity(Long id) {
         super.setId(id);
     }
 }

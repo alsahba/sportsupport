@@ -1,20 +1,18 @@
 package com.sport.support.wallet.application.port.in.command;
 
 import com.sport.support.infrastructure.common.money.Money;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import org.springframework.context.ApplicationEvent;
 
 @Getter
-@AllArgsConstructor
-public class WithdrawMoneyCommand {
+public class WithdrawMoneyCommand extends ApplicationEvent {
 
-   @NotNull
    private final Long userId;
-
-   @Valid
    private final Money money;
 
+   public WithdrawMoneyCommand(Object source, Long userId, Money money) {
+      super(source);
+      this.userId = userId;
+      this.money = money;
+   }
 }

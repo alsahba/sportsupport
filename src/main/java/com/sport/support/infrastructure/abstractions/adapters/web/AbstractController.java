@@ -21,6 +21,10 @@ public abstract class AbstractController {
       return ResponseBuilder.build(items);
    }
 
+   protected <T> Response<DataResponse<T>> respond(List<T> items, int page, int pageSize, int totalPages) {
+      return ResponseBuilder.build(items, page, pageSize, totalPages);
+   }
+
    protected Response<ErrorResponse> respond(ErrorResponse error) {
       return ResponseBuilder.build(error);
    }

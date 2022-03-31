@@ -1,6 +1,6 @@
 package com.sport.support.employee.domain;
 
-import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
+import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
 import com.sport.support.infrastructure.common.money.Money;
 import lombok.AllArgsConstructor;

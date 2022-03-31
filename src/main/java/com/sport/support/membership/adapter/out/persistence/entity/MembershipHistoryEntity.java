@@ -1,10 +1,10 @@
 package com.sport.support.membership.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.branch.adapter.out.persistence.entity.Branch;
+import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
+import com.sport.support.membership.domain.enumeration.Duration;
+import com.sport.support.membership.domain.enumeration.Type;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class MembershipHistoryEntity extends AbstractAuditableEntity {
 
     @ManyToOne
     @JoinColumn(name = "BRANCH_ID", nullable = false)
-    private Branch branch;
+    private BranchEntity branchEntity;
 
     @Enumerated(EnumType.STRING)
     private Duration duration;
@@ -39,7 +39,7 @@ public class MembershipHistoryEntity extends AbstractAuditableEntity {
     public MembershipHistoryEntity(MembershipEntity membershipEntity) {
         setMembership(membershipEntity);
         setType(membershipEntity.getType());
-        setBranch(membershipEntity.getBranch());
+        setBranchEntity(membershipEntity.getBranchEntity());
         setUser(membershipEntity.getUser());
         setDuration(membershipEntity.getDuration());
     }

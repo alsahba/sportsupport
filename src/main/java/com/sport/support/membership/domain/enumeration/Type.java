@@ -1,4 +1,4 @@
-package com.sport.support.membership.adapter.out.persistence.enumeration;
+package com.sport.support.membership.domain.enumeration;
 
 public enum Type {
     POOL(1),

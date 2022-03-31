@@ -6,20 +6,19 @@ import com.sport.support.membership.application.port.in.command.FindMembershipQu
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
 import com.sport.support.membership.domain.MembershipErrorMessages;
 import com.sport.support.plan.application.port.in.command.*;
-import com.sport.support.plan.application.port.in.usecase.AddPlanUC;
-import com.sport.support.plan.application.port.in.usecase.CompletePlanUC;
-import com.sport.support.plan.application.port.in.usecase.DeletePlanExerciseUC;
-import com.sport.support.plan.application.port.in.usecase.DeletePlanUC;
+import com.sport.support.plan.application.port.in.usecase.*;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
 import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
 import com.sport.support.plan.domain.Plan;
+import com.sport.support.plan.domain.PlanErrorMessages;
 import com.sport.support.plan.domain.PlanExercise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,10 +40,10 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
       var user = loadUserUC.loadByUsername(addPlanCommand.getUsername());
       checkTrainerAuthorization(user.getId(), addPlanCommand.getTrainerId());
 
-      // TODO: 30.03.2022 plan's date must be unique ->  does plan exist?
-
-      var plans = addPlanCommand.getDayPlans().stream()
-          .map(dayPlan -> new Plan(user.getId(), addPlanCommand.getTrainerId(), dayPlan)).collect(Collectors.toList());
+      List<Plan> plans = addPlanCommand.getDayPlans().stream().map(dailyPlan -> {
+         checkPlanDate(user.getId(), dailyPlan.getDate());
+         return new Plan(user.getId(), addPlanCommand.getTrainerId(), dailyPlan);
+      }).toList();
       return savePlanPort.save(plans);
    }
 
@@ -54,7 +53,7 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
    @Override
    public void delete(DeletePlanCommand command) {
       var plan = loadPlanPort.load(command.getPlanId());
-      checkTrainerAuthorization(plan.getUserId(), plan.getTrainerId());
+      checkTrainerAuthorization(plan.getUserId(), command.getTrainerId());
       removePlanPort.remove(command.getPlanId());
    }
 
@@ -89,6 +88,12 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
    private void checkTrainerAuthorization(Long userId, Long trainerId) {
       if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId, trainerId))) {
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_TRAINER_IS_UNAUTHORIZED);
+      }
+   }
+
+   private void checkPlanDate(Long userId, LocalDate date) {
+      if (loadPlanPort.existsByUserIdAndDate(userId, date)) {
+         throw new BusinessRuleException(PlanErrorMessages.ERROR_PLAN_DATE_IS_NOT_VALID);
       }
    }
 }

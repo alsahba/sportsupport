@@ -12,4 +12,6 @@ public interface LoadPlanPort {
 
    Plan loadByIdAndUserId(Long id, Long userId);
 
+   boolean existsByUserIdAndDate(Long userId, LocalDate date);
+
 }

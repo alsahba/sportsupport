@@ -1,4 +1,4 @@
-package com.sport.support.employee.adapter.out.persistence.enumeration;
+package com.sport.support.employee.domain.enumeration;
 
 import com.sport.support.infrastructure.security.enumeration.RoleEnum;
 import lombok.Getter;

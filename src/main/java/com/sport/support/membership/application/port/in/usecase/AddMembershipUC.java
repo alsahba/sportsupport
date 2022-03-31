@@ -4,5 +4,7 @@ import com.sport.support.membership.application.port.in.command.AddMembershipCom
 import com.sport.support.membership.domain.Membership;
 
 public interface AddMembershipUC {
+
    Membership add(AddMembershipCommand command);
+
 }

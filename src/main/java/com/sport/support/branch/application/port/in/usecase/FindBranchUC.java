@@ -1,7 +1,7 @@
 package com.sport.support.branch.application.port.in.usecase;
 
-import com.sport.support.branch.adapter.out.persistence.entity.Branch;
 import com.sport.support.branch.application.port.in.command.FindBranchQuery;
+import com.sport.support.branch.domain.Branch;
 import org.springframework.data.domain.Page;
 
 public interface FindBranchUC {

@@ -18,11 +18,11 @@ public class BranchMembershipService implements DecreaseQuotaUC, ReleaseQuotaUC 
 
    @Override
    public void decreaseQuota(BranchMembershipCommand command) {
-      updateQuotaPort.updateQuota(command.getBranchId(), -1);
+      updateQuotaPort.updateQuota(command.branchId(), -1);
    }
 
    @Override
    public void releaseQuota(BranchMembershipCommand command) {
-      updateQuotaPort.updateQuota(command.getBranchId(), +1);
+      updateQuotaPort.updateQuota(command.branchId(), +1);
    }
 }

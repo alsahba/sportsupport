@@ -1,9 +1,9 @@
 package com.sport.support.membership.application.port.in.command;
 
 import com.sport.support.membership.adapter.in.web.payload.AddMembershipRequest;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Status;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
+import com.sport.support.membership.domain.enumeration.Duration;
+import com.sport.support.membership.domain.enumeration.Status;
+import com.sport.support.membership.domain.enumeration.Type;
 import com.sport.support.membership.domain.Membership;
 import lombok.Getter;
 

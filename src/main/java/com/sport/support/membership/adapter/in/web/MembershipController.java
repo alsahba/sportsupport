@@ -30,9 +30,7 @@ public class MembershipController extends AbstractController {
     @PostMapping
     @PreAuthorize("hasAuthority('MEMBER_WRITE')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Response<MembershipResponse> add(
-            @RequestBody @Valid AddMembershipRequest request,
-            Principal principal) {
+    public Response<MembershipResponse> add(@RequestBody @Valid AddMembershipRequest request, Principal principal) {
         var membership = addMembershipUC.add(new AddMembershipCommand(Long.valueOf(principal.getName()), request));
         return respond(new MembershipResponse(membership));
     }

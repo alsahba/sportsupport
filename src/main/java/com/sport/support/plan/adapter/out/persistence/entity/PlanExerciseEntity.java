@@ -10,10 +10,12 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "PLAN_EXERCISE")
 @NoArgsConstructor
 public class PlanExerciseEntity extends AbstractEntity {
 
@@ -44,13 +46,12 @@ public class PlanExerciseEntity extends AbstractEntity {
    }
 
    public PlanExercise toDomain() {
-      // TODO: 30.03.2022 builder cause problems
-      var planExcercise = new PlanExercise();
-      planExcercise.setId(getId());
-      planExcercise.setPlanId(getPlanEntity().getId());
-      planExcercise.setExerciseId(getExerciseEntity().getId());
-      planExcercise.setSets(getSets());
-      planExcercise.setCompleted(isCompleted());
-      return planExcercise;
+      return PlanExercise.builder()
+            .id(getId())
+            .planId(getPlanEntity().getId())
+            .exerciseId(getExerciseEntity().getId())
+            .sets(getSets())
+            .completed(isCompleted())
+            .build();
    }
 }

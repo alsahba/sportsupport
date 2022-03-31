@@ -1,7 +1,7 @@
 package com.sport.support.membership.adapter.in.web.payload;
 
-import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
+import com.sport.support.membership.domain.enumeration.Duration;
+import com.sport.support.membership.domain.enumeration.Type;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

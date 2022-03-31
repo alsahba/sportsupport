@@ -2,11 +2,11 @@ package com.sport.support.membership.adapter.out.persistence.entity;
 
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.branch.adapter.out.persistence.entity.Branch;
+import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
 import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Status;
-import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
+import com.sport.support.membership.domain.enumeration.Duration;
+import com.sport.support.membership.domain.enumeration.Status;
+import com.sport.support.membership.domain.enumeration.Type;
 import com.sport.support.membership.domain.Membership;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +32,7 @@ public class MembershipEntity extends AbstractAuditableEntity {
 
    @ManyToOne
    @JoinColumn(name = "BRANCH_ID", nullable = false)
-   private Branch branch;
+   private BranchEntity branchEntity;
 
    @Enumerated(EnumType.STRING)
    private Duration duration;
@@ -50,7 +50,7 @@ public class MembershipEntity extends AbstractAuditableEntity {
    public MembershipEntity(Membership membership) {
       this.user = new AppUser(membership.getUserId());
       this.trainer = new AppUser(membership.getTrainerId());
-      this.branch = new Branch(membership.getBranchId());
+      this.branchEntity = new BranchEntity(membership.getBranchId());
       this.duration = membership.getDuration();
       this.type = membership.getType();
       this.status = membership.getStatus();
@@ -62,7 +62,7 @@ public class MembershipEntity extends AbstractAuditableEntity {
       return new Membership(
           getId(),
           user.getId(),
-          branch.getId(),
+          branchEntity.getId(),
           trainer.getId(),
           status,
           type,

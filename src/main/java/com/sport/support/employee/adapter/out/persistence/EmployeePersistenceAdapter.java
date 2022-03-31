@@ -1,7 +1,7 @@
 package com.sport.support.employee.adapter.out.persistence;
 
 import com.sport.support.employee.adapter.out.persistence.entity.EmployeeEntity;
-import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
+import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.adapter.out.persistence.repository.EmployeeRepository;
 import com.sport.support.employee.application.port.out.LoadEmployeePort;
 import com.sport.support.employee.application.port.out.SaveEmployeePort;
@@ -26,5 +26,10 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    public EmployeeEntity loadByUserIdAndType(Long userId, EmployeeType type) {
       return employeeRepository.findByUserIdAndType(userId, type)
           .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND));
+   }
+
+   @Override
+   public boolean existsByUserIdAndType(Long userId, EmployeeType type) {
+      return employeeRepository.existsByUserIdAndType(userId, type);
    }
 }

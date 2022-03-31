@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
+@Table(name = "PLAN")
 @NoArgsConstructor
 public class PlanEntity extends AbstractAuditableEntity {
 
@@ -28,17 +29,18 @@ public class PlanEntity extends AbstractAuditableEntity {
    private Set<PlanExerciseEntity> planExerciseEntities;
 
    public Plan toDomain() {
-      // TODO: 30.03.2022 builder cause problems
-      var plan = new Plan();
-      plan.setId(getId());
-      plan.setDate(getDate());
-      plan.setPlanExercises(getPlanExerciseEntities().stream()
-          .map(PlanExerciseEntity::toDomain).collect(Collectors.toSet()));
-      return plan;
+      return Plan.builder()
+          .id(getId())
+          .userId(getUser().getId())
+          .date(getDate())
+          .planExercises(getPlanExerciseEntities().stream()
+              .map(PlanExerciseEntity::toDomain).collect(Collectors.toSet()))
+          .build();
    }
 
    public PlanEntity(Plan plan) {
       setId(plan.getId());
+      setUser(new AppUser(plan.getUserId()));
       setDate(plan.getDate());
       setPlanExerciseEntities(plan.getPlanExercises().stream()
           .map(e -> new PlanExerciseEntity(e, this)).collect(Collectors.toSet()));

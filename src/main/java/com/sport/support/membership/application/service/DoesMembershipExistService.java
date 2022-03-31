@@ -16,9 +16,4 @@ public class DoesMembershipExistService implements DoesMembershipExistUC {
    public boolean doesExistByUserAndTrainer(FindMembershipQuery query) {
       return doesMembershipExistPort.doesExistByUserAndTrainer(query.getUserId(), query.getTrainerId());
    }
-
-   @Override
-   public boolean doesExistByUser(FindMembershipQuery query) {
-      return doesMembershipExistPort.doesExistByUser(query.getUserId());
-   }
 }

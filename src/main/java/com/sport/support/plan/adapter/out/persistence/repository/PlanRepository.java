@@ -11,4 +11,7 @@ public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
    Optional<PlanEntity> findByUserIdAndAndDate(Long userId, LocalDate date);
 
    Optional<PlanEntity> findByIdAndUserId(Long id, Long userId);
+
+   boolean existsByUserIdAndDate(Long userId, LocalDate date);
+
 }

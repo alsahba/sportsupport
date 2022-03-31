@@ -1,6 +1,6 @@
 package com.sport.support.branch.application.port.out;
 
-import com.sport.support.branch.adapter.out.persistence.entity.Branch;
+import com.sport.support.branch.domain.Branch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

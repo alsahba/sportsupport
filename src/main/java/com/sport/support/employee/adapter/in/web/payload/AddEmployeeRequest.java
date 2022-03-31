@@ -1,6 +1,6 @@
 package com.sport.support.employee.adapter.in.web.payload;
 
-import com.sport.support.employee.adapter.out.persistence.enumeration.EmployeeType;
+import com.sport.support.employee.domain.enumeration.EmployeeType;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

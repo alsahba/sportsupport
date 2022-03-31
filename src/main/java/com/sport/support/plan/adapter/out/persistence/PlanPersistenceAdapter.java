@@ -3,7 +3,6 @@ package com.sport.support.plan.adapter.out.persistence;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.plan.adapter.out.persistence.entity.PlanEntity;
-import com.sport.support.plan.adapter.out.persistence.entity.PlanExerciseEntity;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanExerciseRepository;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanRepository;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
@@ -56,11 +55,6 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
    }
 
    @Override
-   public void savePlanExercises(Set<PlanExercise> exercises) {
-      exercises.stream().map(PlanExerciseEntity::new).forEach(planExerciseRepository::save);
-   }
-
-   @Override
    public void updatePlanExercises(Set<Long> ids, boolean completed) {
       var planExcerciseEntities = planExerciseRepository.findByIdIn(ids);
       planExcerciseEntities.forEach(planExerciseEntity -> planExerciseEntity.setCompleted(completed));
@@ -75,5 +69,10 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
    @Override
    public void removeExercise(Set<PlanExercise> planExercises) {
       planExerciseRepository.deleteByIdIn(planExercises.stream().map(PlanExercise::getId).collect(Collectors.toSet()));
+   }
+
+   @Override
+   public boolean existsByUserIdAndDate(Long userId, LocalDate date) {
+      return planRepository.existsByUserIdAndDate(userId, date);
    }
 }

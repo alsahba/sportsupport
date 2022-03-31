@@ -6,6 +6,4 @@ public interface DoesMembershipExistUC {
 
    boolean doesExistByUserAndTrainer(FindMembershipQuery query);
 
-   boolean doesExistByUser(FindMembershipQuery query);
-
 }
