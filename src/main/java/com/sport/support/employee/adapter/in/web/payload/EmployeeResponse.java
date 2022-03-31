@@ -1,24 +1,20 @@
 package com.sport.support.employee.adapter.in.web.payload;
 
 import com.sport.support.employee.domain.Employee;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class EmployeeResponse {
 
-   private Long id;
-   private Long userId;
-   private Long branchId;
-   private String type;
+   private final Long id;
+   private final Long userId;
+   private final Long branchId;
+   private final String type;
 
-   public static EmployeeResponse success(Employee employee) {
-      return EmployeeResponse.builder()
-          .id(employee.getId())
-          .userId(employee.getUserId())
-          .branchId(employee.getBranchId())
-          .type(employee.getType().name())
-          .build();
+   public EmployeeResponse (Employee employee) {
+      this.id = employee.getId();
+      this.userId = employee.getUserId();
+      this.branchId = employee.getBranchId();
+      this.type = employee.getType().toString();
    }
 }

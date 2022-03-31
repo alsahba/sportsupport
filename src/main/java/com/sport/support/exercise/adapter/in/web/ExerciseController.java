@@ -5,7 +5,7 @@ import com.sport.support.exercise.adapter.in.web.payload.ExerciseResponse;
 import com.sport.support.exercise.application.port.in.command.AddExerciseCommand;
 import com.sport.support.exercise.application.port.in.usecase.AddExerciseUC;
 import com.sport.support.exercise.application.port.in.usecase.RemoveExerciseUC;
-import com.sport.support.infrastructure.abstractions.adapters.web.AbstractRestController;
+import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
 import com.sport.support.infrastructure.common.web.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/exercises")
 @RequiredArgsConstructor
-public class ExerciseController extends AbstractRestController {
+public class ExerciseController extends AbstractController {
 
    private final AddExerciseUC addExerciseUC;
    private final RemoveExerciseUC removeExerciseUC;
@@ -25,13 +25,13 @@ public class ExerciseController extends AbstractRestController {
    @ResponseStatus(value = HttpStatus.CREATED)
    public Response<ExerciseResponse> create(@Valid @RequestBody AddExerciseRequest request) {
       var exercise = addExerciseUC.create(new AddExerciseCommand(request));
-      return respond(ExerciseResponse.success(exercise));
+      return respond(new ExerciseResponse(exercise));
    }
 
    @DeleteMapping("/{id}")
    @ResponseStatus(value = HttpStatus.ACCEPTED)
    public Response<ExerciseResponse> remove(@PathVariable("id") Long id) {
       var exercise = removeExerciseUC.remove(id);
-      return respond(ExerciseResponse.success(exercise));
+      return respond(new ExerciseResponse(exercise));
    }
 }

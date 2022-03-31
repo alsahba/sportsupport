@@ -1,6 +1,6 @@
 package com.sport.support.plan.application.port.out;
 
-import com.sport.support.plan.adapter.out.persistence.entity.PlanExercise;
+import com.sport.support.plan.domain.PlanExercise;
 
 import java.util.Set;
 

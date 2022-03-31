@@ -32,11 +32,15 @@ import lombok.RequiredArgsConstructor;
 public class AddMembershipService implements AddMembershipUC {
 
    private final WithdrawMoneyUC withdrawMoneyUC;
-   private final DecreaseQuotaUC decreaseQuotaUC;
+
    private final UpdateRoleUC updateRoleUC;
-   private final LoadUserUC loadUserUC;
-   private final FindBranchUC findBranchUC;
    private final FindEmployeeUC findEmployeeUC;
+   private final LoadUserUC loadUserUC;
+
+   // TODO: 30.03.2022 spring sync event
+   private final DecreaseQuotaUC decreaseQuotaUC;
+   private final FindBranchUC findBranchUC;
+
    private final DoesMembershipExistPort doesMembershipExistPort;
    private final SaveMembershipPort saveMembershipPort;
 
@@ -45,7 +49,7 @@ public class AddMembershipService implements AddMembershipUC {
 
    @Override
    public Membership add(AddMembershipCommand command) {
-      var membership = new Membership(command);
+      var membership = command.toDomain();
       checkUserIsAlreadyMember(membership.getUserId());
 
       var branch = findBranchUC.findById(new FindBranchQuery(membership.getBranchId()));

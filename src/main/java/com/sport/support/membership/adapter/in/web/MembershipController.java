@@ -1,6 +1,6 @@
 package com.sport.support.membership.adapter.in.web;
 
-import com.sport.support.infrastructure.abstractions.adapters.web.AbstractRestController;
+import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
 import com.sport.support.infrastructure.common.web.Response;
 import com.sport.support.membership.adapter.in.web.payload.AddMembershipRequest;
 import com.sport.support.membership.adapter.in.web.payload.MembershipResponse;
@@ -19,7 +19,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/memberships")
-public class MembershipController extends AbstractRestController {
+public class MembershipController extends AbstractController {
 
     // TODO: 28.03.2022 members can request for change of trainer
     //  after trainer approved the request, membership will be updated with new trainer
@@ -34,14 +34,14 @@ public class MembershipController extends AbstractRestController {
             @RequestBody @Valid AddMembershipRequest request,
             Principal principal) {
         var membership = addMembershipUC.add(new AddMembershipCommand(Long.valueOf(principal.getName()), request));
-        return respond(MembershipResponse.success(membership));
+        return respond(new MembershipResponse(membership));
     }
 
     @PostMapping("/cancel")
     @PreAuthorize("hasAuthority('MEMBERSHIP_WRITE')")
     @ResponseStatus(HttpStatus.OK)
-    public Response<MembershipResponse> cancel(Authentication authentication) {
-        var membership = cancelMembershipUC.cancel(Long.valueOf(authentication.getName()));
-        return respond(MembershipResponse.success(membership));
+    public Response cancel(Authentication authentication) {
+        cancelMembershipUC.cancel(Long.valueOf(authentication.getName()));
+        return respond();
     }
 }

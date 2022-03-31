@@ -1,5 +1,16 @@
 package com.sport.support.appuser.domain;
 
-public class UserErrorMessages {
-    public static final String ERROR_USER_IS_NOT_FOUND = "ERROR_USER_IS_NOT_FOUND";
+import com.sport.support.infrastructure.exception.BusinessRuleErrorMessage;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum UserErrorMessages implements BusinessRuleErrorMessage {
+
+    ERROR_USER_IS_NOT_FOUND("SSEU-1", "ERROR_USER_IS_NOT_FOUND");
+
+    private final String code;
+    private final String message;
+
 }

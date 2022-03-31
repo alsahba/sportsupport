@@ -1,5 +1,16 @@
 package com.sport.support.employee.domain;
 
-public class EmployeeErrorMessages {
-   public static final String ERROR_EMPLOYEE_IS_NOT_FOUND = "ERROR_EMPLOYEE_IS_NOT_FOUND";
+import com.sport.support.infrastructure.exception.BusinessRuleErrorMessage;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum EmployeeErrorMessages implements BusinessRuleErrorMessage {
+
+   ERROR_EMPLOYEE_IS_NOT_FOUND("SSEE-1", "ERROR_EMPLOYEE_IS_NOT_FOUND");
+
+   private final String code;
+   private final String message;
+
 }

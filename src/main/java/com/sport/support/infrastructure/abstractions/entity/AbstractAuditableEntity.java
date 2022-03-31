@@ -26,6 +26,12 @@ public abstract class AbstractAuditableEntity extends AbstractEntity {
     @Version
     private int version;
 
+    public void copyFrom(AbstractAuditableEntity entity) {
+        this.creationTimestamp = entity.getCreationTimestamp();
+        this.updateTimestamp = entity.getUpdateTimestamp();
+        this.version = entity.getVersion();
+    }
+
     public AbstractAuditableEntity(Long id) {
         super(id);
     }

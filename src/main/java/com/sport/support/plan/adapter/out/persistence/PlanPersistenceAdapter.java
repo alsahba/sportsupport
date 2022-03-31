@@ -1,20 +1,22 @@
 package com.sport.support.plan.adapter.out.persistence;
 
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.plan.adapter.out.persistence.entity.Plan;
-import com.sport.support.plan.adapter.out.persistence.entity.PlanExercise;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.plan.adapter.out.persistence.entity.PlanEntity;
+import com.sport.support.plan.adapter.out.persistence.entity.PlanExerciseEntity;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanExerciseRepository;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanRepository;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
 import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
+import com.sport.support.plan.domain.Plan;
 import com.sport.support.plan.domain.PlanErrorMessages;
+import com.sport.support.plan.domain.PlanExercise;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,29 +29,42 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
 
    @Override
    public Plan load(Long id) {
-      return planRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(PlanErrorMessages.ERROR_PLAN_IS_NOT_FOUND));
+      var entity = planRepository.findById(id)
+          .orElseThrow(() -> new BusinessRuleException(PlanErrorMessages.ERROR_PLAN_IS_NOT_FOUND));
+      return entity.toDomain();
    }
 
    @Override
-   public Optional<Plan> loadByUserIdAndDate(Long userId, LocalDate date) {
-      return planRepository.findByUserIdAndAndDate(userId, date);
+   public Plan loadByUserIdAndDate(Long userId, LocalDate date) {
+      return planRepository.findByUserIdAndAndDate(userId, date).map(PlanEntity::toDomain).orElse(null);
    }
 
    @Override
-   public Optional<Plan> loadByIdAndUserId(Long id, Long userId) {
-      return planRepository.findByIdAndUserId(id, userId);
+   public Plan loadByIdAndUserId(Long id, Long userId) {
+      return planRepository.findByIdAndUserId(id, userId).map(PlanEntity::toDomain)
+          .orElseThrow(() -> new BusinessRuleException(PlanErrorMessages.ERROR_PLAN_IS_NOT_FOUND));
    }
 
    @Override
-   public void save(Set<Plan> plans) {
-      planRepository.saveAll(plans);
-      planExerciseRepository.saveAll(plans.stream().flatMap(plan -> plan.getPlanExercises().stream()).collect(Collectors.toSet()));
+   public List<Plan> save(List<Plan> plans) {
+      var planEntities = plans.stream().map(PlanEntity::new).collect(Collectors.toSet());
+      var savedPlanEntities = planRepository.saveAll(planEntities);
+      planExerciseRepository.saveAll(planEntities.stream()
+          .flatMap(plan -> plan.getPlanExerciseEntities().stream()).collect(Collectors.toSet()));
+
+      return savedPlanEntities.stream().map(PlanEntity::toDomain).collect(Collectors.toList());
    }
 
    @Override
    public void savePlanExercises(Set<PlanExercise> exercises) {
-      planExerciseRepository.saveAll(exercises);
+      exercises.stream().map(PlanExerciseEntity::new).forEach(planExerciseRepository::save);
+   }
+
+   @Override
+   public void updatePlanExercises(Set<Long> ids, boolean completed) {
+      var planExcerciseEntities = planExerciseRepository.findByIdIn(ids);
+      planExcerciseEntities.forEach(planExerciseEntity -> planExerciseEntity.setCompleted(completed));
+      planExerciseRepository.saveAll(planExcerciseEntities);
    }
 
    @Override
@@ -59,6 +74,6 @@ public class PlanPersistenceAdapter implements LoadPlanPort, SavePlanPort, Remov
 
    @Override
    public void removeExercise(Set<PlanExercise> planExercises) {
-      planExerciseRepository.deleteAll(planExercises);
+      planExerciseRepository.deleteByIdIn(planExercises.stream().map(PlanExercise::getId).collect(Collectors.toSet()));
    }
 }

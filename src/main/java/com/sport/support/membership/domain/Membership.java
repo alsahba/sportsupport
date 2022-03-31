@@ -4,13 +4,14 @@ import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Duration;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Status;
 import com.sport.support.membership.adapter.out.persistence.enumeration.Type;
-import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class Membership {
 
@@ -24,15 +25,16 @@ public class Membership {
    private int loginAttempt;
    private LocalDateTime endDate;
 
-   public Membership(AddMembershipCommand request) {
-      setUserId(request.getUserId());
-      setBranchId(request.getBranchId());
-      setTrainerId(request.getTrainerId());
-      setType(request.getType());
-      setDuration(request.getDuration());
-      setEndDate(calculateEndDate());
-      setLoginAttempt(request.getType().getLoginAttempt());
-      setStatus(Status.ACTIVE);
+   public Membership(Long id, Long userId, Long branchId, Long trainerId, Status status, Type type, Duration duration, int loginAttempt) {
+      this.id = id;
+      this.userId = userId;
+      this.branchId = branchId;
+      this.trainerId = trainerId;
+      this.status = status;
+      this.type = type;
+      this.duration = duration;
+      this.loginAttempt = loginAttempt;
+      this.endDate = calculateEndDate();
    }
 
    private LocalDateTime calculateEndDate() {

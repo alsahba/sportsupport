@@ -7,9 +7,8 @@ import com.sport.support.appuser.application.port.out.RemoveUserPort;
 import com.sport.support.appuser.application.port.out.SaveUserPort;
 import com.sport.support.appuser.domain.UserErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -25,19 +24,19 @@ public class UserPersistenceAdapter implements SaveUserPort, LoadUserPort, Remov
    @Override
    public AppUser loadByUsername(String username) {
       return appUserRepository.findByUsername(username)
-          .orElseThrow(() -> new EntityNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
    }
 
    @Override
    public AppUser loadByEmail(String email) {
       return appUserRepository.findByEmail(email)
-          .orElseThrow(() -> new EntityNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
    }
 
    @Override
    public AppUser loadById(Long id) {
       return appUserRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(UserErrorMessages.ERROR_USER_IS_NOT_FOUND));
    }
 
    @Override

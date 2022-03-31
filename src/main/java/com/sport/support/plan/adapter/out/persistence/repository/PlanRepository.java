@@ -1,14 +1,14 @@
 package com.sport.support.plan.adapter.out.persistence.repository;
 
-import com.sport.support.plan.adapter.out.persistence.entity.Plan;
+import com.sport.support.plan.adapter.out.persistence.entity.PlanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-public interface PlanRepository extends JpaRepository<Plan, Long> {
+public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
 
-   Optional<Plan> findByUserIdAndAndDate(Long userId, LocalDate date);
+   Optional<PlanEntity> findByUserIdAndAndDate(Long userId, LocalDate date);
 
-   Optional<Plan> findByIdAndUserId(Long id, Long userId);
+   Optional<PlanEntity> findByIdAndUserId(Long id, Long userId);
 }

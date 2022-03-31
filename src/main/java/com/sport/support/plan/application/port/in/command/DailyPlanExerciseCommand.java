@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class DailyPlanExerciseCommand {
 
-   private final Long id;
+   private final Long exerciseId;
    private final int sets;
 
    public DailyPlanExerciseCommand(AddPlanExerciseRequest request) {
-      this.id = request.getId();
+      this.exerciseId = request.getId();
       this.sets = request.getSets();
    }
 }

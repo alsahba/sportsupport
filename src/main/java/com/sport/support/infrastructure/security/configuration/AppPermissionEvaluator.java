@@ -15,8 +15,7 @@ public class AppPermissionEvaluator implements PermissionEvaluator {
    @Override
    public boolean hasPermission(Authentication authentication, Object o, Object o1) {
       var authorities = authentication.getAuthorities();
-      if (o instanceof AddEmployeeRequest) {
-         AddEmployeeRequest request = (AddEmployeeRequest) o;
+      if (o instanceof AddEmployeeRequest request) {
          if (EmployeeType.TRAINER.equals(request.getType())) {
             return authorities.contains(PermissionEnum.TRAINER_WRITE.toGrantedAuthority());
          } else {

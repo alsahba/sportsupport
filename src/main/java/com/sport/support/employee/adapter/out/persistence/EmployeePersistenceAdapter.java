@@ -8,9 +8,8 @@ import com.sport.support.employee.application.port.out.SaveEmployeePort;
 import com.sport.support.employee.domain.Employee;
 import com.sport.support.employee.domain.EmployeeErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -26,6 +25,6 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    @Override
    public EmployeeEntity loadByUserIdAndType(Long userId, EmployeeType type) {
       return employeeRepository.findByUserIdAndType(userId, type)
-          .orElseThrow(() -> new EntityNotFoundException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND));
    }
 }

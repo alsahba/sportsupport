@@ -1,7 +1,9 @@
 package com.sport.support.infrastructure.configuration;
 
+import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
+import com.sport.support.infrastructure.common.web.ErrorResponse;
+import com.sport.support.infrastructure.common.web.Response;
 import com.sport.support.infrastructure.exception.BusinessRuleException;
-import com.sport.support.infrastructure.exception.DatabaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -9,40 +11,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Locale;
-
-// TODO: ResponseEntity will be changed wrt application, error handling will be changed
 
 @ControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler extends AbstractController {
 
    private final MessageSource messageSource;
 
-   /*
    @ExceptionHandler(Exception.class)
-   public ResponseEntity<?> handleGeneralException(Exception e) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-   }*/
-
-   @ExceptionHandler(EntityNotFoundException.class)
-   public ResponseEntity<?> handleEntityNotFoundException(Exception e) {
-      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-          messageSource.getMessage(e.getMessage(), null, Locale.US));
+   @ResponseStatus(HttpStatus.BAD_REQUEST)
+   // TODO: 31.03.2022 without response entity it does not work
+   public ResponseEntity<Response<ErrorResponse>> handleGeneralException(Exception e) {
+      return ResponseEntity.badRequest().body(respond(new ErrorResponse("SSE", e.getMessage())));
    }
 
    @ExceptionHandler(BusinessRuleException.class)
-   public ResponseEntity<?> handleBusinessRuleException(Exception e) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-          messageSource.getMessage(e.getMessage(), null, Locale.US));
-   }
-
-   @ExceptionHandler(DatabaseException.class)
-   public ResponseEntity<?> handleDatabaseException(Exception e) {
-      log.error("DatabaseException ", e);
-      return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service is unavailable");
+   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+   public ResponseEntity<Response<ErrorResponse>> handleBusinessRuleException(BusinessRuleException e) {
+      String message = messageSource.getMessage(e.getMessage(), null, Locale.US);
+      return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(respond(new ErrorResponse(e.getCode(), message)));
    }
 }

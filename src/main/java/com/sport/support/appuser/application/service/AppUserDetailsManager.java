@@ -97,8 +97,8 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
 
    @Override
    public void update(UpdateRoleCommand command) {
-      AppUser user = command.getUser();
-      user.setRole(loadAuthorityPort.loadRole(command.getRole()));
+      AppUser user = command.user();
+      user.setRole(loadAuthorityPort.loadRole(command.role()));
       saveUserPort.save(user);
    }
 

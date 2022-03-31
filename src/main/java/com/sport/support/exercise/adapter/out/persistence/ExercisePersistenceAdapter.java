@@ -5,9 +5,8 @@ import com.sport.support.exercise.application.port.out.SaveExercisePort;
 import com.sport.support.exercise.domain.Exercise;
 import com.sport.support.exercise.domain.ExerciseErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class ExercisePersistenceAdapter implements SaveExercisePort, RemoveExerc
    @Override
    public Exercise remove(Long id) {
       var entity = exerciseRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(ExerciseErrorMessages.ERROR_EXERCISE_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(ExerciseErrorMessages.ERROR_EXERCISE_IS_NOT_FOUND));
       exerciseRepository.delete(entity);
       return entity.toDomain();
    }

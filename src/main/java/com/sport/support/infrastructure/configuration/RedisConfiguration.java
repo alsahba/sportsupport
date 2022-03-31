@@ -27,6 +27,7 @@ public class RedisConfiguration {
    @Bean
    public RedissonClient redissonClient() {
       Config config = new Config();
+      // TODO: 31.03.2022 - move to properties file
       config.useSingleServer().setAddress("redis://localhost:6379");
 
       return Redisson.create(config);

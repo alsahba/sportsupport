@@ -71,4 +71,8 @@ public class MembershipEntity extends AbstractAuditableEntity {
           endDate
       );
    }
+
+   public void update(MembershipEntity entity) {
+      copyFrom(entity);
+   }
 }

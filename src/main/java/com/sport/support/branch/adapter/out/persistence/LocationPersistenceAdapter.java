@@ -8,9 +8,8 @@ import com.sport.support.branch.application.port.out.LoadCityPort;
 import com.sport.support.branch.application.port.out.LoadDistrictPort;
 import com.sport.support.branch.domain.LocationErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -22,12 +21,12 @@ public class LocationPersistenceAdapter implements LoadCityPort, LoadDistrictPor
    @Override
    public City loadCity(Long id) {
       return cityRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(LocationErrorMessages.ERROR_CITY_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(LocationErrorMessages.ERROR_CITY_IS_NOT_FOUND));
    }
 
    @Override
    public District loadDistrict(Long id) {
       return districtRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(LocationErrorMessages.ERROR_DISTRICT_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(LocationErrorMessages.ERROR_DISTRICT_IS_NOT_FOUND));
    }
 }

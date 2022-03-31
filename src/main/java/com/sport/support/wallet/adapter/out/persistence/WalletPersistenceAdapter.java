@@ -3,6 +3,7 @@ package com.sport.support.wallet.adapter.out.persistence;
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import com.sport.support.wallet.application.port.out.CreateWalletPort;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
@@ -12,8 +13,6 @@ import com.sport.support.wallet.domain.WalletErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ class WalletPersistenceAdapter implements UpdateWalletBalancePort, CreateWalletP
    @Override
    public Wallet load(Long userId) {
       return walletRepository.findByUserId(userId)
-          .orElseThrow(() -> new EntityNotFoundException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND))
+          .orElseThrow(() -> new BusinessRuleException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND))
           .toDomain();
    }
 
@@ -71,6 +70,6 @@ class WalletPersistenceAdapter implements UpdateWalletBalancePort, CreateWalletP
 
    private WalletEntity findById(Long id) {
       return walletRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(WalletErrorMessages.ERROR_WALLET_NOT_FOUND));
    }
 }

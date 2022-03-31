@@ -11,9 +11,9 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @Getter
 public class JwtProperties {
 
-  private String secret;
-  private Long expireTime;
-  private Long refreshTime;
-  private String prefix;
+  private final String secret;
+  private final Long expireTime;
+  private final Long refreshTime;
+  private final String prefix;
 
 }

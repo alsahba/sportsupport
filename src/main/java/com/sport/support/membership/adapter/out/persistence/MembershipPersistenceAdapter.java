@@ -1,7 +1,7 @@
 package com.sport.support.membership.adapter.out.persistence;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.entity.MembershipEntity;
 import com.sport.support.membership.adapter.out.persistence.entity.MembershipHistoryEntity;
 import com.sport.support.membership.adapter.out.persistence.repository.MembershipHistoryRepository;
@@ -13,11 +13,10 @@ import com.sport.support.membership.domain.Membership;
 import com.sport.support.membership.domain.MembershipErrorMessages;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
-
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MembershipPersistenceAdapter implements SaveMembershipPort, LoadMembershipPort, DoesMembershipExistPort {
+public class MembershipPersistenceAdapter implements SaveMembershipPort, LoadMembershipPort,
+    DoesMembershipExistPort {
 
    private final MembershipRepository membershipRepository;
    private final MembershipHistoryRepository membershipHistoryRepository;
@@ -31,10 +30,11 @@ public class MembershipPersistenceAdapter implements SaveMembershipPort, LoadMem
 
    @Override
    public void update(Membership membership) {
-      MembershipEntity membershipEntity = findByUserId(membership.getUserId());
-      membershipEntity.setStatus(membership.getStatus());
-      membershipEntity.setTrainer(new AppUser(membership.getTrainerId()));
-      membershipRepository.save(membershipEntity);
+      MembershipEntity updatedEntity = new MembershipEntity(membership);
+      MembershipEntity entity = findByUserId(membership.getUserId());
+      updatedEntity.update(entity);
+
+      membershipRepository.save(updatedEntity);
    }
 
    @Override
@@ -54,6 +54,6 @@ public class MembershipPersistenceAdapter implements SaveMembershipPort, LoadMem
 
    private MembershipEntity findByUserId(Long userId) {
       return membershipRepository.findByUserId(userId)
-          .orElseThrow(() -> new EntityNotFoundException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_IS_NOT_FOUND));
    }
 }

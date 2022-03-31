@@ -2,22 +2,18 @@ package com.sport.support.wallet.adapter.in.web.payload;
 
 import com.sport.support.infrastructure.common.money.MoneyDTO;
 import com.sport.support.wallet.domain.Wallet;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class WalletResponse {
 
-   private Long id;
-   private Long userId;
-   private MoneyDTO balance;
+   private final Long id;
+   private final Long userId;
+   private final MoneyDTO balance;
 
-   public static WalletResponse success(Wallet wallet) {
-      return WalletResponse.builder()
-          .id(wallet.getId())
-          .userId(wallet.getUserId())
-          .balance(wallet.getBalance().toDTO())
-          .build();
+   public WalletResponse(Wallet wallet) {
+      this.id = wallet.getId();
+      this.userId = wallet.getUserId();
+      this.balance = wallet.getBalance().toDTO();
    }
 }

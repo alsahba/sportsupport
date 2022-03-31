@@ -6,13 +6,12 @@ import com.sport.support.branch.adapter.out.persistence.repository.PaymentReposi
 import com.sport.support.branch.application.port.out.*;
 import com.sport.support.branch.domain.BranchErrorMessages;
 import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.infrastructure.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
-import javax.persistence.EntityNotFoundException;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
@@ -57,7 +56,7 @@ public class BranchPersistenceAdapter
    @Override
    public Branch loadById(Long id) {
       return branchRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND));
    }
 
    @Override

@@ -22,7 +22,7 @@ public class CancelMembershipService implements CancelMembershipUC {
       Membership membership = loadMembershipPort.loadByUserId(userId);
       membership.cancel();
       releaseQuotaUC.releaseQuota(new BranchMembershipCommand(membership.getBranchId()));
-      saveMembershipPort.save(membership);
+      saveMembershipPort.update(membership);
       return membership;
    }
 }

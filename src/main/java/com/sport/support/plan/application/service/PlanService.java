@@ -5,8 +5,6 @@ import com.sport.support.infrastructure.exception.BusinessRuleException;
 import com.sport.support.membership.application.port.in.command.FindMembershipQuery;
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
 import com.sport.support.membership.domain.MembershipErrorMessages;
-import com.sport.support.plan.adapter.out.persistence.entity.Plan;
-import com.sport.support.plan.adapter.out.persistence.entity.PlanExercise;
 import com.sport.support.plan.application.port.in.command.*;
 import com.sport.support.plan.application.port.in.usecase.AddPlanUC;
 import com.sport.support.plan.application.port.in.usecase.CompletePlanUC;
@@ -16,15 +14,14 @@ import com.sport.support.plan.application.port.out.LoadPlanPort;
 import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
-import com.sport.support.plan.domain.PlanErrorMessages;
+import com.sport.support.plan.domain.Plan;
+import com.sport.support.plan.domain.PlanExercise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,31 +37,31 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
    private final RemovePlanExercisePort removePlanExercisePort;
 
    @Override
-   public void add(AddPlanCommand addPlanCommand) {
+   public List<Plan> add(AddPlanCommand addPlanCommand) {
       var user = loadUserUC.loadByUsername(addPlanCommand.getUsername());
-      isTrainerAuthorized(user.getId(), addPlanCommand.getTrainerId());
+      checkTrainerAuthorization(user.getId(), addPlanCommand.getTrainerId());
 
-      Set<Plan> plans = new HashSet<>();
-      addPlanCommand.getDayPlans().forEach(dayPlan -> {
-             Optional<Plan> plan = loadPlanPort.loadByUserIdAndDate(user.getId(), dayPlan.getDate());
-             plan.ifPresentOrElse(addNewExercises(dayPlan), () -> plans.add(new Plan(dayPlan, user)));
-          }
-      );
+      // TODO: 30.03.2022 plan's date must be unique ->  does plan exist?
 
-      savePlanPort.save(plans);
+      var plans = addPlanCommand.getDayPlans().stream()
+          .map(dayPlan -> new Plan(user.getId(), addPlanCommand.getTrainerId(), dayPlan)).collect(Collectors.toList());
+      return savePlanPort.save(plans);
    }
+
+   // TODO: 30.03.2022 delete multiple plans uc
+   // TODO: 30.03.2022 revert completion uc
 
    @Override
    public void delete(DeletePlanCommand command) {
       var plan = loadPlanPort.load(command.getPlanId());
-      isTrainerAuthorized(command.getTrainerId(), plan.getUser().getId());
+      checkTrainerAuthorization(plan.getUserId(), plan.getTrainerId());
       removePlanPort.remove(command.getPlanId());
    }
 
    @Override
    public void deleteExercise(DeletePlanExerciseCommand command) {
       var plan = loadPlanPort.load(command.getPlanId());
-      isTrainerAuthorized(plan.getUser().getId(), command.getTrainerId());
+      checkTrainerAuthorization(plan.getUserId(), command.getTrainerId());
 
       Set<PlanExercise> planExercises = plan.getPlanExercises().stream()
           .filter(planExercise -> command.getPlanExerciseIds().contains(planExercise.getId()))
@@ -74,40 +71,24 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
 
    @Override
    public void completeExercise(CompletePlanExerciseCommand command) {
-      var optionalPlan = loadPlanPort.loadByIdAndUserId(command.getPlanId(), command.getUserId());
-
-      optionalPlan.ifPresentOrElse(plan -> {
-         plan.getPlanExercises().stream()
-             .filter(planExercise -> command.getPlanExerciseIds().contains(planExercise.getId()))
-             .forEach(planExercise -> planExercise.setCompleted(true));
-         savePlanPort.savePlanExercises(plan.getPlanExercises());
-      }, () -> {
-         throw new BusinessRuleException(PlanErrorMessages.ERROR_PLAN_IS_NOT_FOUND);
-      });
+      var plan = loadPlanPort.loadByIdAndUserId(command.getPlanId(), command.getUserId());
+      var planExerciseIds = plan.getPlanExercises().stream()
+          .map(PlanExercise::getId)
+          .filter(id -> command.getPlanExerciseIds().contains(id)).collect(Collectors.toSet());
+      savePlanPort.updatePlanExercises(planExerciseIds, true);
    }
 
    @Override
    public void complete(CompletePlanCommand command) {
-      var optionalPlan = loadPlanPort.loadByIdAndUserId(command.getPlanId(), command.getUserId());
-      optionalPlan.ifPresentOrElse(plan -> {
-         plan.getPlanExercises().forEach(planExercise -> planExercise.setCompleted(true));
-         savePlanPort.savePlanExercises(plan.getPlanExercises());
-      }, () -> {
-         throw new BusinessRuleException(PlanErrorMessages.ERROR_PLAN_IS_NOT_FOUND);
-      });
+      var plan = loadPlanPort.loadByIdAndUserId(command.getPlanId(), command.getUserId());
+      var planExerciseIds = plan.getPlanExercises().stream()
+          .map(PlanExercise::getId).collect(Collectors.toSet());
+      savePlanPort.updatePlanExercises(planExerciseIds, true);
    }
 
-   private void isTrainerAuthorized(Long userId, Long trainerId) {
+   private void checkTrainerAuthorization(Long userId, Long trainerId) {
       if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId, trainerId))) {
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_TRAINER_IS_UNAUTHORIZED);
       }
-   }
-
-   private Consumer<Plan> addNewExercises(DailyPlanCommand dayPlan) {
-      return plan -> {
-         plan.getPlanExercises().addAll(dayPlan.getExercises().stream()
-             .map(planExercise -> new PlanExercise(planExercise, plan)).collect(Collectors.toSet()));
-         savePlanPort.savePlanExercises(plan.getPlanExercises());
-      };
    }
 }
