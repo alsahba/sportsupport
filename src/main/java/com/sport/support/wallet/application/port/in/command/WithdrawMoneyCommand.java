@@ -1,6 +1,6 @@
 package com.sport.support.wallet.application.port.in.command;
 
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.common.money.Money;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

@@ -1,6 +1,6 @@
 package com.sport.support;
 
-import com.sport.support.infrastructure.security.configuration.JwtProperties;
+import com.sport.support.shared.security.configuration.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

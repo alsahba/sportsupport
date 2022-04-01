@@ -4,7 +4,7 @@ import com.sport.support.branch.application.port.in.command.BranchMembershipComm
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
 import com.sport.support.branch.application.port.in.usecase.ReleaseQuotaUC;
 import com.sport.support.branch.application.port.out.UpdateQuotaPort;
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;

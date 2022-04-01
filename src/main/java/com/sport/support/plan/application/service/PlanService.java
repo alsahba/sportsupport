@@ -1,7 +1,7 @@
 package com.sport.support.plan.application.service;
 
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.membership.application.port.in.command.FindMembershipQuery;
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
 import com.sport.support.membership.domain.MembershipErrorMessages;

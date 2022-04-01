@@ -3,7 +3,6 @@ package com.sport.support.membership.application.service;
 import com.sport.support.appuser.application.port.in.command.UpdateRoleCommand;
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import com.sport.support.appuser.application.port.in.usecase.UpdateRoleUC;
-import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
 import com.sport.support.branch.application.port.in.command.BranchMembershipCommand;
 import com.sport.support.branch.application.port.in.command.FindBranchQuery;
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
@@ -11,10 +10,10 @@ import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
 import com.sport.support.branch.domain.Branch;
 import com.sport.support.employee.application.port.in.usecase.CheckEmployeeValidityUC;
 import com.sport.support.employee.domain.enumeration.EmployeeType;
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
-import com.sport.support.infrastructure.common.money.Money;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.money.Money;
+import com.sport.support.shared.exception.BusinessRuleException;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
 import com.sport.support.membership.application.port.in.usecase.AddMembershipUC;
 import com.sport.support.membership.application.port.out.DoesMembershipExistPort;
@@ -53,7 +52,7 @@ public class AddMembershipService implements AddMembershipUC {
       var user = loadUserUC.loadById(membership.getUserId());
 
       decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(membership.getBranchId()));
-      updateRoleUC.update(new UpdateRoleCommand(user, RoleEnum.MEMBER));
+      updateRoleUC.update(new UpdateRoleCommand(user.getId(), RoleEnum.MEMBER));
       receivePayment(user.getId(), branch, membership.getType(), membership.getDuration());
 
       return saveMembershipPort.save(membership);

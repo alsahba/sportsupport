@@ -2,11 +2,12 @@ package com.sport.support.branch.application.service;
 
 import com.sport.support.branch.application.port.in.command.AddBranchCommand;
 import com.sport.support.branch.application.port.in.usecase.AddBranchUC;
+import com.sport.support.branch.application.port.out.LocationExistencePort;
 import com.sport.support.branch.application.port.out.SaveBranchPort;
-import com.sport.support.branch.application.port.out.CheckCityValidityPort;
-import com.sport.support.branch.application.port.out.CheckDistrictValidityPort;
 import com.sport.support.branch.domain.Branch;
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.branch.domain.LocationErrorMessages;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -14,14 +15,22 @@ import lombok.RequiredArgsConstructor;
 public class AddBranchService implements AddBranchUC {
 
    private final SaveBranchPort saveBranchPort;
-   private final CheckCityValidityPort checkCityValidityPort;
-   private final CheckDistrictValidityPort checkDistrictValidityPort;
+   private final LocationExistencePort locationExistencePort;
 
    @Override
    public Branch add(AddBranchCommand command) {
       var branch = command.toDomain();
-      checkCityValidityPort.doesCityExistById(branch.getCityId());
-      checkDistrictValidityPort.doesDistrictExistById(branch.getDistrictId());
+      checkLocation(branch.getCityId(), branch.getDistrictId());
+      locationExistencePort.doesDistrictExistById(branch.getDistrictId());
       return saveBranchPort.save(branch);
+   }
+
+   private void checkLocation(Long cityId, Long districtId) {
+      if (!locationExistencePort.doesCityExistById(cityId)) {
+         throw new BusinessRuleException(LocationErrorMessages.ERROR_CITY_IS_NOT_FOUND);
+      }
+      if (!locationExistencePort.doesDistrictExistById(districtId)) {
+         throw new BusinessRuleException(LocationErrorMessages.ERROR_DISTRICT_IS_NOT_FOUND);
+      }
    }
 }

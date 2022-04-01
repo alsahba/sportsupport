@@ -2,7 +2,7 @@ package com.sport.support.employee.application.port.in.command;
 
 import com.sport.support.employee.adapter.in.web.payload.AddEmployeeRequest;
 import com.sport.support.employee.domain.enumeration.EmployeeType;
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.common.money.Money;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

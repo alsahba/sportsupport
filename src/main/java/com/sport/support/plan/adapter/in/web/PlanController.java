@@ -1,8 +1,8 @@
 package com.sport.support.plan.adapter.in.web;
 
-import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
-import com.sport.support.infrastructure.common.web.DataResponse;
-import com.sport.support.infrastructure.common.web.Response;
+import com.sport.support.shared.abstractions.adapters.web.AbstractController;
+import com.sport.support.shared.common.web.DataResponse;
+import com.sport.support.shared.common.web.Response;
 import com.sport.support.plan.adapter.in.web.payload.AddPlanRequest;
 import com.sport.support.plan.adapter.in.web.payload.CompletePlanExerciseRequest;
 import com.sport.support.plan.adapter.in.web.payload.DeletePlanExerciseRequest;

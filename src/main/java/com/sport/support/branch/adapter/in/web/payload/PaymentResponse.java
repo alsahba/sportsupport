@@ -1,7 +1,7 @@
 package com.sport.support.branch.adapter.in.web.payload;
 
 import com.sport.support.branch.domain.Payment;
-import com.sport.support.infrastructure.common.money.MoneyDTO;
+import com.sport.support.shared.common.money.MoneyDTO;
 import com.sport.support.membership.domain.enumeration.Duration;
 import com.sport.support.membership.domain.enumeration.Type;
 import lombok.Getter;

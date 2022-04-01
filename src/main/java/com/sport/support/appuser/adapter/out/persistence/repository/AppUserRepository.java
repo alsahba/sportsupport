@@ -1,14 +1,14 @@
 package com.sport.support.appuser.adapter.out.persistence.repository;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+public interface AppUserRepository extends JpaRepository<AppUserEntity, Long> {
 
-   Optional<AppUser> findByUsername(String username);
+   Optional<AppUserEntity> findByUsername(String username);
 
-   Optional<AppUser> findByEmail(String email);
+   Optional<AppUserEntity> findByEmail(String email);
 
 }

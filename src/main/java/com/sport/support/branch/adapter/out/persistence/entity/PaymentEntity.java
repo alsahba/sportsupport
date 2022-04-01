@@ -1,8 +1,8 @@
 package com.sport.support.branch.adapter.out.persistence.entity;
 
 import com.sport.support.branch.domain.Payment;
-import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
+import com.sport.support.shared.common.money.Money;
 import com.sport.support.membership.domain.enumeration.Duration;
 import com.sport.support.membership.domain.enumeration.Type;
 import lombok.NoArgsConstructor;

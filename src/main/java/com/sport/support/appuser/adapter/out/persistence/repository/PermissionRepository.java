@@ -1,13 +1,13 @@
 package com.sport.support.appuser.adapter.out.persistence.repository;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.Permission;
+import com.sport.support.appuser.adapter.out.persistence.entity.PermissionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface PermissionRepository extends JpaRepository<Permission, Long> {
+public interface PermissionRepository extends JpaRepository<PermissionEntity, Long> {
 
-   Set<Permission> findByNameIn(Collection<String> names);
+   Set<PermissionEntity> findByNameIn(Collection<String> names);
 
 }

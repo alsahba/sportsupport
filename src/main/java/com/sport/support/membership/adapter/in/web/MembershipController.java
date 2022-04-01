@@ -1,7 +1,7 @@
 package com.sport.support.membership.adapter.in.web;
 
-import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
-import com.sport.support.infrastructure.common.web.Response;
+import com.sport.support.shared.abstractions.adapters.web.AbstractController;
+import com.sport.support.shared.common.web.Response;
 import com.sport.support.membership.adapter.in.web.payload.AddMembershipRequest;
 import com.sport.support.membership.adapter.in.web.payload.MembershipResponse;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;

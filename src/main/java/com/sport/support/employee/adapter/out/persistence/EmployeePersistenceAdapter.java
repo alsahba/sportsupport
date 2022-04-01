@@ -7,8 +7,8 @@ import com.sport.support.employee.application.port.out.LoadEmployeePort;
 import com.sport.support.employee.application.port.out.SaveEmployeePort;
 import com.sport.support.employee.domain.Employee;
 import com.sport.support.employee.domain.EmployeeErrorMessages;
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter

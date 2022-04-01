@@ -1,6 +1,6 @@
 package com.sport.support.wallet.application.service;
 
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
 import com.sport.support.wallet.application.port.in.usecase.WithdrawMoneyUC;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;

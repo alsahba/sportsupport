@@ -1,12 +1,12 @@
 package com.sport.support.appuser.adapter.out.persistence;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.Permission;
-import com.sport.support.appuser.adapter.out.persistence.entity.Role;
-import com.sport.support.appuser.adapter.out.persistence.entity.RolePermission;
+import com.sport.support.appuser.adapter.out.persistence.entity.PermissionEntity;
+import com.sport.support.appuser.adapter.out.persistence.entity.RoleEntity;
+import com.sport.support.appuser.adapter.out.persistence.entity.RolePermissionEntity;
 import com.sport.support.appuser.adapter.out.persistence.repository.PermissionRepository;
 import com.sport.support.appuser.adapter.out.persistence.repository.RolePermissionRepository;
 import com.sport.support.appuser.adapter.out.persistence.repository.RoleRepository;
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -22,16 +22,16 @@ public class InsertRolePermissionBean {
       this.rolePermissionRepository = rolePermissionRepository;
 
       RoleEnum.getAll().forEach(roleEnum -> {
-         Role role = roleRepository.findByName(roleEnum.name()).get();
-         Set<Permission> permissions = permissionRepository.findByNameIn(roleEnum.getPermissions());
-         insertRolePermission(role, permissions);
+         RoleEntity roleEntity = roleRepository.findByName(roleEnum.name()).get();
+         Set<PermissionEntity> permissionEntities = permissionRepository.findByNameIn(roleEnum.getPermissions());
+         insertRolePermission(roleEntity, permissionEntities);
       });
    }
 
-   private void insertRolePermission(Role role, Set<Permission> permissions) {
-      permissions.forEach(p -> {
-         RolePermission rolePermission = new RolePermission(role, p);
-         rolePermissionRepository.save(rolePermission);
+   private void insertRolePermission(RoleEntity roleEntity, Set<PermissionEntity> permissionEntities) {
+      permissionEntities.forEach(p -> {
+         RolePermissionEntity rolePermissionEntity = new RolePermissionEntity(roleEntity, p);
+         rolePermissionRepository.save(rolePermissionEntity);
       });
    }
 }

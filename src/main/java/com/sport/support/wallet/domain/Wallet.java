@@ -1,7 +1,7 @@
 package com.sport.support.wallet.domain;
 
-import com.sport.support.infrastructure.common.money.Money;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.common.money.Money;
+import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.Builder;
 import lombok.Data;
 

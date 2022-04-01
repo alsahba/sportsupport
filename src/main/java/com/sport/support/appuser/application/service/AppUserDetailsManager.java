@@ -1,6 +1,5 @@
 package com.sport.support.appuser.application.service;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
 import com.sport.support.appuser.application.port.in.command.ChangePasswordCommand;
 import com.sport.support.appuser.application.port.in.command.ChangeUserNameCommand;
 import com.sport.support.appuser.application.port.in.command.RegisterUserCommand;
@@ -10,8 +9,9 @@ import com.sport.support.appuser.application.port.out.LoadAuthorityPort;
 import com.sport.support.appuser.application.port.out.LoadUserPort;
 import com.sport.support.appuser.application.port.out.RemoveUserPort;
 import com.sport.support.appuser.application.port.out.SaveUserPort;
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
-import com.sport.support.infrastructure.security.user.AppUserDetails;
+import com.sport.support.appuser.domain.AppUser;
+import com.sport.support.appuser.domain.AppUserDetails;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 import com.sport.support.wallet.application.port.in.command.CreateWalletCommand;
 import com.sport.support.wallet.application.port.in.usecase.CreateWalletUC;
 import lombok.RequiredArgsConstructor;
@@ -63,31 +63,31 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    }
 
    @Override
-   public void register(RegisterUserCommand command) {
-      AppUser user = new AppUser(command);
+   public AppUser register(RegisterUserCommand command) {
+      var user = command.toDomain();
+
       user.setPassword(passwordEncoder.encode(user.getPassword()));
       user.setRole(loadAuthorityPort.loadRole(RoleEnum.OWNER));
-      saveUserPort.save(user);
-      createWalletUC.create(new CreateWalletCommand(user.getId()));
+
+      var savedUser = saveUserPort.save(user);
+      createWalletUC.create(new CreateWalletCommand(savedUser.getId()));
+      return savedUser;
    }
 
    @Override
    public void change(ChangeUserNameCommand command) {
-      AppUser user = findById(command.getUserId());
-      user.update(command.getName(), command.getSurname());
-      saveUserPort.save(user);
+      saveUserPort.update(command.getUserId(), command.getName(), command.getSurname());
    }
 
    @Override
    public void change(ChangePasswordCommand command) {
-      AppUser user = findById(command.getId());
+      var appUser = loadUserPort.loadById(command.getId());
 
-      if (!passwordEncoder.matches(command.getPassword(), user.getPassword())) {
+      if (!passwordEncoder.matches(command.getPassword(), appUser.getPassword())) {
          throw new BadCredentialsException("Invalid credentials");
       }
 
-      user.setPassword(command.getNewPassword());
-      saveUserPort.save(user);
+      saveUserPort.update(command.getId(), command.getNewPassword());
    }
 
    @Override
@@ -97,12 +97,7 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
 
    @Override
    public void update(UpdateRoleCommand command) {
-      AppUser user = command.user();
-      user.setRole(loadAuthorityPort.loadRole(command.role()));
-      saveUserPort.save(user);
-   }
-
-   private AppUser findById(Long id) {
-      return loadUserPort.loadById(id);
+      var role = loadAuthorityPort.loadRole(command.role());
+      saveUserPort.update(command.id(), role);
    }
 }

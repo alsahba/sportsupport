@@ -1,6 +1,6 @@
 package com.sport.support.branch.adapter.in.web.payload;
 
-import com.sport.support.infrastructure.common.annotations.validation.FixedPhoneNumber;
+import com.sport.support.shared.common.annotations.validation.FixedPhoneNumber;
 import lombok.Data;
 
 import javax.validation.Valid;

@@ -6,8 +6,8 @@ import com.sport.support.branch.adapter.out.persistence.repository.PaymentReposi
 import com.sport.support.branch.application.port.out.*;
 import com.sport.support.branch.domain.Branch;
 import com.sport.support.branch.domain.BranchErrorMessages;
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -17,8 +17,8 @@ import org.springframework.data.domain.PageRequest;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class BranchPersistenceAdapter
-    implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort, DeleteBranchPort, UpdateBranchPort {
+public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort,
+    DeleteBranchPort, UpdateBranchPort,BranchExistencePort {
 
    private final BranchRepository branchRepository;
    private final PaymentRepository paymentRepository;
@@ -77,6 +77,11 @@ public class BranchPersistenceAdapter
           () -> {
              throw new BusinessRuleException(BranchErrorMessages.ERROR_BRANCH_IS_NOT_FOUND);
           });
+   }
+
+   @Override
+   public boolean existsById(Long id) {
+      return branchRepository.existsById(id);
    }
 
    private BranchEntity findById(Long id) {

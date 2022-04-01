@@ -1,12 +1,12 @@
 package com.sport.support.appuser.adapter.out.persistence;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.Role;
 import com.sport.support.appuser.adapter.out.persistence.repository.PermissionRepository;
 import com.sport.support.appuser.adapter.out.persistence.repository.RolePermissionRepository;
 import com.sport.support.appuser.adapter.out.persistence.repository.RoleRepository;
 import com.sport.support.appuser.application.port.out.LoadAuthorityPort;
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
+import com.sport.support.appuser.domain.Role;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 
 @PersistenceAdapter
 public class AuthorityPersistenceAdapter implements LoadAuthorityPort {
@@ -24,6 +24,6 @@ public class AuthorityPersistenceAdapter implements LoadAuthorityPort {
    @Override
    public Role loadRole(RoleEnum role) {
       return roleRepository.findByName(role.name())
-          .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+          .orElseThrow(() -> new IllegalArgumentException("Role not found")).toDomain();
    }
 }

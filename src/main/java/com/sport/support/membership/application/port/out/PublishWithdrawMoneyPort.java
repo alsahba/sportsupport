@@ -1,6 +1,6 @@
 package com.sport.support.membership.application.port.out;
 
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.common.money.Money;
 
 public interface PublishWithdrawMoneyPort {
 

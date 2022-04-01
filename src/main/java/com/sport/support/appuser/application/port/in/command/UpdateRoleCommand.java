@@ -1,7 +1,6 @@
 package com.sport.support.appuser.application.port.in.command;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 
-public record UpdateRoleCommand(AppUser user, RoleEnum role) {
+public record UpdateRoleCommand(Long id, RoleEnum role) {
 }

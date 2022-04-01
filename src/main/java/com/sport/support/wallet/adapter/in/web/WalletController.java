@@ -1,7 +1,7 @@
 package com.sport.support.wallet.adapter.in.web;
 
-import com.sport.support.infrastructure.abstractions.adapters.web.AbstractController;
-import com.sport.support.infrastructure.common.web.Response;
+import com.sport.support.shared.abstractions.adapters.web.AbstractController;
+import com.sport.support.shared.common.web.Response;
 import com.sport.support.wallet.adapter.in.web.payload.DepositMoneyRequest;
 import com.sport.support.wallet.adapter.in.web.payload.WalletResponse;
 import com.sport.support.wallet.application.port.in.command.DepositMoneyCommand;

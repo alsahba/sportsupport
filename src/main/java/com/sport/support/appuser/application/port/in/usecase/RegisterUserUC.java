@@ -1,9 +1,10 @@
 package com.sport.support.appuser.application.port.in.usecase;
 
 import com.sport.support.appuser.application.port.in.command.RegisterUserCommand;
+import com.sport.support.appuser.domain.AppUser;
 
 public interface RegisterUserUC {
 
-   void register(RegisterUserCommand command);
+   AppUser register(RegisterUserCommand command);
 
 }

@@ -1,6 +1,6 @@
 package com.sport.support.membership.application.service;
 
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import com.sport.support.membership.application.port.in.command.FindMembershipQuery;
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
 import com.sport.support.membership.application.port.out.DoesMembershipExistPort;

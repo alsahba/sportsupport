@@ -1,11 +1,11 @@
 package com.sport.support.employee.adapter.out.persistence.entity;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
 import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
 import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.domain.Employee;
-import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
+import com.sport.support.shared.common.money.Money;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +22,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
 
    @OneToOne
    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-   private AppUser user;
+   private AppUserEntity user;
 
    @ManyToOne
    @JoinColumn(name = "BRANCH_ID", referencedColumnName = "ID")
@@ -46,7 +46,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
    private Money bonus;
 
    public EmployeeEntity(Employee employee) {
-      setUser(new AppUser(employee.getUserId()));
+      setUser(new AppUserEntity(employee.getUserId()));
       setBranchEntity(new BranchEntity(employee.getBranchId()));
       setType(employee.getType());
       setStartDate(employee.getStartDate());

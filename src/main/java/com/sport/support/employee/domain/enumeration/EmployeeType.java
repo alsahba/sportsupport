@@ -1,6 +1,6 @@
 package com.sport.support.employee.domain.enumeration;
 
-import com.sport.support.infrastructure.security.enumeration.RoleEnum;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

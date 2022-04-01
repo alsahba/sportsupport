@@ -1,7 +1,7 @@
 package com.sport.support.plan.adapter.out.persistence;
 
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.plan.adapter.out.persistence.entity.PlanEntity;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanExerciseRepository;
 import com.sport.support.plan.adapter.out.persistence.repository.PlanRepository;

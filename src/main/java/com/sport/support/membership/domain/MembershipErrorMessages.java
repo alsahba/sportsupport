@@ -1,6 +1,6 @@
 package com.sport.support.membership.domain;
 
-import com.sport.support.infrastructure.exception.BusinessRuleErrorMessage;
+import com.sport.support.shared.exception.BusinessRuleErrorMessage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

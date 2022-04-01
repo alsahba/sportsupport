@@ -1,7 +1,7 @@
 package com.sport.support.membership.adapter.out.persistence;
 
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.membership.adapter.out.persistence.entity.MembershipEntity;
 import com.sport.support.membership.adapter.out.persistence.entity.MembershipHistoryEntity;
 import com.sport.support.membership.adapter.out.persistence.repository.MembershipHistoryRepository;

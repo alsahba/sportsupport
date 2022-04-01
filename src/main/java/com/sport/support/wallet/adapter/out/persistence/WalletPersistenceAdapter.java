@@ -1,9 +1,9 @@
 package com.sport.support.wallet.adapter.out.persistence;
 
-import com.sport.support.appuser.adapter.out.persistence.entity.AppUser;
-import com.sport.support.infrastructure.common.annotations.stereotype.PersistenceAdapter;
-import com.sport.support.infrastructure.common.money.Money;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
+import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
+import com.sport.support.shared.common.money.Money;
+import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import com.sport.support.wallet.application.port.out.CreateWalletPort;
 import com.sport.support.wallet.application.port.out.LoadWalletPort;
@@ -57,7 +57,7 @@ class WalletPersistenceAdapter implements UpdateWalletBalancePort, CreateWalletP
       var entity = new WalletEntity();
       entity.setBalance(Money.zero());
       entity.setTotalSpent(Money.zero());
-      entity.setUser(new AppUser(userId));
+      entity.setUser(new AppUserEntity(userId));
       return entity;
    }
 

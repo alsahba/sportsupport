@@ -1,6 +1,6 @@
 package com.sport.support.membership.adapter.out.publisher;
 
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.common.money.Money;
 import com.sport.support.membership.application.port.out.PublishWithdrawMoneyPort;
 import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
 import lombok.RequiredArgsConstructor;

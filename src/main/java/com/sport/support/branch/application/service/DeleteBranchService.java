@@ -2,7 +2,7 @@ package com.sport.support.branch.application.service;
 
 import com.sport.support.branch.application.port.in.usecase.DeleteBranchUC;
 import com.sport.support.branch.application.port.out.DeleteBranchPort;
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import lombok.RequiredArgsConstructor;
 
 @UseCase

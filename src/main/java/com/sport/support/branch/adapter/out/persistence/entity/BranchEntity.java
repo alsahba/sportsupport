@@ -2,8 +2,8 @@ package com.sport.support.branch.adapter.out.persistence.entity;
 
 import com.sport.support.branch.domain.Branch;
 import com.sport.support.branch.domain.BranchErrorMessages;
-import com.sport.support.infrastructure.abstractions.entity.AbstractAuditableEntity;
-import com.sport.support.infrastructure.exception.BusinessRuleException;
+import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
+import com.sport.support.shared.exception.BusinessRuleException;
 
 import javax.persistence.*;
 import java.util.Set;

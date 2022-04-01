@@ -1,6 +1,6 @@
 package com.sport.support.branch.adapter.out.persistence.entity;
 
-import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
+import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

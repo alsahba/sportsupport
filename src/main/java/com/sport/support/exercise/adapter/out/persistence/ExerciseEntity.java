@@ -1,7 +1,7 @@
 package com.sport.support.exercise.adapter.out.persistence;
 
 import com.sport.support.exercise.domain.Exercise;
-import com.sport.support.infrastructure.abstractions.entity.AbstractEntity;
+import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

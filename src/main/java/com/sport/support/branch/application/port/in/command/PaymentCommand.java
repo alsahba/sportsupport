@@ -2,7 +2,7 @@ package com.sport.support.branch.application.port.in.command;
 
 import com.sport.support.branch.adapter.in.web.payload.AddUpdatePaymentRequest;
 import com.sport.support.branch.domain.Payment;
-import com.sport.support.infrastructure.common.money.Money;
+import com.sport.support.shared.common.money.Money;
 import com.sport.support.membership.domain.enumeration.Duration;
 import com.sport.support.membership.domain.enumeration.Type;
 import lombok.Getter;

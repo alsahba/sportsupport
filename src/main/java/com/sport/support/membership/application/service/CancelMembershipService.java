@@ -2,7 +2,7 @@ package com.sport.support.membership.application.service;
 
 import com.sport.support.branch.application.port.in.command.BranchMembershipCommand;
 import com.sport.support.branch.application.port.in.usecase.ReleaseQuotaUC;
-import com.sport.support.infrastructure.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import com.sport.support.membership.application.port.in.usecase.CancelMembershipUC;
 import com.sport.support.membership.application.port.out.LoadMembershipPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
