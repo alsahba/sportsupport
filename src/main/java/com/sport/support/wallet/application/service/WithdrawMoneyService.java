@@ -16,7 +16,7 @@ class WithdrawMoneyService implements WithdrawMoneyUC {
 
    @Override
    public void withdraw(WithdrawMoneyCommand command) {
-      var wallet = loadWalletPort.load(command.getUserId());
+      var wallet = loadWalletPort.loadByUserId(command.getUserId());
       wallet.withdraw(command.getMoney());
       withdrawPort.update(wallet);
    }

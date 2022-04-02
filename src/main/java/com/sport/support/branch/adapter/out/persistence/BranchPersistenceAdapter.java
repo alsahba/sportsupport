@@ -8,7 +8,6 @@ import com.sport.support.branch.domain.Branch;
 import com.sport.support.branch.domain.BranchErrorMessages;
 import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.shared.exception.BusinessRuleException;
-import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,16 +15,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 @PersistenceAdapter
-@RequiredArgsConstructor
 public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort, UpdateQuotaPort,
     DeleteBranchPort, UpdateBranchPort,BranchExistencePort {
 
    private final BranchRepository branchRepository;
    private final PaymentRepository paymentRepository;
    private final RedissonClient redissonClient;
+   private final String LOCK_PREFIX;
 
-   @Value("${lock-prefix.branch-quota}")
-   private String LOCK_PREFIX;
+   public BranchPersistenceAdapter(BranchRepository branchRepository,
+                                   PaymentRepository paymentRepository,
+                                   RedissonClient redissonClient,
+                                   @Value("${lock-prefix.branch-quota}") String prefix) {
+      this.branchRepository = branchRepository;
+      this.paymentRepository = paymentRepository;
+      this.redissonClient = redissonClient;
+      this.LOCK_PREFIX = prefix;
+   }
 
    @Override
    public void updateQuota(Long branchId, int change) {

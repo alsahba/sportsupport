@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -19,7 +22,7 @@ import javax.persistence.*;
 public class WalletEntity extends AbstractAuditableEntity {
 
     @OneToOne
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(nullable = false)
     private AppUserEntity user;
 
     @Embedded
@@ -34,12 +37,20 @@ public class WalletEntity extends AbstractAuditableEntity {
     })
     private Money totalSpent;
 
+    @OneToMany(mappedBy = "wallet")
+    private Set<WalletActivityEntity> activities = new HashSet<>();
+
+    public WalletEntity(Long id) {
+        super(id);
+    }
+
     public Wallet toDomain() {
         return Wallet.builder()
             .id(getId())
             .userId(getUser().getId())
             .balance(getBalance())
             .totalSpent(getTotalSpent())
+            .activities(activities.stream().map(WalletActivityEntity::toDomain).collect(Collectors.toSet()))
             .build();
     }
 }

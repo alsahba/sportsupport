@@ -5,6 +5,7 @@ import com.sport.support.shared.common.web.ErrorResponse;
 import com.sport.support.shared.common.web.Response;
 import com.sport.support.shared.common.web.ResponseBuilder;
 
+import java.security.Principal;
 import java.util.List;
 
 public abstract class AbstractController {
@@ -29,4 +30,7 @@ public abstract class AbstractController {
       return ResponseBuilder.build(error);
    }
 
+   protected Long getUserIdFromAuth(Principal principal) {
+      return Long.valueOf(principal.getName());
+   }
 }

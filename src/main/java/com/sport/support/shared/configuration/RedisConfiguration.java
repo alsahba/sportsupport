@@ -18,11 +18,14 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfiguration {
 
-   @Value("${spring.redis.host}")
-   private String host;
+   private final String host;
+   private final String port;
 
-   @Value("${spring.redis.port}")
-   private String port;
+   public RedisConfiguration(@Value("${spring.redis.host}") String host,
+                             @Value("${spring.redis.port}") String port) {
+      this.host = host;
+      this.port = port;
+   }
 
    @Bean
    public CacheManager cacheTimeoutManager(RedisConnectionFactory connectionFactory) {
