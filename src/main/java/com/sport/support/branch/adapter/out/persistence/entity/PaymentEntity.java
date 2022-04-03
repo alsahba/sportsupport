@@ -51,6 +51,11 @@ public class PaymentEntity extends AbstractAuditableEntity {
           .build();
    }
 
+   public void update(PaymentEntity paymentEntity) {
+      setId(paymentEntity.getId());
+      copyFrom(paymentEntity);
+   }
+
    public BranchEntity getBranch() {
       return branch;
    }

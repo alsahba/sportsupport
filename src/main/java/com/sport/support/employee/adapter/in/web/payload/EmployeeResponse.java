@@ -14,7 +14,7 @@ public class EmployeeResponse {
    public EmployeeResponse (Employee employee) {
       this.id = employee.getId();
       this.userId = employee.getUserId().getId();
-      this.branchId = employee.getBranchId();
+      this.branchId = employee.getBranchId().getId();
       this.type = employee.getType().toString();
    }
 }

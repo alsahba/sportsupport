@@ -1,6 +1,7 @@
 package com.sport.support.employee.domain;
 
 import com.sport.support.appuser.domain.vo.UserId;
+import com.sport.support.branch.domain.vo.BranchId;
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
 import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.domain.vo.EmployeeId;
@@ -17,14 +18,14 @@ import java.time.LocalDate;
 public class Employee extends AbstractDomainObject<EmployeeId> {
 
    private UserId userId;
-   private Long branchId;
+   private BranchId branchId;
    private EmployeeType type;
    private Money baseSalary;
    private Money bonus;
    private LocalDate startDate;
 
    @Builder
-   public Employee(EmployeeId idVO, UserId userId, Long branchId, EmployeeType type, Money baseSalary, Money bonus, LocalDate startDate) {
+   public Employee(EmployeeId idVO, UserId userId, BranchId branchId, EmployeeType type, Money baseSalary, Money bonus, LocalDate startDate) {
       super(idVO);
       this.userId = userId;
       this.branchId = branchId;
@@ -36,7 +37,7 @@ public class Employee extends AbstractDomainObject<EmployeeId> {
 
    public Employee(Long userId, AddEmployeeCommand addEmployeeCommand) {
       this.userId = new UserId(userId);
-      this.branchId = addEmployeeCommand.getBranchId();
+      this.branchId = new BranchId(addEmployeeCommand.getBranchId());
       this.type = addEmployeeCommand.getType();
       this.baseSalary = addEmployeeCommand.getBaseSalary();
       this.bonus = addEmployeeCommand.getBonus();

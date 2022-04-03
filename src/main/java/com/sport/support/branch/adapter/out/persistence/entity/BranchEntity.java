@@ -7,6 +7,7 @@ import com.sport.support.branch.domain.vo.CityId;
 import com.sport.support.branch.domain.vo.DistrictId;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.shared.exception.BusinessRuleException;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "BRANCH")
+@NoArgsConstructor
 public class BranchEntity extends AbstractAuditableEntity {
 
    private String name;
@@ -68,10 +70,7 @@ public class BranchEntity extends AbstractAuditableEntity {
       setCity(branchEntity.getCity());
       setDistrict(branchEntity.getDistrict());
       getPayments().forEach(payment -> branchEntity.getPayments().stream()
-          .filter(p -> p.equals(payment)).findFirst().ifPresent(p -> payment.setId(p.getId())));
-   }
-
-   public BranchEntity() {
+          .filter(p -> p.equals(payment)).findFirst().ifPresent(payment::update));
    }
 
    public String getName() {

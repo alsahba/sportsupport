@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,14 +35,11 @@ public class BranchController extends AbstractController {
    private final UpdateBranchUC updateBranchUC;
    private final DeleteBranchUC deleteBranchUC;
 
-   // TODO: 28.03.2022 managers can update only their branches but owner can update all branches
-
    @GetMapping
    @PreAuthorize("hasAuthority('BRANCH_READ')")
    @ResponseStatus(HttpStatus.OK)
-   public Response<DataResponse<BranchResponse>> getAll(
-       @Valid @RequestParam(defaultValue = "5") @Positive int limit,
-       @Valid @RequestParam(defaultValue = "0") @Min(0) int pageNumber) {
+   public Response<DataResponse<BranchResponse>> getAll(@Valid @RequestParam(defaultValue = "5") @Positive int limit,
+                                                        @Valid @RequestParam(defaultValue = "0") @Min(0) int pageNumber) {
 
       PageRequest pageRequest = PageRequest.of(pageNumber, limit);
       var responseList = findBranchUC.findAll(new FindBranchQuery(pageRequest)).stream()
@@ -67,8 +65,9 @@ public class BranchController extends AbstractController {
    @PutMapping
    @PreAuthorize("hasAuthority('BRANCH_UPDATE')")
    @ResponseStatus(HttpStatus.OK)
-   public Response<Long> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest) {
-      updateBranchUC.update(new UpdateBranchCommand(updateBranchRequest));
+   public Response<Long> update(@RequestBody @Valid UpdateBranchRequest updateBranchRequest,
+                                Principal principal) {
+      updateBranchUC.update(new UpdateBranchCommand(getUserIdFromAuth(principal), updateBranchRequest));
       return respond(updateBranchRequest.getId());
    }
 

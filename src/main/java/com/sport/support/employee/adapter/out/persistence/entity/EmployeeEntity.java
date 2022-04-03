@@ -3,6 +3,7 @@ package com.sport.support.employee.adapter.out.persistence.entity;
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
 import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
+import com.sport.support.branch.domain.vo.BranchId;
 import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.domain.Employee;
 import com.sport.support.employee.domain.vo.EmployeeId;
@@ -26,7 +27,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
    private AppUserEntity user;
 
    @ManyToOne
-   private BranchEntity branchEntity;
+   private BranchEntity branch;
 
    @Enumerated(EnumType.STRING)
    private EmployeeType type;
@@ -47,7 +48,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
 
    public EmployeeEntity(Employee employee) {
       setUser(new AppUserEntity(employee.getUserId().getId()));
-      setBranchEntity(new BranchEntity(employee.getBranchId()));
+      setBranch(new BranchEntity(employee.getBranchId().getId()));
       setType(employee.getType());
       setStartDate(employee.getStartDate());
       setBaseSalary(employee.getBaseSalary());
@@ -58,7 +59,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
       return new Employee(
           new EmployeeId(getId()),
           new UserId(getUser().getId()),
-          this.getBranchEntity().getId(),
+          new BranchId(getBranch().getId()),
           getType(),
           getBaseSalary(),
           getBonus(),

@@ -23,9 +23,9 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    }
 
    @Override
-   public EmployeeEntity loadByUserIdAndType(Long userId, EmployeeType type) {
+   public Employee loadByUserIdAndType(Long userId, EmployeeType type) {
       return employeeRepository.findByUserIdAndType(userId, type)
-          .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND));
+          .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND)).toDomain();
    }
 
    @Override

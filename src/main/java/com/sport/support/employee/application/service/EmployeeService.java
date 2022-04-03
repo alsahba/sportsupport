@@ -8,6 +8,7 @@ import com.sport.support.branch.domain.enumeration.BranchErrorMessages;
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
 import com.sport.support.employee.application.port.in.usecase.AddEmployeeUC;
 import com.sport.support.employee.application.port.in.usecase.CheckEmployeeValidityUC;
+import com.sport.support.employee.application.port.in.usecase.LoadEmployeeUC;
 import com.sport.support.employee.application.port.out.LoadEmployeePort;
 import com.sport.support.employee.application.port.out.SaveEmployeePort;
 import com.sport.support.employee.domain.Employee;
@@ -22,7 +23,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC {
+public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC, LoadEmployeeUC {
 
    private final SaveEmployeePort saveEmployeePort;
    private final LoadEmployeePort loadEmployeePort;
@@ -45,6 +46,11 @@ public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC {
       if (!loadEmployeePort.existsByUserIdAndType(userId, type)) {
          throw new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND);
       }
+   }
+
+   @Override
+   public Employee loadByUserIdAndType(Long userId, EmployeeType type) {
+      return loadEmployeePort.loadByUserIdAndType(userId, type);
    }
 
    private void checkBranch(Long branchId) {
