@@ -2,7 +2,7 @@ package com.sport.support.wallet.application.port.in.command;
 
 import com.sport.support.shared.common.daterange.DateRange;
 import com.sport.support.wallet.adapter.in.web.payload.FindWalletActivityRequest;
-import com.sport.support.wallet.domain.WalletActivityType;
+import com.sport.support.wallet.domain.enumeration.WalletActivityType;
 import lombok.Getter;
 
 import java.util.Arrays;

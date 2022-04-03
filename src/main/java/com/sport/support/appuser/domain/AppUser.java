@@ -1,13 +1,15 @@
 package com.sport.support.appuser.domain;
 
+import com.sport.support.appuser.domain.vo.UserId;
+import com.sport.support.shared.abstractions.domain.AbstractDomainObject;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
-public class AppUser {
+@Getter
+@Setter
+public class AppUser extends AbstractDomainObject<UserId> {
 
-   private Long id;
    private String name;
    private String surname;
    private String username;
@@ -16,4 +18,15 @@ public class AppUser {
    private String phone;
    private Role role;
 
+   @Builder
+   public AppUser(UserId idVO, String name, String surname, String username, String password, String email, String phone, Role role) {
+      super(idVO);
+      this.name = name;
+      this.surname = surname;
+      this.username = username;
+      this.password = password;
+      this.email = email;
+      this.phone = phone;
+      this.role = role;
+   }
 }

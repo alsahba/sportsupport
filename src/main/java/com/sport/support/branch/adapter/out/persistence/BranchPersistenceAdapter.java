@@ -5,7 +5,8 @@ import com.sport.support.branch.adapter.out.persistence.repository.BranchReposit
 import com.sport.support.branch.adapter.out.persistence.repository.PaymentRepository;
 import com.sport.support.branch.application.port.out.*;
 import com.sport.support.branch.domain.Branch;
-import com.sport.support.branch.domain.BranchErrorMessages;
+import com.sport.support.branch.domain.enumeration.BranchErrorMessages;
+import com.sport.support.branch.domain.vo.BranchId;
 import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.shared.exception.BusinessRuleException;
 import org.redisson.api.RLock;
@@ -34,10 +35,10 @@ public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort,
    }
 
    @Override
-   public void updateQuota(Long branchId, int change) {
-      acquireLock(branchId);
+   public void updateQuota(BranchId branchId, int change) {
+      acquireLock(branchId.getId());
 
-      BranchEntity branchEntity = findById(branchId);
+      BranchEntity branchEntity = findById(branchId.getId());
       branchEntity.setQuota(branchEntity.getQuota() + change);
       branchRepository.save(branchEntity);
 
@@ -47,11 +48,9 @@ public class BranchPersistenceAdapter implements SaveBranchPort, LoadBranchPort,
    @Override
    public Branch save(Branch branch) {
       var entity = new BranchEntity(branch);
-
-      branchRepository.save(entity);
+      var savedEntity = branchRepository.save(entity);
       paymentRepository.saveAll(entity.getPayments());
-
-      return branch;
+      return savedEntity.toDomain();
    }
 
    @Override

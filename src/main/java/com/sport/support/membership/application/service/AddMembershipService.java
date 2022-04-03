@@ -3,6 +3,7 @@ package com.sport.support.membership.application.service;
 import com.sport.support.appuser.application.port.in.command.UpdateRoleCommand;
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import com.sport.support.appuser.application.port.in.usecase.UpdateRoleUC;
+import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.branch.application.port.in.command.BranchMembershipCommand;
 import com.sport.support.branch.application.port.in.command.FindBranchQuery;
 import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
@@ -20,7 +21,7 @@ import com.sport.support.membership.application.port.out.DoesMembershipExistPort
 import com.sport.support.membership.application.port.out.PublishWithdrawMoneyPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
 import com.sport.support.membership.domain.Membership;
-import com.sport.support.membership.domain.MembershipErrorMessages;
+import com.sport.support.membership.domain.enumeration.MembershipErrorMessages;
 import com.sport.support.membership.domain.enumeration.Duration;
 import com.sport.support.membership.domain.enumeration.Type;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +47,10 @@ public class AddMembershipService implements AddMembershipUC {
       var membership = command.toDomain();
 
       checkUserIsAlreadyMember(membership.getUserId());
-      checkEmployeeValidityUC.checkEmployeeExistenceByUserIdAndType(membership.getTrainerId(), EmployeeType.TRAINER);
+      checkEmployeeValidityUC.checkEmployeeExistenceByUserIdAndType(membership.getTrainerId().getId(), EmployeeType.TRAINER);
 
-      var branch = findBranchUC.findById(new FindBranchQuery(membership.getBranchId()));
-      var user = loadUserUC.loadById(membership.getUserId());
+      var branch = findBranchUC.findById(new FindBranchQuery(membership.getBranchId().getId()));
+      var user = loadUserUC.loadById(membership.getUserId().getId());
 
       decreaseQuotaUC.decreaseQuota(new BranchMembershipCommand(membership.getBranchId()));
       updateRoleUC.update(new UpdateRoleCommand(user.getId(), RoleEnum.MEMBER));
@@ -63,8 +64,8 @@ public class AddMembershipService implements AddMembershipUC {
       publishWithdrawMoneyPort.publishWithdrawMoney(userId, cost);
    }
 
-   private void checkUserIsAlreadyMember(Long userId) {
-      if (doesMembershipExistPort.doesExistByUser(userId)) {
+   private void checkUserIsAlreadyMember(UserId userId) {
+      if (doesMembershipExistPort.doesExistByUser(userId.getId())) {
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_USER_IS_ALREADY_MEMBER);
       }
    }

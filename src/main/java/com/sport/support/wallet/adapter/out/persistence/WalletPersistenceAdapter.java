@@ -14,7 +14,7 @@ import com.sport.support.wallet.application.port.out.LoadWalletPort;
 import com.sport.support.wallet.application.port.out.UpdateWalletBalancePort;
 import com.sport.support.wallet.domain.Wallet;
 import com.sport.support.wallet.domain.WalletActivity;
-import com.sport.support.wallet.domain.WalletErrorMessages;
+import com.sport.support.wallet.domain.enumeration.WalletErrorMessages;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;

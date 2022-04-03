@@ -1,8 +1,10 @@
 package com.sport.support.plan.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
-import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
+import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.plan.domain.Plan;
+import com.sport.support.plan.domain.vo.PlanId;
+import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,8 +31,8 @@ public class PlanEntity extends AbstractAuditableEntity {
 
    public Plan toDomain() {
       return Plan.builder()
-          .id(getId())
-          .userId(getUser().getId())
+          .idVO(new PlanId(getId()))
+          .userId(new UserId(getUser().getId()))
           .date(getDate())
           .planExercises(getPlanExerciseEntities().stream()
               .map(PlanExerciseEntity::toDomain).collect(Collectors.toSet()))
@@ -39,13 +41,9 @@ public class PlanEntity extends AbstractAuditableEntity {
 
    public PlanEntity(Plan plan) {
       setId(plan.getId());
-      setUser(new AppUserEntity(plan.getUserId()));
+      setUser(new AppUserEntity(plan.getUserId().getId()));
       setDate(plan.getDate());
       setPlanExerciseEntities(plan.getPlanExercises().stream()
           .map(e -> new PlanExerciseEntity(e, this)).collect(Collectors.toSet()));
-   }
-
-   public PlanEntity(Long id) {
-      super(id);
    }
 }

@@ -1,6 +1,7 @@
 package com.sport.support.appuser.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.domain.Role;
+import com.sport.support.appuser.domain.vo.RoleId;
 import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,7 +42,7 @@ public class RoleEntity extends AbstractEntity {
 
    public Role toDomain() {
       return Role.builder()
-          .id(getId())
+          .idVO(new RoleId(getId()))
           .name(name)
           .permissions(getPermissions().stream().map(PermissionEntity::getName).collect(Collectors.toSet()))
           .build();

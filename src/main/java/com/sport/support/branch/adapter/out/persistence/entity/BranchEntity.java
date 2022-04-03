@@ -1,7 +1,10 @@
 package com.sport.support.branch.adapter.out.persistence.entity;
 
 import com.sport.support.branch.domain.Branch;
-import com.sport.support.branch.domain.BranchErrorMessages;
+import com.sport.support.branch.domain.enumeration.BranchErrorMessages;
+import com.sport.support.branch.domain.vo.BranchId;
+import com.sport.support.branch.domain.vo.CityId;
+import com.sport.support.branch.domain.vo.DistrictId;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.shared.exception.BusinessRuleException;
 
@@ -38,8 +41,8 @@ public class BranchEntity extends AbstractAuditableEntity {
       setId(branch.getId());
       setName(branch.getName());
       setQuota(branch.getQuota());
-      setCity(new CityEntity(branch.getCityId()));
-      setDistrict(new DistrictEntity(branch.getDistrictId()));
+      setCity(new CityEntity(branch.getCityId().getId()));
+      setDistrict(new DistrictEntity(branch.getDistrictId().getId()));
       setAddress(branch.getAddress());
       setPhoneNumber(branch.getPhoneNumber());
       setPayments(branch.getPayments().stream()
@@ -49,11 +52,11 @@ public class BranchEntity extends AbstractAuditableEntity {
 
    public Branch toDomain() {
       return Branch.builder()
-          .id(getId())
+          .idVO(new BranchId(getId()))
           .name(getName())
           .quota(getQuota())
-          .cityId(getCity().getId())
-          .districtId(getDistrict().getId())
+          .cityId(new CityId(getCity().getId()))
+          .districtId(new DistrictId(getDistrict().getId()))
           .address(getAddress())
           .phoneNumber(getPhoneNumber())
           .payments(getPayments().stream().map(PaymentEntity::toDomain).collect(Collectors.toSet()))

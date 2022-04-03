@@ -1,4 +1,4 @@
-package com.sport.support.wallet.domain;
+package com.sport.support.wallet.domain.enumeration;
 
 import com.sport.support.shared.exception.BusinessRuleErrorMessage;
 import lombok.Getter;

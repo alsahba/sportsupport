@@ -1,6 +1,7 @@
 package com.sport.support.exercise.adapter.out.persistence;
 
 import com.sport.support.exercise.domain.Exercise;
+import com.sport.support.exercise.domain.vo.ExerciseId;
 import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class ExerciseEntity extends AbstractEntity {
 
    public Exercise toDomain() {
       return Exercise.builder()
-          .id(getId())
+          .idVO(new ExerciseId(getId()))
           .name(getName())
           .description(getDescription())
           .videoUrl(getVideoUrl())

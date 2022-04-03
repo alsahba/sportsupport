@@ -1,10 +1,11 @@
 package com.sport.support.plan.application.service;
 
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
+import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.membership.application.port.in.command.FindMembershipQuery;
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
-import com.sport.support.membership.domain.MembershipErrorMessages;
+import com.sport.support.membership.domain.enumeration.MembershipErrorMessages;
 import com.sport.support.plan.application.port.in.command.*;
 import com.sport.support.plan.application.port.in.usecase.*;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
@@ -12,7 +13,7 @@ import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
 import com.sport.support.plan.domain.Plan;
-import com.sport.support.plan.domain.PlanErrorMessages;
+import com.sport.support.plan.domain.enumeration.PlanErrorMessages;
 import com.sport.support.plan.domain.PlanExercise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
    @Override
    public List<Plan> add(AddPlanCommand addPlanCommand) {
       var user = loadUserUC.loadByUsername(addPlanCommand.getUsername());
-      checkTrainerAuthorization(user.getId(), addPlanCommand.getTrainerId());
+      checkTrainerAuthorization(user.getIdVO(), addPlanCommand.getTrainerId());
 
       List<Plan> plans = addPlanCommand.getDayPlans().stream().map(dailyPlan -> {
          checkPlanDate(user.getId(), dailyPlan.getDate());
@@ -85,8 +86,8 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
       savePlanPort.updatePlanExercises(planExerciseIds, true);
    }
 
-   private void checkTrainerAuthorization(Long userId, Long trainerId) {
-      if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId, trainerId))) {
+   private void checkTrainerAuthorization(UserId userId, Long trainerId) {
+      if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId.getId(), trainerId))) {
          throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_TRAINER_IS_UNAUTHORIZED);
       }
    }

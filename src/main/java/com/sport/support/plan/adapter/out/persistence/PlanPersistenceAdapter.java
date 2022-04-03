@@ -10,7 +10,7 @@ import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
 import com.sport.support.plan.domain.Plan;
-import com.sport.support.plan.domain.PlanErrorMessages;
+import com.sport.support.plan.domain.enumeration.PlanErrorMessages;
 import com.sport.support.plan.domain.PlanExercise;
 import lombok.RequiredArgsConstructor;
 

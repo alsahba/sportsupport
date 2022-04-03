@@ -3,7 +3,9 @@ package com.sport.support.wallet.adapter.out.persistence.entity;
 import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import com.sport.support.shared.common.money.Money;
 import com.sport.support.wallet.domain.WalletActivity;
-import com.sport.support.wallet.domain.WalletActivityType;
+import com.sport.support.wallet.domain.enumeration.WalletActivityType;
+import com.sport.support.wallet.domain.vo.WalletActivityId;
+import com.sport.support.wallet.domain.vo.WalletId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,8 +35,8 @@ public class WalletActivityEntity extends AbstractEntity {
 
    public WalletActivity toDomain() {
       return WalletActivity.builder()
-          .id(getId())
-          .walletId(getWallet().getId())
+          .idVO(new WalletActivityId(getId()))
+          .walletId(new WalletId(getWallet().getId()))
           .type(getType())
           .amount(getAmount())
           .transactionDate(getTransactionDate())
@@ -42,7 +44,7 @@ public class WalletActivityEntity extends AbstractEntity {
    }
 
    public WalletActivityEntity(WalletActivity walletActivity) {
-      setWallet(new WalletEntity(walletActivity.getWalletId()));
+      setWallet(new WalletEntity(walletActivity.getWalletId().getId()));
       setAmount(walletActivity.getAmount());
       setTransactionDate(walletActivity.getTransactionDate());
       setType(walletActivity.getType());

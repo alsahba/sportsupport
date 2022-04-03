@@ -5,7 +5,7 @@ import com.sport.support.branch.application.port.in.usecase.AddBranchUC;
 import com.sport.support.branch.application.port.out.LocationExistencePort;
 import com.sport.support.branch.application.port.out.SaveBranchPort;
 import com.sport.support.branch.domain.Branch;
-import com.sport.support.branch.domain.LocationErrorMessages;
+import com.sport.support.branch.domain.enumeration.LocationErrorMessages;
 import com.sport.support.shared.common.annotations.stereotype.UseCase;
 import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class AddBranchService implements AddBranchUC {
    @Override
    public Branch add(AddBranchCommand command) {
       var branch = command.toDomain();
-      checkLocation(branch.getCityId(), branch.getDistrictId());
-      locationExistencePort.doesDistrictExistById(branch.getDistrictId());
+      checkLocation(branch.getCityId().getId(), branch.getDistrictId().getId());
+      locationExistencePort.doesDistrictExistById(branch.getDistrictId().getId());
       return saveBranchPort.save(branch);
    }
 

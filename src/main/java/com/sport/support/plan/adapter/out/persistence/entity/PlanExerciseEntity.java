@@ -1,7 +1,10 @@
 package com.sport.support.plan.adapter.out.persistence.entity;
 
 import com.sport.support.exercise.adapter.out.persistence.ExerciseEntity;
+import com.sport.support.exercise.domain.vo.ExerciseId;
 import com.sport.support.plan.domain.PlanExercise;
+import com.sport.support.plan.domain.vo.PlanExerciseId;
+import com.sport.support.plan.domain.vo.PlanId;
 import com.sport.support.shared.abstractions.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,17 +38,16 @@ public class PlanExerciseEntity extends AbstractEntity {
 
    public PlanExerciseEntity(PlanExercise planExercise) {
       setId(planExercise.getId());
-      setPlan(new PlanEntity(planExercise.getPlanId()));
-      setExercise(new ExerciseEntity(planExercise.getExerciseId()));
+      setExercise(new ExerciseEntity(planExercise.getExerciseId().getId()));
       setSets(planExercise.getSets());
       setCompleted(planExercise.isCompleted());
    }
 
    public PlanExercise toDomain() {
       return PlanExercise.builder()
-            .id(getId())
-            .planId(this.getPlan().getId())
-            .exerciseId(this.getExercise().getId())
+            .idVO(new PlanExerciseId(getId()))
+            .planId(new PlanId(getPlan().getId()))
+            .exerciseId(new ExerciseId(getExercise().getId()))
             .sets(getSets())
             .completed(isCompleted())
             .build();

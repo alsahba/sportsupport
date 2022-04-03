@@ -2,6 +2,8 @@ package com.sport.support.branch.application.port.in.command;
 
 import com.sport.support.branch.adapter.in.web.payload.AddBranchRequest;
 import com.sport.support.branch.domain.Branch;
+import com.sport.support.branch.domain.vo.CityId;
+import com.sport.support.branch.domain.vo.DistrictId;
 import lombok.Getter;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class AddBranchCommand {
       return Branch.builder()
           .name(name)
           .quota(quota)
-          .cityId(cityId)
-          .districtId(districtId)
+          .cityId(new CityId(cityId))
+          .districtId(new DistrictId(districtId))
           .address(address)
           .phoneNumber(phoneNumber)
           .payments(payments.stream().map(PaymentCommand::toDomain).collect(Collectors.toSet()))

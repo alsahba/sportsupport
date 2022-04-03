@@ -2,6 +2,7 @@ package com.sport.support.branch.application.port.in.command;
 
 import com.sport.support.branch.adapter.in.web.payload.UpdateBranchRequest;
 import com.sport.support.branch.domain.Branch;
+import com.sport.support.branch.domain.vo.BranchId;
 import lombok.Getter;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class UpdateBranchCommand {
 
    public Branch toDomain() {
       return Branch.builder()
-            .id(id)
+            .idVO(new BranchId(id))
             .name(name)
             .quota(quota)
             .address(address)

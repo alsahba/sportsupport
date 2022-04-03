@@ -13,7 +13,7 @@ public class PlanExerciseResponse {
 
    public PlanExerciseResponse(PlanExercise planExercise) {
       this.id = planExercise.getId();
-      this.exerciseId = planExercise.getExerciseId();
+      this.exerciseId = planExercise.getExerciseId().getId();
       this.sets = planExercise.getSets();
       this.completed = planExercise.isCompleted();
    }

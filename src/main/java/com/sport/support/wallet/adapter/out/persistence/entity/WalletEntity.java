@@ -4,6 +4,7 @@ import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.shared.common.money.Money;
 import com.sport.support.wallet.domain.Wallet;
+import com.sport.support.wallet.domain.vo.WalletId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,7 +46,7 @@ public class WalletEntity extends AbstractAuditableEntity {
 
     public Wallet toDomain() {
         return Wallet.builder()
-            .id(getId())
+            .idVO(new WalletId(getId()))
             .userId(getUser().getId())
             .balance(getBalance())
             .totalSpent(getTotalSpent())

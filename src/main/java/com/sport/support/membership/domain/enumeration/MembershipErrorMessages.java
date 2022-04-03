@@ -1,4 +1,4 @@
-package com.sport.support.membership.domain;
+package com.sport.support.membership.domain.enumeration;
 
 import com.sport.support.shared.exception.BusinessRuleErrorMessage;
 import lombok.RequiredArgsConstructor;

@@ -1,27 +1,36 @@
 package com.sport.support.plan.domain;
 
+import com.sport.support.exercise.domain.vo.ExerciseId;
 import com.sport.support.plan.application.port.in.command.DailyPlanExerciseCommand;
-import lombok.AllArgsConstructor;
+import com.sport.support.plan.domain.vo.PlanExerciseId;
+import com.sport.support.plan.domain.vo.PlanId;
+import com.sport.support.shared.abstractions.domain.AbstractDomainObject;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@Builder
-@AllArgsConstructor
-public class PlanExercise {
+@Getter
+@Setter
+public class PlanExercise extends AbstractDomainObject<PlanExerciseId> {
 
-   private Long id;
-   private Long planId;
-   private Long exerciseId;
+   private PlanId planId;
+   private ExerciseId exerciseId;
    private int sets;
    private boolean completed;
 
-   public PlanExercise(Long planId, DailyPlanExerciseCommand command) {
+   public PlanExercise(PlanId planId, DailyPlanExerciseCommand command) {
       this.planId = planId;
-      this.exerciseId = command.getExerciseId();
+      this.exerciseId = new ExerciseId(command.getExerciseId());
       this.sets = command.getSets();
       this.completed = false;
+   }
+
+   @Builder
+   public PlanExercise(PlanExerciseId idVO, PlanId planId, ExerciseId exerciseId, int sets, boolean completed) {
+      super(idVO);
+      this.planId = planId;
+      this.exerciseId = exerciseId;
+      this.sets = sets;
+      this.completed = completed;
    }
 }

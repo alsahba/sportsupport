@@ -13,7 +13,7 @@ public class EmployeeResponse {
 
    public EmployeeResponse (Employee employee) {
       this.id = employee.getId();
-      this.userId = employee.getUserId();
+      this.userId = employee.getUserId().getId();
       this.branchId = employee.getBranchId();
       this.type = employee.getType().toString();
    }

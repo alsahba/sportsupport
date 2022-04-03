@@ -8,7 +8,7 @@ import com.sport.support.appuser.application.port.out.RemoveUserPort;
 import com.sport.support.appuser.application.port.out.SaveUserPort;
 import com.sport.support.appuser.domain.AppUser;
 import com.sport.support.appuser.domain.Role;
-import com.sport.support.appuser.domain.UserErrorMessages;
+import com.sport.support.appuser.domain.enumeration.UserErrorMessages;
 import com.sport.support.shared.common.annotations.stereotype.PersistenceAdapter;
 import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;

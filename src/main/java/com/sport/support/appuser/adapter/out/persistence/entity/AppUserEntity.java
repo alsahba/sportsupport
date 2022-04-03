@@ -1,6 +1,7 @@
 package com.sport.support.appuser.adapter.out.persistence.entity;
 
 import com.sport.support.appuser.domain.AppUser;
+import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.wallet.adapter.out.persistence.entity.WalletEntity;
 import lombok.Getter;
@@ -58,7 +59,7 @@ public class AppUserEntity extends AbstractAuditableEntity {
 
    public AppUser toDomain() {
       return AppUser.builder()
-          .id(getId())
+          .idVO(new UserId(getId()))
           .name(getName())
           .surname(getSurname())
           .username(getUsername())

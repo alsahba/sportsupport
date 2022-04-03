@@ -1,5 +1,6 @@
 package com.sport.support.membership.application.service;
 
+import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.branch.application.port.in.command.BranchMembershipCommand;
 import com.sport.support.branch.application.port.in.usecase.ReleaseQuotaUC;
 import com.sport.support.shared.common.annotations.stereotype.UseCase;
@@ -19,7 +20,7 @@ public class CancelMembershipService implements CancelMembershipUC {
 
    @Override
    public Membership cancel(Long userId) {
-      Membership membership = loadMembershipPort.loadByUserId(userId);
+      Membership membership = loadMembershipPort.loadByUserId(new UserId(userId));
       membership.cancel();
       releaseQuotaUC.releaseQuota(new BranchMembershipCommand(membership.getBranchId()));
       saveMembershipPort.update(membership);

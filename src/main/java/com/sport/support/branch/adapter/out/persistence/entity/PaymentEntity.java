@@ -1,6 +1,8 @@
 package com.sport.support.branch.adapter.out.persistence.entity;
 
 import com.sport.support.branch.domain.Payment;
+import com.sport.support.branch.domain.vo.BranchId;
+import com.sport.support.branch.domain.vo.PaymentId;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.shared.common.money.Money;
 import com.sport.support.membership.domain.enumeration.Duration;
@@ -41,8 +43,8 @@ public class PaymentEntity extends AbstractAuditableEntity {
 
    public Payment toDomain() {
       return Payment.builder()
-          .id(getId())
-          .branchId(getBranch().getId())
+          .idVO(new PaymentId(getId()))
+          .branchId(new BranchId(getBranch().getId()))
           .cost(getCost())
           .duration(getDuration())
           .type(getType())

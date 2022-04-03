@@ -1,7 +1,7 @@
 package com.sport.support.wallet.adapter.out.persistence.repository;
 
 import com.sport.support.wallet.adapter.out.persistence.entity.WalletActivityEntity;
-import com.sport.support.wallet.domain.WalletActivityType;
+import com.sport.support.wallet.domain.enumeration.WalletActivityType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

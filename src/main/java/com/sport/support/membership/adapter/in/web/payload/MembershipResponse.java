@@ -14,8 +14,8 @@ public class MembershipResponse {
 
    public MembershipResponse(Membership membership) {
       this.id = membership.getId();
-      this.userId = membership.getUserId();
-      this.branchId = membership.getBranchId();
+      this.userId = membership.getUserId().getId();
+      this.branchId = membership.getBranchId().getId();
       this.type = membership.getType().toString();
       this.duration = membership.getDuration().toString();
    }

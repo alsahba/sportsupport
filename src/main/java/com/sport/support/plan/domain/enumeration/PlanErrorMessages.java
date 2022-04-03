@@ -1,4 +1,4 @@
-package com.sport.support.plan.domain;
+package com.sport.support.plan.domain.enumeration;
 
 import com.sport.support.shared.exception.BusinessRuleErrorMessage;
 import lombok.Getter;

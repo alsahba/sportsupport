@@ -1,4 +1,6 @@
 package com.sport.support.branch.application.port.in.command;
 
-public record BranchMembershipCommand(Long branchId) {
+import com.sport.support.branch.domain.vo.BranchId;
+
+public record BranchMembershipCommand(BranchId branchId) {
 }

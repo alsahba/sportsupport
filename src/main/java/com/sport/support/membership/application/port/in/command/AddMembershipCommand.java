@@ -1,5 +1,7 @@
 package com.sport.support.membership.application.port.in.command;
 
+import com.sport.support.appuser.domain.vo.UserId;
+import com.sport.support.branch.domain.vo.BranchId;
 import com.sport.support.membership.adapter.in.web.payload.AddMembershipRequest;
 import com.sport.support.membership.domain.enumeration.Duration;
 import com.sport.support.membership.domain.enumeration.Status;
@@ -26,9 +28,9 @@ public class AddMembershipCommand {
 
    public Membership toDomain() {
       return Membership.builder()
-          .userId(userId)
-          .trainerId(trainerId)
-          .branchId(branchId)
+          .userId(new UserId(userId))
+          .trainerId(new UserId(trainerId))
+          .branchId(new BranchId(branchId))
           .status(Status.ACTIVE)
           .type(type)
           .duration(duration)
