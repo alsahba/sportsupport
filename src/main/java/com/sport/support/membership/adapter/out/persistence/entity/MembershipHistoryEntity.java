@@ -11,23 +11,23 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "MEMBERSHIP_HISTORY")
 @Getter
 @Setter
+@Entity
+@Table(name = "MEMBERSHIP_HISTORY")
 @NoArgsConstructor
 public class MembershipHistoryEntity extends AbstractAuditableEntity {
 
     @ManyToOne
-    @JoinColumn(name = "MEMBERSHIP_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private MembershipEntity membership;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private AppUserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "BRANCH_ID", nullable = false)
+    @JoinColumn(nullable = false)
     private BranchEntity branchEntity;
 
     @Enumerated(EnumType.STRING)

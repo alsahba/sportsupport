@@ -15,10 +15,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "role")
 @Getter
 @Setter
+@Entity
+@Table(name = "role")
 @NoArgsConstructor
 public class RoleEntity extends AbstractEntity {
 

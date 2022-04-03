@@ -7,15 +7,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "DISTRICT")
 @Getter
 @Setter
+@Entity
+@Table(name = "DISTRICT")
 @NoArgsConstructor
 public class DistrictEntity extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name = "CITY_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(nullable = false, insertable = false, updatable = false)
     private CityEntity city;
 
     @Column(nullable = false)

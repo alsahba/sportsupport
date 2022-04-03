@@ -21,11 +21,9 @@ import java.time.LocalDate;
 public class EmployeeEntity extends AbstractAuditableEntity {
 
    @OneToOne
-   @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
    private AppUserEntity user;
 
    @ManyToOne
-   @JoinColumn(name = "BRANCH_ID", referencedColumnName = "ID")
    private BranchEntity branchEntity;
 
    @Enumerated(EnumType.STRING)

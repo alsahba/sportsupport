@@ -18,11 +18,9 @@ public class BranchEntity extends AbstractAuditableEntity {
    private int quota;
 
    @OneToOne
-   @JoinColumn(name = "CITY_ID", referencedColumnName = "ID")
    private CityEntity city;
 
    @OneToOne
-   @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "ID")
    private DistrictEntity district;
 
    private String address;

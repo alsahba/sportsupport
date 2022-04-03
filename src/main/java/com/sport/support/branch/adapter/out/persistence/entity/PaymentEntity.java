@@ -17,7 +17,6 @@ import javax.persistence.*;
 public class PaymentEntity extends AbstractAuditableEntity {
 
    @ManyToOne
-   @JoinColumn(name = "BRANCH_ID", referencedColumnName = "ID")
    private BranchEntity branch;
 
    @Embedded

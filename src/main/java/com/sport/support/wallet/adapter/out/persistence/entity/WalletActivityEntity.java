@@ -11,10 +11,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "WALLET_ACTIVITY")
 @Getter
 @Setter
+@Entity
+@Table(name = "WALLET_ACTIVITY")
 @NoArgsConstructor
 public class WalletActivityEntity extends AbstractEntity {
 

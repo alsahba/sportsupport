@@ -7,10 +7,10 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "permission")
 @Getter
 @Setter
+@Entity
+@Table(name = "permission")
 public class PermissionEntity extends AbstractEntity {
 
     private String name;

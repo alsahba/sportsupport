@@ -9,10 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "CITY")
 @Getter
 @Setter
+@Entity
+@Table(name = "CITY")
 @NoArgsConstructor
 public class CityEntity extends AbstractEntity {
 

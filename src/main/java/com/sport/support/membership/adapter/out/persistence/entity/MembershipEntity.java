@@ -15,23 +15,23 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "MEMBERSHIP")
 @Getter
 @Setter
+@Entity
+@Table(name = "MEMBERSHIP")
 @NoArgsConstructor
 public class MembershipEntity extends AbstractAuditableEntity {
 
    @OneToOne
-   @JoinColumn(name = "USER_ID", nullable = false)
+   @JoinColumn(nullable = false)
    private AppUserEntity user;
 
    @OneToOne
-   @JoinColumn(name = "TRAINER_ID", nullable = false)
+   @JoinColumn(nullable = false)
    private AppUserEntity trainer;
 
    @ManyToOne
-   @JoinColumn(name = "BRANCH_ID", nullable = false)
+   @JoinColumn(nullable = false)
    private BranchEntity branchEntity;
 
    @Enumerated(EnumType.STRING)

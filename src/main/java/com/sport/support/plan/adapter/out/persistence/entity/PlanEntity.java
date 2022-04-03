@@ -20,12 +20,11 @@ import java.util.stream.Collectors;
 public class PlanEntity extends AbstractAuditableEntity {
 
    @ManyToOne
-   @JoinColumn(name = "USER_ID")
    private AppUserEntity user;
 
    private LocalDate date;
 
-   @OneToMany(mappedBy = "planEntity", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
    private Set<PlanExerciseEntity> planExerciseEntities;
 
    public Plan toDomain() {
