@@ -21,13 +21,13 @@ import java.util.Locale;
 public class ControllerExceptionHandler extends AbstractController {
 
    private final MessageSource messageSource;
-/*
+
    @ExceptionHandler(Exception.class)
    @ResponseStatus(HttpStatus.BAD_REQUEST)
    // TODO: 31.03.2022 without response entity it does not work
    public ResponseEntity<Response<ErrorResponse>> handleGeneralException(Exception e) {
       return ResponseEntity.badRequest().body(respond(new ErrorResponse("SSE", e.getMessage())));
-   }*/
+   }
 
    @ExceptionHandler(BusinessRuleException.class)
    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

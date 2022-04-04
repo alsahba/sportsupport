@@ -9,4 +9,6 @@ public interface LoadEmployeePort {
 
    boolean existsByUserIdAndType(Long userId, EmployeeType type);
 
+   boolean existsById(Long id);
+
 }

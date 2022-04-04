@@ -5,12 +5,11 @@ import com.sport.support.plan.application.port.in.command.DailyPlanExerciseComma
 import com.sport.support.plan.domain.vo.PlanExerciseId;
 import com.sport.support.plan.domain.vo.PlanId;
 import com.sport.support.shared.abstractions.domain.AbstractDomainObject;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Setter
+@SuperBuilder
 public class PlanExercise extends AbstractDomainObject<PlanExerciseId> {
 
    private PlanId planId;
@@ -23,14 +22,5 @@ public class PlanExercise extends AbstractDomainObject<PlanExerciseId> {
       this.exerciseId = new ExerciseId(command.getExerciseId());
       this.sets = command.getSets();
       this.completed = false;
-   }
-
-   @Builder
-   public PlanExercise(PlanExerciseId idVO, PlanId planId, ExerciseId exerciseId, int sets, boolean completed) {
-      super(idVO);
-      this.planId = planId;
-      this.exerciseId = exerciseId;
-      this.sets = sets;
-      this.completed = completed;
    }
 }

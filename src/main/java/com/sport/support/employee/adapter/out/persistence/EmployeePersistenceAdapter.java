@@ -32,4 +32,9 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    public boolean existsByUserIdAndType(Long userId, EmployeeType type) {
       return employeeRepository.existsByUserIdAndType(userId, type);
    }
+
+   @Override
+   public boolean existsById(Long id) {
+      return employeeRepository.existsById(id);
+   }
 }

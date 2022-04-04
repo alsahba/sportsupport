@@ -6,4 +6,6 @@ public interface CheckEmployeeValidityUC {
 
    void checkEmployeeExistenceByUserIdAndType(Long userId, EmployeeType type);
 
+   void checkEmployeeExistenceById(Long id);
+
 }

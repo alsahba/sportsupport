@@ -9,33 +9,22 @@ import com.sport.support.membership.domain.enumeration.Type;
 import com.sport.support.shared.abstractions.domain.AbstractDomainObject;
 import com.sport.support.shared.common.money.Money;
 import com.sport.support.shared.exception.BusinessRuleException;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
 @Getter
+@SuperBuilder
 public class Branch extends AbstractDomainObject<BranchId> {
 
-   private String name;
-   private int quota;
-   private CityId cityId;
-   private DistrictId districtId;
-   private String address;
-   private String phoneNumber;
-   private Set<Payment> payments;
-
-   @Builder
-   public Branch(BranchId idVO, String name, int quota, CityId cityId, DistrictId districtId, String address, String phoneNumber, Set<Payment> payments) {
-      super(idVO);
-      this.name = name;
-      this.quota = quota;
-      this.cityId = cityId;
-      this.districtId = districtId;
-      this.address = address;
-      this.phoneNumber = phoneNumber;
-      this.payments = payments;
-   }
+   private final String name;
+   private final int quota;
+   private final CityId cityId;
+   private final DistrictId districtId;
+   private final String address;
+   private final String phoneNumber;
+   private final Set<Payment> payments;
 
    public Money getCost(Type type, Duration duration) {
       var payment = getPayments().stream()

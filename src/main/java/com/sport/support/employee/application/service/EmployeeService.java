@@ -49,6 +49,13 @@ public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC, 
    }
 
    @Override
+   public void checkEmployeeExistenceById(Long id) {
+      if (!loadEmployeePort.existsById(id)) {
+         throw new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND);
+      }
+   }
+
+   @Override
    public Employee loadByUserIdAndType(Long userId, EmployeeType type) {
       return loadEmployeePort.loadByUserIdAndType(userId, type);
    }

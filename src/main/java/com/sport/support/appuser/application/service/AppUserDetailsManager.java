@@ -65,9 +65,7 @@ public class AppUserDetailsManager implements UserDetailsService, RegisterUserUC
    @Override
    public AppUser register(RegisterUserCommand command) {
       var user = command.toDomain();
-
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setRole(loadAuthorityPort.loadRole(RoleEnum.OWNER));
+      user.update(passwordEncoder.encode(command.getPassword()), loadAuthorityPort.loadRole(RoleEnum.OWNER));
 
       var savedUser = saveUserPort.save(user);
       createWalletUC.create(new CreateWalletCommand(savedUser.getId()));

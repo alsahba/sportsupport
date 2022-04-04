@@ -6,15 +6,14 @@ import com.sport.support.shared.exception.BusinessRuleException;
 import com.sport.support.wallet.domain.enumeration.WalletActivityType;
 import com.sport.support.wallet.domain.enumeration.WalletErrorMessages;
 import com.sport.support.wallet.domain.vo.WalletId;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
-@Setter
+@SuperBuilder
 public class Wallet extends AbstractDomainObject<WalletId> {
 
    private Long userId;
@@ -22,27 +21,18 @@ public class Wallet extends AbstractDomainObject<WalletId> {
    private Money totalSpent;
    private Set<WalletActivity> activities;
 
-   @Builder
-   public Wallet(WalletId idVO, Long userId, Money balance, Money totalSpent, Set<WalletActivity> activities) {
-      super(idVO);
-      this.userId = userId;
-      this.balance = balance;
-      this.totalSpent = totalSpent;
-      this.activities = activities;
-   }
-
    public void withdraw(Money change) {
-      setBalance(getBalance().subtract(change));
-      setTotalSpent(getTotalSpent().add(change));
+      this.balance = this.balance.subtract(change);
+      this.totalSpent = this.totalSpent.add(change);
+      this.activities = Set.of(createActivity(WalletActivityType.WITHDRAW, change));
       if (getBalance().isNegative()) {
          throw new BusinessRuleException(WalletErrorMessages.ERROR_WALLET_INSUFFICIENT_BALANCE);
       }
-      setActivities(Set.of(createActivity(WalletActivityType.WITHDRAW, change)));
    }
 
    public void deposit(Money change) {
-      setBalance(getBalance().add(change));
-      setActivities(Set.of(createActivity(WalletActivityType.DEPOSIT, change)));
+      this.balance = this.balance.add(change);
+      this.activities = Set.of(createActivity(WalletActivityType.DEPOSIT, change));
    }
 
    private WalletActivity createActivity(WalletActivityType type, Money change) {

@@ -4,8 +4,8 @@ import com.sport.support.appuser.adapter.out.persistence.entity.AppUserEntity;
 import com.sport.support.appuser.domain.vo.UserId;
 import com.sport.support.branch.adapter.out.persistence.entity.BranchEntity;
 import com.sport.support.branch.domain.vo.BranchId;
-import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.domain.Employee;
+import com.sport.support.employee.domain.enumeration.EmployeeType;
 import com.sport.support.employee.domain.vo.EmployeeId;
 import com.sport.support.shared.abstractions.entity.AbstractAuditableEntity;
 import com.sport.support.shared.common.money.Money;
@@ -55,15 +55,19 @@ public class EmployeeEntity extends AbstractAuditableEntity {
       setBonus(employee.getBonus());
    }
 
+   public EmployeeEntity(Long id) {
+      super(id);
+   }
+
    public Employee toDomain() {
-      return new Employee(
-          new EmployeeId(getId()),
-          new UserId(getUser().getId()),
-          new BranchId(getBranch().getId()),
-          getType(),
-          getBaseSalary(),
-          getBonus(),
-          getStartDate()
-      );
+      return Employee.builder()
+          .idVO(new EmployeeId(getId()))
+          .userId(new UserId(getUser().getId()))
+          .branchId(new BranchId(getBranch().getId()))
+          .type(getType())
+          .startDate(getStartDate())
+          .baseSalary(getBaseSalary())
+          .bonus(getBonus())
+          .build();
    }
 }
