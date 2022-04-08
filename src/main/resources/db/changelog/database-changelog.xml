@@ -4,10 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
-    <include file="db/changelog/data/city.xml"/>
-    <include file="db/changelog/data/district.xml"/>
-    <include file="db/changelog/data/permission.xml"/>
-    <include file="db/changelog/data/role.xml"/>
-    <include file="db/changelog/data/exercise.xml"/>
-    <include file="db/changelog/data/role-permission.xml"/>
+    <changeSet id="1" author="admin" context="dev or test">
+        <loadUpdateData tableName="city" encoding="UTF-8" file="db/data/city.csv" primaryKey="id" quotchar="'" separator=","/>
+        <loadUpdateData tableName="district" encoding="UTF-8" file="db/data/district.csv" primaryKey="id" quotchar="'" separator=","/>
+        <loadUpdateData tableName="exercise" encoding="UTF-8" file="db/data/exercise.csv" primaryKey="id" quotchar="'" separator=","/>
+        <loadUpdateData tableName="role" encoding="UTF-8" file="db/data/role.csv" primaryKey="id" quotchar="'" separator=","/>
+        <loadUpdateData tableName="permission" encoding="UTF-8" file="db/data/permission.csv" primaryKey="id" quotchar="'" separator=","/>
+        <loadUpdateData tableName="role_permission" encoding="UTF-8" file="db/data/role-permission.csv" primaryKey="id" quotchar="'" separator=","/>
+    </changeSet>
 </databaseChangeLog>
