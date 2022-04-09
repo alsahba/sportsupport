@@ -1,9 +1,9 @@
 package com.sport.support.wallet.application.port.in.usecase;
 
-import com.sport.support.wallet.application.port.in.command.WithdrawMoneyCommand;
+import com.sport.support.wallet.application.port.in.command.ChangeBalanceCommand;
 
 public interface WithdrawMoneyUC {
 
-    void withdraw(WithdrawMoneyCommand command);
+    void withdraw(ChangeBalanceCommand command);
 
 }

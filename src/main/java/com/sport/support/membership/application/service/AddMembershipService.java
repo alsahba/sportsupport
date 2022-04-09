@@ -10,20 +10,19 @@ import com.sport.support.branch.application.port.in.usecase.DecreaseQuotaUC;
 import com.sport.support.branch.application.port.in.usecase.FindBranchUC;
 import com.sport.support.branch.domain.Branch;
 import com.sport.support.employee.application.port.in.usecase.CheckEmployeeValidityUC;
-import com.sport.support.employee.domain.enumeration.EmployeeType;
-import com.sport.support.shared.common.annotations.stereotype.UseCase;
-import com.sport.support.shared.common.money.Money;
-import com.sport.support.shared.exception.BusinessRuleException;
-import com.sport.support.shared.security.enumeration.RoleEnum;
 import com.sport.support.membership.application.port.in.command.AddMembershipCommand;
 import com.sport.support.membership.application.port.in.usecase.AddMembershipUC;
 import com.sport.support.membership.application.port.out.DoesMembershipExistPort;
 import com.sport.support.membership.application.port.out.PublishWithdrawMoneyPort;
 import com.sport.support.membership.application.port.out.SaveMembershipPort;
 import com.sport.support.membership.domain.Membership;
-import com.sport.support.membership.domain.enumeration.MembershipErrorMessages;
 import com.sport.support.membership.domain.enumeration.Duration;
+import com.sport.support.membership.domain.enumeration.MembershipErrorMessages;
 import com.sport.support.membership.domain.enumeration.Type;
+import com.sport.support.shared.common.annotations.stereotype.UseCase;
+import com.sport.support.shared.common.money.Money;
+import com.sport.support.shared.exception.BusinessRuleException;
+import com.sport.support.shared.security.enumeration.RoleEnum;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -47,7 +46,7 @@ public class AddMembershipService implements AddMembershipUC {
       var membership = command.toDomain();
 
       checkUserIsAlreadyMember(membership.getUserId());
-      checkEmployeeValidityUC.checkEmployeeExistenceByUserIdAndType(membership.getTrainerId().getId(), EmployeeType.TRAINER);
+      checkEmployeeValidityUC.checkEmployeeExistenceById(membership.getTrainerId().getId());
 
       var branch = findBranchUC.findById(new FindBranchQuery(membership.getBranchId().getId()));
       var user = loadUserUC.loadById(membership.getUserId().getId());

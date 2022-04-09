@@ -7,7 +7,7 @@ import com.sport.support.wallet.adapter.in.web.payload.DepositMoneyRequest;
 import com.sport.support.wallet.adapter.in.web.payload.FindWalletActivityRequest;
 import com.sport.support.wallet.adapter.in.web.payload.WalletActivityResponse;
 import com.sport.support.wallet.adapter.in.web.payload.WalletResponse;
-import com.sport.support.wallet.application.port.in.command.DepositMoneyCommand;
+import com.sport.support.wallet.application.port.in.command.ChangeBalanceCommand;
 import com.sport.support.wallet.application.port.in.command.FindWalletActivityQuery;
 import com.sport.support.wallet.application.port.in.usecase.DepositMoneyUC;
 import com.sport.support.wallet.application.port.in.usecase.FindWalletUC;
@@ -32,7 +32,7 @@ class WalletController extends AbstractController {
    @ResponseStatus(value = HttpStatus.ACCEPTED)
    public Response<WalletResponse> deposit(@Valid @RequestBody DepositMoneyRequest request,
                                            Principal principal) {
-      var command = new DepositMoneyCommand(getUserIdFromAuth(principal), request);
+      var command = new ChangeBalanceCommand(getUserIdFromAuth(principal), request);
       var wallet = depositMoneyUC.deposit(command);
       return respond(new WalletResponse(wallet));
    }
