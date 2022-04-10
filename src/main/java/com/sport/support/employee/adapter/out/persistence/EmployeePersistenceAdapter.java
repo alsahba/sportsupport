@@ -23,9 +23,22 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    }
 
    @Override
+   public Employee update(Employee employee) {
+      var entity = findById(employee.getId());
+      var updatedEntity = new EmployeeEntity(employee);
+      updatedEntity.copyFrom(entity);
+      return employeeRepository.save(updatedEntity).toDomain();
+   }
+
+   @Override
    public Employee loadByUserIdAndType(Long userId, EmployeeType type) {
       return employeeRepository.findByUserIdAndType(userId, type)
           .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND)).toDomain();
+   }
+
+   @Override
+   public Employee loadById(Long id) {
+      return findById(id).toDomain();
    }
 
    @Override
@@ -36,5 +49,10 @@ public class EmployeePersistenceAdapter implements SaveEmployeePort, LoadEmploye
    @Override
    public boolean existsById(Long id) {
       return employeeRepository.existsById(id);
+   }
+
+   private EmployeeEntity findById(Long id) {
+      return employeeRepository.findById(id)
+          .orElseThrow(() -> new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_IS_NOT_FOUND));
    }
 }

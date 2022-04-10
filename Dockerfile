@@ -6,7 +6,7 @@ COPY pom.xml .
 RUN ./mvnw dependency:go-offline
 
 COPY src src
-RUN ./mvnw package -DskipTests
+RUN ./mvnw package -DskipTests -q
 
 FROM openjdk:17-jdk-slim-buster
 

@@ -2,19 +2,22 @@ package com.sport.support.plan.application.service;
 
 import com.sport.support.appuser.application.port.in.usecase.LoadUserUC;
 import com.sport.support.appuser.domain.vo.UserId;
-import com.sport.support.shared.exception.BusinessRuleException;
+import com.sport.support.employee.domain.enumeration.EmployeeErrorMessages;
 import com.sport.support.membership.application.port.in.command.FindMembershipQuery;
 import com.sport.support.membership.application.port.in.usecase.DoesMembershipExistUC;
-import com.sport.support.membership.domain.enumeration.MembershipErrorMessages;
 import com.sport.support.plan.application.port.in.command.*;
-import com.sport.support.plan.application.port.in.usecase.*;
+import com.sport.support.plan.application.port.in.usecase.AddPlanUC;
+import com.sport.support.plan.application.port.in.usecase.CompletePlanUC;
+import com.sport.support.plan.application.port.in.usecase.DeletePlanExerciseUC;
+import com.sport.support.plan.application.port.in.usecase.DeletePlanUC;
 import com.sport.support.plan.application.port.out.LoadPlanPort;
 import com.sport.support.plan.application.port.out.RemovePlanExercisePort;
 import com.sport.support.plan.application.port.out.RemovePlanPort;
 import com.sport.support.plan.application.port.out.SavePlanPort;
 import com.sport.support.plan.domain.Plan;
-import com.sport.support.plan.domain.enumeration.PlanErrorMessages;
 import com.sport.support.plan.domain.PlanExercise;
+import com.sport.support.plan.domain.enumeration.PlanErrorMessages;
+import com.sport.support.shared.exception.BusinessRuleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -88,7 +91,7 @@ public class PlanService implements AddPlanUC, DeletePlanUC, DeletePlanExerciseU
 
    private void checkTrainerAuthorization(UserId userId, Long trainerId) {
       if (!doesMembershipExistUC.doesExistByUserAndTrainer(new FindMembershipQuery(userId.getId(), trainerId))) {
-         throw new BusinessRuleException(MembershipErrorMessages.ERROR_MEMBERSHIP_TRAINER_IS_UNAUTHORIZED);
+         throw new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_TRAINER_IS_UNAUTHORIZED);
       }
    }
 

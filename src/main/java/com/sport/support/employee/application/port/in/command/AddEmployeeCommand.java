@@ -21,8 +21,8 @@ public class AddEmployeeCommand {
       this.branchId = request.getBranchId();
       this.username = request.getUsername();
       this.type = request.getType();
-      this.baseSalary = new Money(request.getBaseSalary().doubleValue());
-      this.bonus = new Money(request.getBonus().doubleValue());
+      this.baseSalary = new Money(request.getBaseSalary());
+      this.bonus = new Money(request.getBonus());
       this.startDate = request.getStartDate();
    }
 }

@@ -38,6 +38,10 @@ services:
       - db
       - redis
       - kafka
+    environment:
+      - DB_HOST=db
+      - KAFKA_HOST=kafka
+      - REDIS_HOST=redis
 
   db:
     image: 'postgres:14-alpine'

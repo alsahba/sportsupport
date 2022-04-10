@@ -16,6 +16,6 @@ Also, hexagonal architecture attempted to apply, implementation of it inspired b
 
 Meaning of the 'apply attempt'  is about that this is neither completely true nor completely false implementation for hexagonal architecture. I'm still in learning phase of it like majority of our development community. So, please feel free for contributing the code or reaching me that the points that you want the touch.
 
-If you want to try project without complete dockerization, you can use the following command for infra setup but you must change service addresses in the properties file:
+If you want to try project without complete dockerization, you can use the following command for infra setup:
 
 ```docker-compose -f infra_docker-compose.yml -p infra up ```

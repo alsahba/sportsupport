@@ -47,6 +47,7 @@ public class EmployeeEntity extends AbstractAuditableEntity {
    private Money bonus;
 
    public EmployeeEntity(Employee employee) {
+      setId(employee.getId());
       setUser(new AppUserEntity(employee.getUserId().getId()));
       setBranch(new BranchEntity(employee.getBranchId().getId()));
       setType(employee.getType());

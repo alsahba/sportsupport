@@ -31,4 +31,9 @@ public class Employee extends AbstractDomainObject<EmployeeId> {
       this.bonus = addEmployeeCommand.getBonus();
       this.startDate = addEmployeeCommand.getStartDate().toLocalDate();
    }
+
+   public void changeSalary(Money baseSalary, Money bonus) {
+      this.baseSalary = baseSalary;
+      this.bonus = bonus;
+   }
 }

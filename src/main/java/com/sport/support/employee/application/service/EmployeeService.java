@@ -6,7 +6,9 @@ import com.sport.support.appuser.application.port.in.usecase.UpdateRoleUC;
 import com.sport.support.branch.application.port.in.usecase.BranchExistenceUC;
 import com.sport.support.branch.domain.enumeration.BranchErrorMessages;
 import com.sport.support.employee.application.port.in.command.AddEmployeeCommand;
+import com.sport.support.employee.application.port.in.command.ChangeSalaryCommand;
 import com.sport.support.employee.application.port.in.usecase.AddEmployeeUC;
+import com.sport.support.employee.application.port.in.usecase.ChangeSalaryUC;
 import com.sport.support.employee.application.port.in.usecase.CheckEmployeeValidityUC;
 import com.sport.support.employee.application.port.in.usecase.LoadEmployeeUC;
 import com.sport.support.employee.application.port.out.LoadEmployeePort;
@@ -23,7 +25,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC, LoadEmployeeUC {
+public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC, LoadEmployeeUC, ChangeSalaryUC {
 
    private final SaveEmployeePort saveEmployeePort;
    private final LoadEmployeePort loadEmployeePort;
@@ -58,6 +60,19 @@ public class EmployeeService implements AddEmployeeUC, CheckEmployeeValidityUC, 
    @Override
    public Employee loadByUserIdAndType(Long userId, EmployeeType type) {
       return loadEmployeePort.loadByUserIdAndType(userId, type);
+   }
+
+   @Override
+   public void change(ChangeSalaryCommand command) {
+      var employee = loadEmployeePort.loadById(command.getEmployeeId().getId());
+      var manager = loadEmployeePort.loadByUserIdAndType(command.getManagerId().getId(), EmployeeType.MANAGER);
+
+      if (employee.getBranchId().equals(manager.getBranchId())) {
+         employee.changeSalary(command.getBaseSalary(), command.getBonus());
+         saveEmployeePort.update(employee);
+      } else {
+         throw new BusinessRuleException(EmployeeErrorMessages.ERROR_EMPLOYEE_MANAGER_IS_UNAUTHORIZED);
+      }
    }
 
    private void checkBranch(Long branchId) {
