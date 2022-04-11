@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
 @SuperBuilder
+@NoArgsConstructor
 @AllArgsConstructor
-public class AbstractDomainObject<T extends AbstractIDValueObject> {
+public abstract class AbstractDomainObject<T extends AbstractIDValueObject> {
 
    protected T idVO;
 

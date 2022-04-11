@@ -28,7 +28,7 @@ public class MembershipController extends AbstractController {
     private final CancelMembershipUC cancelMembershipUC;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('MEMBER_WRITE')")
+    @PreAuthorize("hasAuthority('USER_WRITE')")
     @ResponseStatus(HttpStatus.CREATED)
     public Response<MembershipResponse> add(@RequestBody @Valid AddMembershipRequest request, Principal principal) {
         var membership = addMembershipUC.add(new AddMembershipCommand(Long.valueOf(principal.getName()), request));
@@ -38,8 +38,9 @@ public class MembershipController extends AbstractController {
     @PostMapping("/cancel")
     @PreAuthorize("hasAuthority('MEMBERSHIP_WRITE')")
     @ResponseStatus(HttpStatus.OK)
-    public Response cancel(Authentication authentication) {
-        cancelMembershipUC.cancel(Long.valueOf(authentication.getName()));
-        return respond();
+    public Response<Long> cancel(Authentication authentication) {
+        var userId = Long.valueOf(authentication.getName());
+        cancelMembershipUC.cancel(userId);
+        return respond(userId);
     }
 }
