@@ -11,11 +11,24 @@ Tech-stack:
 - Postgresql
 - Docker
 - Kafka
+- Swagger3
 
 Also, hexagonal architecture attempted to apply, implementation of it inspired by the Tom Hombergs' implementation for the book 'Get Your Hands Dirty on Clean Architecture: A Hands-on Guide to Creating Clean Web Applications with Code Examples in Java'.
 
 Meaning of the 'apply attempt'  is about that this is neither completely true nor completely false implementation for hexagonal architecture. I'm still in learning phase of it like majority of our development community. So, please feel free for contributing the code or reaching me that the points that you want the touch.
 
-If you want to try project without complete dockerization, you can use the following command for infra setup:
+If you want to try project without complete dockerization, you can use the following command for infrastructure setup:
 
-```docker-compose -f infra_docker-compose.yml -p infra up ```
+```docker-compose -f infra_docker-compose.yml -p sport_support_infra up ```
+
+You can find the api documentation in this address:
+
+```http://localhost:8080/swagger-ui/index.html/```
+
+The test data for this project is managed by liquibase. You can find the changelog in the project root. 
+You can run the following command to update the database:
+
+```mvn liquibase:update```
+
+
+

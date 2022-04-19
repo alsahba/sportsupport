@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class NotificationPersistenceAdapter implements SaveNotificationPort {
+class NotificationPersistenceAdapter implements SaveNotificationPort {
 
    private final NotificationRepository repository;
 
