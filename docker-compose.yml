@@ -26,14 +26,10 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    expose:
-      - 8080
+    build: .
+    container_name: app
     ports:
       - "8080:8080"
-    container_name: app
     depends_on:
       - db
       - redis
